@@ -5,6 +5,14 @@
 Dieses Projekt wurde im Rahmen einer Semesterprojektarbeit der [DHBW Heidenheim](https://www.heidenheim.dhbw.de/startseite) erstellt.  
 Dieses Repository enthält den Quellcode für eine Webanwendung, die die Essensbestellungsprozesse für eine Firma automatisiert. Bisherige manuelle Prozesse, wie das Ausfüllen von Excel-Tabellen, werden durch eine benutzerfreundliche Webanwendung ersetzt. Die Anwendung ermöglicht die Bestellung von Mahlzeiten für die kommende Woche und bietet verschiedene Funktionen zur Verbesserung des gesamten Bestellungsprozesses.
 
+## Projektstruktur
+
+Im [Web-App](Web-App) Ordner ist der Code (Frontend/Backend) für die Web-Applikation.
+
+Im [Development](Development) Ordner ist alles weitere was für die Entwicklung benötigt wird (Tools, etc.).
+
+Die [Dokumentation](Dokumentation) kann man hier einsehen.
+
 ## Funktionen
 
 ### Grundlegende Funktionen
