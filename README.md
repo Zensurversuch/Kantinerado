@@ -7,7 +7,7 @@ Dieses Repository enthält den Quellcode für eine Webanwendung, die die Essensb
 
 ## Projektstruktur
 
-Im [Web-App](Web-App) Ordner ist der Code (Frontend/Backend) der ganhzen Web-Applikation.
+Im [Web-App](Web-App) Ordner ist der Code (Frontend/Backend) für die Web-Applikation.
 
 Im [Development](Development) Ordner ist alles weitere was für die Entwicklung benötigt wird (Tools, etc.).
 
