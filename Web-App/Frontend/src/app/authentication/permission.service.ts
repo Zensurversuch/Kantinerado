@@ -11,8 +11,6 @@ export class PermissionService {
     'kantinenmitarbeiter': ['food', 'orders']
   };
 
-  constructor() { }
-
   getPermissionsForRole(role: string): string[] {
     return this.permissionsData[role] || [];
   }
