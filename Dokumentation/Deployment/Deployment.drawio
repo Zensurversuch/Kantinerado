@@ -1,0 +1,61 @@
+<mxfile host="Electron" modified="2024-02-21T09:22:45.206Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.1.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="0N3FYHktX2Psp93LMLEZ" version="23.1.5" type="device">
+  <diagram name="Seite-1" id="TCh91SgyN863A4KeoIE5">
+    <mxGraphModel dx="1750" dy="1035" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="90" width="130" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-7" value="Repository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="155" y="50" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-8" value="Code und Dockerfiles" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="130" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-10" value="GitHub Aktion" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="354" y="120" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-11" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="475" y="80" width="340" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="9HwNZBYhLnA3fZjCpn_T-4" target="9HwNZBYhLnA3fZjCpn_T-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-4" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="110" width="130" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-5" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="280" width="130" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-6" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="9HwNZBYhLnA3fZjCpn_T-1" target="9HwNZBYhLnA3fZjCpn_T-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="460" y="360" as="sourcePoint" />
+            <mxPoint x="510" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-12" value="Amazon Web Service" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="520" y="40" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-14" value="Amazon Elastic Container Registery" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="520" y="80" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-15" value="Images (Backend, Frontend etc.)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="600" y="140" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="9HwNZBYhLnA3fZjCpn_T-19" target="9HwNZBYhLnA3fZjCpn_T-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-19" value="Public IP Adresse" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="575" y="540" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-21" value="Elastic Container Service" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="240" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9HwNZBYhLnA3fZjCpn_T-22" value="Ausführen der Images" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="605" y="330" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
