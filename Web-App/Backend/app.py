@@ -1,7 +1,10 @@
 from flask import Flask
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, get_jwt_claims
+from flask import jsonify
+from flask import request
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity
 from role_permissions import get_permissions_for_role
 
+testing = True
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  
@@ -29,7 +32,7 @@ def login():
     if username not in users or users[username]['password'] != password:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=username, additional_claims={'role': users[username]['role']})
+    access_token = create_access_token(identity=username)
     return jsonify(access_token=access_token), 200
 
 
@@ -37,8 +40,13 @@ def login():
 #Beispiel für permission check die permission muss in der Role Permission datei hinterlegt werden
 @app.route("/hello")
 def hello():
-    current_user = get_jwt_identity()
-    current_role = get_jwt_claims()['roles']
+    if not testing:
+        current_user = get_jwt_identity()
+        current_role = "admin" #Hier muss die Rolle von der Datenbank kommen mithilfe des current_user name
+    else:
+        current_user = "user1"
+        current_role = "admin"
+   
     current_permissions = set(get_permissions_for_role(current_role))
     if 'hello' in current_permissions:
         return jsonify(logged_in_as=current_user, message='Admin access to money granted! Hello, World!')
