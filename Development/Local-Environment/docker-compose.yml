@@ -8,13 +8,15 @@ services:
       - "5000:5000"
     depends_on:
       - database
+    environment:
+    - POSTGRES_PW=${POSTGRES_PW}
 
   database:
     image: postgres:15
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: test
+      POSTGRES_PASSWORD: ${POSTGRES_PW}
       POSTGRES_DB: postgres
-    # Nächste Zeilen auskommentieren, um die Datenbank von außen nicht erreichbar zu machen
+    # Uncomment the following lines to prevent the database from being accessible from the outside
     ports:
      - "5432:5432"

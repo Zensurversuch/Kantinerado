@@ -1,0 +1,13 @@
+Run the docker-compose application and paste this code into your powershell to create a dummy user:
+
+$headers = @{ "Content-Type" = "application/json" }
+
+$body = @{
+    email = "test@example.com"
+    password = "mypassword"
+    firstName = "firstName"
+    lastName = "lastName"
+    role = "user"
+} | ConvertTo-Json
+
+Invoke-WebRequest -Uri "http://localhost:5000/create_user" -Method POST -Headers $headers -Body $body

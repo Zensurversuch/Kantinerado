@@ -1,27 +1,12 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
+from dotenv import dotenv_values
+import sys
 
-# PostgreSQL connection string
-POSTGRES_URL = 'postgresql://postgres:test@localhost:5432/postgres'
+sys.path.append("../Backend/DB_Repositories")
+from models import initialize_database
 
-def initialize_database():
-    engine = create_engine(POSTGRES_URL)
+env_vars = dotenv_values("../../Development/Local-Environment/.env")
+postgres_pw = env_vars.get("POSTGRES_PW")
 
-    metadata = MetaData()
-
-    users = Table('users', metadata,
-                  Column('id', Integer, primary_key=True),
-                  Column('name', String),
-                  Column('email', String))
-
-    metadata.create_all(engine)
-
-    # Optionally, insert some example data
-    with engine.connect() as connection:
-        connection.execute(users.insert().values(name='John Doe', email='john@example.com'))
-        connection.execute(users.insert().values(name='Jane Smith', email='jane@example.com'))
-        connection.commit()
-
-    print("Daten wurden erfolgreich in die Datenbank eingefügt.")
 
 if __name__ == "__main__":
-    initialize_database()
+    initialize_database(postgres_pw)
