@@ -3,7 +3,14 @@
 Dieses Docker-Compose-Setup ermöglicht es, eine einfache Webanwendung mit einer Backend-API und einer PostgreSQL-Datenbank lokal zu betreiben. Hier ist eine kurze Anleitung, wie Sie das Setup starten können:
 
 **Voraussetzungen:**
-- Docker und Docker Compose müssen auf Ihrem System installiert sein.
+
+- Stellen Sie sicher, dass Docker und Docker Compose auf Ihrem System installiert sind.  
+- !!!Erstellen Sie eine `.env`-Datei in diesem Ordner mit dem folgenden Inhalt:
+   ```text
+   # Diese Datei kann Variablen für Docker speichern
+
+   POSTGRES_PW=test      # Setzen Sie hier das Passwort für Ihre PostgreSQL-Datenbank fest
+   ```
 
 **Schritte zum Starten der Anwendung:**
 
