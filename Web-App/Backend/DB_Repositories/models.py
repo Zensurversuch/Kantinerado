@@ -21,13 +21,13 @@ dish_allergy_association = Table(
 class Allergy(Base):
     __tablename__ = 'allergies'
 
-    allergieID = Column(Integer, primary_key=True)
+    allergieID = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
 
 class Dish(Base):
     __tablename__ = 'dishes'
 
-    dishID = Column(Integer, primary_key=True)
+    dishID = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     ingredients = Column(ARRAY(String))
     dietaryCategory = Column(String(50), nullable=False)
@@ -40,7 +40,7 @@ class Dish(Base):
 class User(Base):
     __tablename__ = 'users'
 
-    userID = Column(Integer, primary_key=True)
+    userID = Column(Integer, primary_key=True, autoincrement=True)
     email = Column(String(50), nullable=False)
     password = Column(String(50), nullable=False)
     lastName = Column(String(50), nullable=False)
@@ -53,7 +53,7 @@ class User(Base):
 class Order(Base):
     __tablename__ = 'orders'
 
-    orderID = Column(Integer, primary_key=True)
+    orderID = Column(Integer, primary_key=True, autoincrement=True)
     userID = Column(Integer, ForeignKey('users.userID'), nullable=False)
     dishID = Column(Integer, ForeignKey('dishes.dishID'), nullable=False)
     amount = Column(Integer, nullable=False)
@@ -62,7 +62,7 @@ class Order(Base):
 class MealPlan(Base):
     __tablename__ = 'mealPlan'
 
-    mealPlanID = Column(Integer, primary_key=True)
+    mealPlanID = Column(Integer, primary_key=True, autoincrement=True)
     dishID = Column(Integer, ForeignKey('dishes.dishID'), nullable=False)
     date = Column(Date, nullable=False)
 
