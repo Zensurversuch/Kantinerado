@@ -1,6 +1,12 @@
 version: '3'
 
 services:
+  frontend:
+    build:
+      context: ../../Web-App/Frontend/
+    ports:
+      - "80:80"
+
   backend:
     build:
       context: ../../Web-App/Backend/
