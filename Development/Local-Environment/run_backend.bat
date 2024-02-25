@@ -8,4 +8,4 @@ set CONTAINER_NAME=backend-container
 
 docker build -t %IMAGE_TAG% %DOCKERFILE_DIR%
 
-docker run --rm --name %CONTAINER_NAME% -p 8080:5000 %IMAGE_TAG%:latest
+docker run --rm --name %CONTAINER_NAME% -p 5000:5000 %IMAGE_TAG%:latest
