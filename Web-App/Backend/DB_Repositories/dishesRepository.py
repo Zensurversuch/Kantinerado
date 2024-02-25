@@ -2,6 +2,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from DB_Repositories.models import Dish
 import base64
+from random import randint
 
 class DishRepository:
     def __init__(self, engine):
@@ -35,8 +36,15 @@ class DishRepository:
     def create_dish(self, name, ingredients, dietary_category, meal_type, image=None):
         try:
             session = scoped_session(self.session_factory)
+            min_ = 1
+            max_ = 1000000000
+            rand_dishID = randint(min_, max_)
+
+            while session.query(Dish).filter(Dish.dishID == rand_dishID).first() is not None:
+                rand_dishID = randint(min_, max_)
 
             new_dish = Dish(
+                dishID=rand_dishID,
                 name=name,
                 ingredients=ingredients,
                 dietaryCategory=dietary_category,

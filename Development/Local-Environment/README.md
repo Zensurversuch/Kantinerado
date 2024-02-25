@@ -15,17 +15,14 @@ Dieses Docker-Compose-Setup ermöglicht es, eine einfache Webanwendung mit einer
 
 ## Schritte zum Starten der Anwendung: 
 
-1. **Konfiguration anpassen (optional):**
-    Sie können die Konfiguration der Datenbank in der `docker-compose.yml`-Datei ändern, einschließlich des Benutzernamens, Passworts und des Datenbanknamens. Standardmäßig sind die Werte auf `postgres`, `test` und `postgres` eingestellt.
-
-2. **Docker Compose starten:**
+1. **Docker Compose starten:**
     Führen Sie den folgenden Befehl in diesem Ordner aus:
     ```bash
     docker-compose up --build
     ```
     Dieser Befehl baut die Docker-Images und startet die Container gemäß der Konfiguration in der `docker-compose.yml`-Datei. Die Option `--build` wird verwendet, um sicherzustellen, dass das Backend Image vor dem Start der Container neu erstellt wird, wodurch Änderungen am Code automatisch mit deployed werden.
 
-3. **Aufräumen:**
+2. **Aufräumen:**
     Um die Docker-Container zu stoppen und aufzuräumen, verwenden Sie den folgenden Befehl:
     ```bash
     docker-compose down

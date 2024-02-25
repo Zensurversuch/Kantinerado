@@ -14,7 +14,7 @@ app = Flask(__name__)
 postgres_pw = os.getenv("POSTGRES_PW")
 POSTGRES_URL = f"postgresql://postgres:{postgres_pw}@database/postgres"
 jwt_secret_key = os.getenv("JWT_SECRET_KEY")
-app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
+app.config['JWT_SECRET_KEY'] = jwt_secret_key
 
 testing = True
 # --------------------------------------------------------------------------
@@ -146,6 +146,9 @@ def create_user():
 
         if not (email and password and lastName and firstName and role):
             return jsonify({"message": "Missing required fields"}), 400
+        
+        if user_repo.get_user_by_email(email):
+            return jsonify({"message": f"User with the email {email} already exists"}), 500
 
         if user_repo.create_user(email, password, lastName, firstName, role):
             return jsonify({"message": "User created successful"}), 201

@@ -1,6 +1,7 @@
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from DB_Repositories.models import User
+from random import randint 
 
 class UserRepository:
     def __init__(self, engine):
@@ -9,8 +10,13 @@ class UserRepository:
 
     def create_user(self, email, password, lastName, firstName, role):
         try:
+            min_ = 1
+            max_ = 1000000000
+            rand_userid = randint(min_, max_)
             session = scoped_session(self.session_factory)
-            new_user = User(email=email, password=password, lastName=lastName, firstName=firstName, role=role)
+            while session.query(User).filter(User.userID == rand_userid).first() is not None:
+                rand_userid = randint(min_, max_)
+            new_user = User(userID = rand_userid, email=email, password=password, lastName=lastName, firstName=firstName, role=role)
             session.add(new_user)
             session.commit()
             return True
