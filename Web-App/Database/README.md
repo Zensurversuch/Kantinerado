@@ -1,7 +1,7 @@
 # Datenbank
 ## Tabellen initialisieren
 Wenn die Datenbank erstellt wurde müssen die Tabellen initialisiert werden. Dies wird mit dem Skript [initialize_db.py](initialize_db.py) gemacht. Wichtig ist das man dieses in diesem Ordner ausführt sodass das Passwort der Datenbank richtig gezogen wird.  
-Wenn man dieses Skript ausführt wenn die Tabellen schon initialisiert sind führt dies zu keinem Fehler und auch die Daten die in der DB waren bleiben bestehen.
+Wenn man dieses Skript ausführt wenn die Tabellen schon initialisiert sind führt dies zu keinem Fehler und auch die Daten die in der DB waren bleiben bestehen. Des Weiteren müssen die Python-Module "python-dotenv", "sqlalchemy" und "sqlalchemy" auf dem System installiert sein.
 
 ## Tabellen mit DummyDaten befüllen
 
