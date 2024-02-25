@@ -13,9 +13,10 @@ app = Flask(__name__)
 # -------------------- Environment Variables -------------------------------
 postgres_pw = os.getenv("POSTGRES_PW")
 POSTGRES_URL = f"postgresql://postgres:{postgres_pw}@database/postgres"
-testing = True
 jwt_secret_key = os.getenv("JWT_SECRET_KEY")
-app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  
+app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
+
+testing = True
 # --------------------------------------------------------------------------
 
 engine = create_engine(POSTGRES_URL)
@@ -29,6 +30,36 @@ dish_repo = dishesRepository.DishRepository(engine)
 meal_plan_repo = mealPlanRepository.MealPlanRepository(engine)
 order_repo = orderRepository.OrderRepository(engine)
 
+######################### Just for testing #######################################
+if testing:
+    @app.route('/test_login/<string:email>/<string:password>')
+    def test_login(email, password):
+        if not email or not password:
+            return jsonify({"msg": "Fehlender Benutzername oder Passwort"}), 400
+
+        user_data = user_repo.get_user_by_email(email)
+
+        if user_data and password == user_data["password"]:
+            role = user_data["role"]
+            return jsonify({"msg": f"User existiert mit der Rolle {role}"}), 200
+        else:
+            return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
+
+    @app.route("/test_hello/<int:user_id>")
+    def test_hello(user_id):
+        current_user = user_id
+        user_data = user_repo.get_user_by_id(current_user)
+        if(user_data):
+            current_role = user_data["role"]
+        else:
+            return jsonify({"msg": "Benutzer existiert nicht"}), 401
+
+        current_permissions = set(get_permissions_for_role(current_role))
+        if 'hello' in current_permissions:
+            return jsonify(logged_in_as=current_user, message='Zugriff auf Hello gestattet! Hallo, Welt!')
+        else:
+            return jsonify(message='Zugriff nicht gestattet! Hello Berechtigung erforderlich'), 403
+################### END TESTING ROUTES #####################################################################
 
 
 @app.route("/hello")
@@ -45,18 +76,21 @@ def hello():
     """
     if not testing:
         current_user = get_jwt_identity()  # get_jwt_identity() returns userId
-        current_role = "admin" # Implementieren von Datenbank
+        user_data = user_repo.get_user_by_id(current_user)
+        if(user_data):
+            current_role = user_data["role"]
     else:
         current_user = "user1"
         current_role = "admin"
-   
+
     current_permissions = set(get_permissions_for_role(current_role))
     if 'hello' in current_permissions:
-        return jsonify(logged_in_as=current_user, message='Zugriff auf Geld gewährt! Hallo, Welt!')
+        return jsonify(logged_in_as=current_user, message='Zugriff auf Hello gestattet! Hallo, Welt!')
     else:
-        return jsonify(message='Zugriff mit Berechtigung für Geld erforderlich!'), 403
+        return jsonify(message='Zugriff nicht gestattet! Hello Berechtigung erforderlich'), 403
 
-# USER ROUTES
+
+#################################### USER ROUTES ##################################
 @app.route('/login', methods=['POST'])
 def login():
     """
@@ -88,20 +122,15 @@ def login():
     if not email or not password:
         return jsonify({"msg": "Fehlender Benutzername oder Passwort"}), 400
 
-    if username not in users or users[username]['password'] != password:
+    user_data = user_repo.get_user_by_email(email)
+
+    if user_data and password == user_data["password"]:
+        access_token = create_access_token(identity=user_data["userID"])
+        return jsonify(access_token=access_token), 200
+    else:
         return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
-    
-    #Meine Methoden
-    # user_pw = user_repo.get_password_for_user(user_id)
-    # if user_pw:
-    #     return jsonify({"password": user_pw})
-    # return jsonify({"message": "User not found"}), 404
-    
-    # !!!Methode entwickeln Alle daten von user for email!!!
 
 
-    access_token = create_access_token(identity=userId)
-    return jsonify(access_token=access_token), 200
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
@@ -129,9 +158,16 @@ def all_users():
     return jsonify({"message": "No users found"}), 404
 
 
-@app.route('/user/<int:user_id>')
-def get_user(user_id):
+@app.route('/user_by_id/<int:user_id>')
+def get_user_by_id(user_id):
     user = user_repo.get_user_by_id(user_id)
+    if user:
+        return user
+    return jsonify({"message": "User not found"}), 404
+
+@app.route('/user_by_email/<string:email>')
+def get_user_by_mail(email):
+    user = user_repo.get_user_by_email(email)
     if user:
         return user
     return jsonify({"message": "User not found"}), 404
@@ -151,7 +187,7 @@ def get_user_password(user_id):
     return jsonify({"message": "User not found"}), 404
 
 
-# DISH ROUTES
+######################################## DISH ROUTES #############################
 @app.route('/dish/<int:dish_id>')
 def get_dish_by_id(dish_id):
     dish = dish_repo.get_dish_by_id(dish_id)
