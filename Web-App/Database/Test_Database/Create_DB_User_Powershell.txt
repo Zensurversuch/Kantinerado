@@ -7,7 +7,7 @@ $body = @{
     password = "mypassword"
     firstName = "firstName"
     lastName = "lastName"
-    role = "user"
+    role = "kantinenmitarbeiter"
 } | ConvertTo-Json
 
 Invoke-WebRequest -Uri "http://localhost:5000/create_user" -Method POST -Headers $headers -Body $body
