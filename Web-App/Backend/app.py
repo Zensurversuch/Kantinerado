@@ -63,7 +63,7 @@ if testing:
 
 
 @app.route("/hello")
-#@swag_from('swagger/hello.yml')  # Spezifiziere die Swagger-YAML-Datei für diesen Endpunkt
+#@swag_from('swagger/hello.yml')
 def hello():
     """
     Hello-Endpunkt
@@ -142,7 +142,7 @@ def create_user():
         firstName = data.get('firstName')
         role = data.get('role')
         allergies = data.get('allergies')       # Needs to be done: 
-                                                # if allergies are given you have to map the allergies to the created_dish in the dish_allergy_association table
+                                                # if allergies are given you have to map the allergies to the created_user in the user_allergy_association table
 
         if not (email and password and lastName and firstName and role):
             return jsonify({"message": "Missing required fields"}), 400
