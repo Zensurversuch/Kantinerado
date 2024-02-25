@@ -141,6 +141,8 @@ def create_user():
         lastName = data.get('lastName')
         firstName = data.get('firstName')
         role = data.get('role')
+        allergies = data.get('allergies')       # Needs to be done: 
+                                                # if allergies are given you have to map the allergies to the created_dish in the dish_allergy_association table
 
         if not (email and password and lastName and firstName and role):
             return jsonify({"message": "Missing required fields"}), 400
@@ -204,6 +206,8 @@ def create_dishes():
         dietary_category = data.get('dietary_category')
         meal_type = data.get('meal_type')
         image = data.get('image')
+        allergies = data.get('allergies')       # Needs to be done: 
+                                                # if allergies are given you have to map the allergies to the created_dish in the dish_allergy_association table
 
         if not (name and ingredients and dietary_category and meal_type):
             return jsonify({"message": "Missing required fields"}), 400
