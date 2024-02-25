@@ -32,7 +32,7 @@ class DishRepository:
         finally:
             session.close()
 
-    def create_dish(self, name, ingredients, dietary_category, meal_type, image=None, allergies=None):
+    def create_dish(self, name, ingredients, dietary_category, meal_type, image=None):
         try:
             session = scoped_session(self.session_factory)
 

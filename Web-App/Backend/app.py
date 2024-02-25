@@ -204,14 +204,13 @@ def create_dishes():
         dietary_category = data.get('dietary_category')
         meal_type = data.get('meal_type')
         image = data.get('image')
-        allergies = data.get('allergies')
 
         if not (name and ingredients and dietary_category and meal_type):
             return jsonify({"message": "Missing required fields"}), 400
 
         image = base64.b64decode(image) if image else None
 
-        if dish_repo.create_dish(name, ingredients, dietary_category, meal_type, image, allergies):
+        if dish_repo.create_dish(name, ingredients, dietary_category, meal_type, image):
             return jsonify({"message": "Dish created successfully"}), 201
         else:
             return jsonify({"message": "Failed to create dish"}), 500
