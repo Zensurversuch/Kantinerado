@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flasgger import Swagger
 from role_permissions import get_permissions_for_role
-from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 from sqlalchemy import create_engine, MetaData
 from DB_Repositories import userRepository, dishesRepository, orderRepository, mealPlanRepository
 import os
@@ -9,12 +9,11 @@ import base64
 
 app = Flask(__name__)
 
-
 # -------------------- Environment Variables -------------------------------
 postgres_pw = os.getenv("POSTGRES_PW")
 POSTGRES_URL = f"postgresql://postgres:{postgres_pw}@database/postgres"
-jwt_secret_key = os.getenv("JWT_SECRET_KEY")
-app.config['JWT_SECRET_KEY'] = jwt_secret_key
+jwt_secret_key = os.getenv("JWT_KEY")
+app.config["JWT_SECRET_KEY"] = f"{jwt_secret_key}"
 
 testing = True
 # --------------------------------------------------------------------------
@@ -64,6 +63,7 @@ if testing:
 
 @app.route("/hello")
 #@swag_from('swagger/hello.yml')
+@jwt_required()
 def hello():
     """
     Hello-Endpunkt

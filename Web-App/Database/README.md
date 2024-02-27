@@ -5,7 +5,7 @@ Wenn man dieses Skript ausführt wenn die Tabellen schon initialisiert sind füh
 
 ## Tabellen mit DummyDaten befüllen
 
-Im Ordner [Test_Database](./Test_Database/) befinden sich SQL Skripte um die Datenbank zu Testzwecken mit Dummy Daten zu befüllen.
+Im Ordner [Dummy_SQL_Scripts](./Test_Database/Dummy_SQL_Scripts/) befinden sich SQL Skripte um die Datenbank zu Testzwecken mit Dummy Daten zu befüllen.
 
 ### Ausführen der SQL Skripte
 Mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) kann man SQL Skripte einfach in der Datenbank ausführen.
