@@ -1,0 +1,27 @@
+Run the docker-compose application and paste this code into your powershell to create a dummy dish:
+
+Witout Picture:
+$body = @{
+    "name" = "Pizza"
+    "ingredients" = @("dough", "cheese", "tomato sauce", "toppings")
+    "dietary_category" = "Italian"
+    "meal_type" = "Main"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:5000/create_dish" -Method POST -Body $body -ContentType "application/json"
+
+
+
+With Picture:
+$imagePath = "path/to/your/image.jpg"
+$imageBase64 = [Convert]::ToBase64String((Get-Content -Path $imagePath -Encoding Byte))
+
+$body = @{
+    "name" = "Pizza"
+    "ingredients" = @("dough", "cheese", "tomato sauce", "toppings")
+    "dietary_category" = "Italian"
+    "meal_type" = "Main"
+    "image" = $imageBase64
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:5000/create_dish" -Method POST -Body $body -ContentType "application/json"
