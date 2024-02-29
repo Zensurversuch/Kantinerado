@@ -1,32 +1,43 @@
-@import '../color.scss';
 
+@import "../color.scss";
 .menu {
   position: fixed;
-  top: 0;
+  top: 50px;
   left: 0;
-  bottom: 0;
-  width: 200px;
+  width: 100%;
   background-color: $primary-color;
-  box-shadow: 0 0 10px $primary-border-color;
-  z-index: 1000;
-  transform: translateX(-100%);
+  padding: 10px;
+  border: 1px solid $primary-border-color;
+  display: block;
+  z-index: 500;
 
-  ul {
-    list-style: none;
+  &__list {
+    list-style-type: none;
     padding: 0;
     margin: 0;
+    text-align: center;
   }
 
-  li {
-    padding: 10px;
-    border-bottom: 1px solid $primary-border-color;
+  &__item {
+    margin: 2em;
+    border-bottom: solid 1px $primary-border-color;
+  }
 
-    &:last-child {
-      border-bottom: none;
+  &__link {
+    text-decoration: none;
+    color: $primary-text-color;
+
+    &:hover {
+      color: $secondary-border-color;
     }
   }
-
-  @media (max-width: 576px) {
-    width: 150px;
+}
+@media (min-width: 500px) {
+  .menu{
+    max-width: 150px;
+    height: 100em;
+    display: flex;
+    justify-content: space-around;
   }
+
 }

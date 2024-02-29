@@ -4,10 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
-  min-height: 50px;
-  height: 3em;
-  max-height: 100px;
+  height: 50px;
   background-color: $primary-color;
   border: solid 1px $primary-border-color;
   color: $primary-text-color;
@@ -24,13 +21,15 @@
   }
 
   &__logo {
+    z-index: 1000;
+    display: none;
     color: white;
     background-color: $highlight-color;
     border: solid $primary-border-color 1px;
     border-radius: 3em;
-    min-height: 3em;
+    min-height: 2em;
     max-height: 4em;
-    max-width: 100%;
+    max-width: 200px;
     height: auto;
   }
 
@@ -40,8 +39,6 @@
     color: white;
     font-size: 16px;
     cursor: pointer;
-    margin-right: 10px;
-
     &--menu {
     }
 
@@ -50,34 +47,16 @@
   }
 
   &__username {
-    margin-right: 10px;
   }
 
-  .slideInLeft {
-    transform: translateX(-100%);
-  }
 
-  .slideInLeftActive {
-    transform: translateX(0);
-  }
-
-  .slideOutLeft {
-    transform: translateX(-100%);
-  }
-
-  .slideOutLeftActive {
-    transform: translateX(-100%);
-  }
-
-  @media (max-width: 768px) {
-    .header__icon {
-      font-size: 14px;
+  @media (min-width: 500px) {
+    .header__logo {
+      display: inline-block;
+      justify-content: center;
     }
   }
 
-  @media (max-width: 576px) {
-    .header__icon {
-      display: none;
-    }
+  @media (min-width: 750px) {
   }
 }
