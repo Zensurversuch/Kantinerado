@@ -1,0 +1,32 @@
+@import '../color.scss';
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 200px;
+  background-color: $primary-color;
+  box-shadow: 0 0 10px $primary-border-color;
+  z-index: 1000; // Stelle sicher, dass das Menü über anderen Inhalten liegt
+  transform: translateX(-100%); // Initialzustand, das Menü ist ausgefahren
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 10px;
+    border-bottom: 1px solid $primary-border-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  @media (max-width: 576px) {
+    width: 150px; // Breite des Menüs für kleinere Bildschirme anpassen
+  }
+}
