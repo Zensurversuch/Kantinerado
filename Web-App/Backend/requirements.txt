@@ -11,3 +11,4 @@ Werkzeug==3.0.1
 python-dotenv==1.0.0
 flask_jwt_extended==4.6.0
 flasgger==0.9.7.1
+flask-cors==3.0.10
