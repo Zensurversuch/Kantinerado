@@ -1,0 +1,62 @@
+@import '../color.scss';
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  background-color: $primary-color;
+  border: solid 1px $primary-border-color;
+  color: $primary-text-color;
+
+  &__left,
+  &__right {
+    display: flex;
+    align-items: center;
+  }
+
+  &__center {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  &__logo {
+    z-index: 1000;
+    display: none;
+    color: white;
+    background-color: $highlight-color;
+    border: solid $primary-border-color 1px;
+    border-radius: 3em;
+    min-height: 2em;
+    max-height: 4em;
+    max-width: 200px;
+    height: auto;
+  }
+
+  &__icon {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    &--menu {
+    }
+
+    &--settings {
+    }
+  }
+
+  &__username {
+  }
+
+
+  @media (min-width: 500px) {
+    .header__logo {
+      display: inline-block;
+      justify-content: center;
+    }
+  }
+
+  @media (min-width: 750px) {
+  }
+}
