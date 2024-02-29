@@ -1,15 +1,15 @@
-<app-header></app-header>
-<div>
-  <h2>Login</h2>
-  <form (submit)="onSubmit()">
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" [(ngModel)]="username" required>
+<app-header class="app-header"></app-header>
+<div class="login">
+  <h2 class="login__title">Login</h2>
+  <form class="login__form" (submit)="onSubmit()">
+    <div class="login__form-group">
+      <label class="login__label" for="username">Username:</label>
+      <input class="login__input" type="text" id="username" name="username" [(ngModel)]="username" required>
     </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" [(ngModel)]="password" required>
+    <div class="login__form-group">
+      <label class="login__label" for="password">Password:</label>
+      <input class="login__input" type="password" id="password" name="password" [(ngModel)]="password" required>
     </div>
-    <button type="submit">Login</button>
+    <button class="login__submit-btn" type="submit">Login</button>
   </form>
 </div>
