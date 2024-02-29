@@ -8,8 +8,8 @@
   width: 200px;
   background-color: $primary-color;
   box-shadow: 0 0 10px $primary-border-color;
-  z-index: 1000; // Stelle sicher, dass das Menü über anderen Inhalten liegt
-  transform: translateX(-100%); // Initialzustand, das Menü ist ausgefahren
+  z-index: 1000;
+  transform: translateX(-100%);
 
   ul {
     list-style: none;
@@ -27,6 +27,6 @@
   }
 
   @media (max-width: 576px) {
-    width: 150px; // Breite des Menüs für kleinere Bildschirme anpassen
+    width: 150px;
   }
 }

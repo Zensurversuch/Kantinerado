@@ -5,6 +5,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px;
+  min-height: 50px;
+  height: 3em;
+  max-height: 100px;
   background-color: $primary-color;
   border: solid 1px $primary-border-color;
   color: $primary-text-color;
@@ -21,6 +24,12 @@
   }
 
   &__logo {
+    color: white;
+    background-color: $highlight-color;
+    border: solid $primary-border-color 1px;
+    border-radius: 3em;
+    min-height: 3em;
+    max-height: 4em;
     max-width: 100%;
     height: auto;
   }
@@ -42,6 +51,22 @@
 
   &__username {
     margin-right: 10px;
+  }
+
+  .slideInLeft {
+    transform: translateX(-100%);
+  }
+
+  .slideInLeftActive {
+    transform: translateX(0);
+  }
+
+  .slideOutLeft {
+    transform: translateX(-100%);
+  }
+
+  .slideOutLeftActive {
+    transform: translateX(-100%);
   }
 
   @media (max-width: 768px) {
