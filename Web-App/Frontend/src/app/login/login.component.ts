@@ -25,7 +25,7 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.http.post('http://localhost:5000/login', userData)
+    this.http.post('http://185.233.106.149:5000/login', userData)
     .subscribe(
       (response: any) => {
         console.log('POST request successful', response);

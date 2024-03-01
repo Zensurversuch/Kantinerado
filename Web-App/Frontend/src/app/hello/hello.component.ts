@@ -20,7 +20,7 @@ export class HelloComponent {
   }
   public onSubmit() {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-        this.http.get('http://localhost:5000/hello', { headers })
+        this.http.get('http://185.233.106.149:5000/hello', { headers })
         .subscribe(
           (helloResponse) => {
             console.log('GET request successful', helloResponse);
