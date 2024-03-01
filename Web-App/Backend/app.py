@@ -6,6 +6,8 @@ from sqlalchemy import create_engine, MetaData
 from DB_Repositories import userRepository, dishesRepository, orderRepository, mealPlanRepository
 import os
 import base64
+import hashlib
+from flask_cors import CORS
 
 app = Flask(__name__)
 
@@ -23,6 +25,7 @@ metadata = MetaData()
 
 jwt = JWTManager(app)
 Swagger(app)
+CORS(app) 
 
 user_repo = userRepository.UserRepository(engine)
 dish_repo = dishesRepository.DishRepository(engine)
@@ -118,13 +121,15 @@ def login():
 
     email = request.json.get('email', None)
     password = request.json.get('password', None)
+    #hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
 
     if not email or not password:
         return jsonify({"msg": "Fehlender Benutzername oder Passwort"}), 400
 
     user_data = user_repo.get_user_by_email(email)
 
-    if user_data and password == user_data["password"]:
+    if user_data and (password == user_data["password"]):
         access_token = create_access_token(identity=user_data["userID"])
         return jsonify(access_token=access_token), 200
     else:
@@ -146,13 +151,16 @@ def create_user():
 
         if not (email and password and lastName and firstName and role):
             return jsonify({"message": "Missing required fields"}), 400
-        
+
         if user_repo.get_user_by_email(email):
             return jsonify({"message": f"User with the email {email} already exists"}), 500
 
-        if user_repo.create_user(email, password, lastName, firstName, role):
+        ret_value = user_repo.create_user(email, password, lastName, firstName, role, allergies)
+        if not ret_value:   # If ret_value is empty no allergies were missing
             return jsonify({"message": "User created successful"}), 201
-        else:
+        elif ret_value:     # If ret_value contains values allergies were missing
+            return jsonify({"message": f"User created successful, but the allergies {ret_value} aren't present in the database"}), 201
+        elif ret_value == False:
             return jsonify({"message": "Failed to create user"}), 500
 
 @app.route('/all_users')
@@ -217,10 +225,14 @@ def create_dishes():
 
         image = base64.b64decode(image) if image else None
 
-        if dish_repo.create_dish(name, ingredients, dietary_category, meal_type, image):
-            return jsonify({"message": "Dish created successfully"}), 201
-        else:
-            return jsonify({"message": "Failed to create dish"}), 500
+        ret_value = dish_repo.create_dish(name, ingredients, dietary_category, meal_type, image, allergies)
+        if not ret_value:   # If ret_value is empty no allergies were missing
+            return jsonify({"message": "Dish created successful"}), 201
+        elif ret_value:     # If ret_value contains values allergies were missing
+            return jsonify({"message": f"Dish created successful, but the allergies {ret_value} aren't present in the database"}), 201
+        elif ret_value == False:
+            return jsonify({"message": "Failed to create Dish"}), 500
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
