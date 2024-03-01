@@ -1,0 +1,590 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Kantinerado API",
+    "description": "\nDie API stellt eine Schnittstelle zwischen dem Fornt- und dem Backend der Kantinerado Web-App bereit. ",
+    "contact": {
+      "email": "kirchert.tin22@student.dhbw-heidenheim.de"
+    },
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://185.233.106.149:5000"
+    },
+    {
+      "url": "http://127.0.0.1:5000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "dishes",
+      "description": "routes regarding dishes"
+    },
+    {
+      "name": "users",
+      "description": "routes regarding user"
+    }
+  ],
+  "paths": {
+    "/dishes/{allergies}": {
+      "get": {
+        "tags": [
+          "dishes"
+        ],
+        "summary": "returns all filtered dishes",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "allergies",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "allergies to filter dishes with"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned dishes succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "DishesList": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Dish_with_Id"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fehler"
+          }
+        }
+      }
+    },
+    "/dish/{dish_id}": {
+      "get": {
+        "tags": [
+          "dishes"
+        ],
+        "summary": "returns dish by Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dish_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the dish to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned dish succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dish_with_Id"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "dish not found"
+          }
+        }
+      }
+    },
+    "/order": {
+      "post": {
+        "tags": [
+          "dishes"
+        ],
+        "summary": "sends order returns statuscodes",
+        "description": "sends order.",
+        "requestBody": {
+          "description": "Make a new order by sending dishIds of ordered dishes",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Order": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "example": [
+                        1,
+                        2
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Order placed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Order succesfully sent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "wrong Input"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/create_dish": {
+      "post": {
+        "tags": [
+          "dishes"
+        ],
+        "summary": "creates a new dish",
+        "description": "creates dish.",
+        "requestBody": {
+          "description": "create a dish",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Dish"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "dish Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Dish succesfully created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "wrong Input"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/create_user": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "creates a new user",
+        "description": "creates user.",
+        "requestBody": {
+          "description": "create a user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "user created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "user succesfully created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Missing required fields"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/all_users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "returns all users",
+        "responses": {
+          "200": {
+            "description": "returned users succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "UserList": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User_with_Id"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "no users found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No users found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user_by_id/{user_id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "returns User by Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned user succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_with_Id"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found"
+          }
+        }
+      }
+    },
+    "/user_by_email/{user_email}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "returns User by email",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_email",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "email of the user to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned user succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User_with_Id"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found"
+          }
+        }
+      }
+    },
+    "/user_allergy/{user_id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "returns allergy of a user by user_id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to get allergies"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned allergy succesfully'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "allergies": {
+                      "type": "string",
+                      "example": "nuts"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found"
+          }
+        }
+      }
+    },
+    "/user_password/{user_password}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "returns password of a user by user_id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_password",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to get password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned password succesfully'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "allergies": {
+                      "type": "string",
+                      "example": "password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "e-mail",
+          "second_name",
+          "first_name",
+          "role"
+        ],
+        "properties": {
+          "allergies": {
+            "type": "string",
+            "example": "nuts"
+          },
+          "e-mail": {
+            "type": "string",
+            "example": "example@example.com"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Aaron"
+          },
+          "second_name": {
+            "type": "string",
+            "example": "Seidl"
+          },
+          "role": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "User_with_Id": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/User"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "Id": {
+                "type": "number",
+                "example": 1234
+              }
+            }
+          }
+        ]
+      },
+      "Dish": {
+        "required": [
+          "ID",
+          "name",
+          "ingredients",
+          "dietaryCategory",
+          "mealtype",
+          "allergies"
+        ],
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "number",
+            "example": 1234
+          },
+          "name": {
+            "type": "string",
+            "example": "Name"
+          },
+          "dietaryCategory": {
+            "type": "string",
+            "example": "vegan"
+          },
+          "mealType": {
+            "type": "string",
+            "example": "lunch"
+          },
+          "price": {
+            "type": "number",
+            "example": "12,34"
+          },
+          "description": {
+            "type": "string",
+            "example": "description of the dish"
+          },
+          "allergies": {
+            "type": "string",
+            "example": "nuts"
+          }
+        }
+      },
+      "Dish_with_Id": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Dish"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "Id": {
+                "type": "number",
+                "example": 1234
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
