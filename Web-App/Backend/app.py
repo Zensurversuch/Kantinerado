@@ -7,6 +7,7 @@ from DB_Repositories import userRepository, dishesRepository, orderRepository, m
 import os
 import base64
 import hashlib
+from flask_cors import CORS
 
 app = Flask(__name__)
 
@@ -24,6 +25,7 @@ metadata = MetaData()
 
 jwt = JWTManager(app)
 Swagger(app)
+CORS(app) 
 
 user_repo = userRepository.UserRepository(engine)
 dish_repo = dishesRepository.DishRepository(engine)
@@ -119,7 +121,7 @@ def login():
 
     email = request.json.get('email', None)
     password = request.json.get('password', None)
-    hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    #hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
 
     if not email or not password:
@@ -127,7 +129,7 @@ def login():
 
     user_data = user_repo.get_user_by_email(email)
 
-    if user_data and (hashed_pw == user_data["password"]):
+    if user_data and (password == user_data["password"]):
         access_token = create_access_token(identity=user_data["userID"])
         return jsonify(access_token=access_token), 200
     else:
