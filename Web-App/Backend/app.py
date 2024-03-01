@@ -85,10 +85,12 @@ if testing:
             return jsonify(message='Zugriff nicht gestattet! Hello Berechtigung erforderlich'), 403
 ################### END TESTING ROUTES #####################################################################
 
-@app.route("/hello")
 @app.route('/swagger/swagger.json')
 def send_swagger_json():
     return send_from_directory('swagger', 'swagger.json')
+
+
+@app.route("/hello")
 @jwt_required()
 def hello():
     """
