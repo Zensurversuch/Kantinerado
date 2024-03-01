@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
+from flask_swagger_ui import get_swaggerui_blueprint
 from flasgger import Swagger
 from role_permissions import get_permissions_for_role
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
@@ -12,6 +13,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # -------------------- Environment Variables -------------------------------
+SWAGGER_URL = '/swagger'  # URL for exposing Swagger UI (without trailing '/')
+API_URL = '/swagger/swagger.json'  # Our API url (can of course be a local resource)
 postgres_pw = os.getenv("POSTGRES_PW")
 POSTGRES_URL = f"postgresql://postgres:{postgres_pw}@database/postgres"
 jwt_secret_key = os.getenv("JWT_SECRET_KEY")
@@ -31,6 +34,25 @@ user_repo = userRepository.UserRepository(engine)
 dish_repo = dishesRepository.DishRepository(engine)
 meal_plan_repo = mealPlanRepository.MealPlanRepository(engine)
 order_repo = orderRepository.OrderRepository(engine)
+
+# Call factory function to create our blueprint
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    API_URL,
+    config={  # Swagger UI config overrides
+        'app_name': "Kantinerado"
+    },
+    # oauth_config={  # OAuth config. See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
+    #    'clientId': "your-client-id",
+    #    'clientSecret': "your-client-secret-if-required",
+    #    'realm': "your-realms",
+    #    'appName': "your-app-name",
+    #    'scopeSeparator': " ",
+    #    'additionalQueryStringParams': {'test': "hello"}
+    # }
+)
+
+app.register_blueprint(swaggerui_blueprint)
 
 ######################### Just for testing #######################################
 if testing:
@@ -63,9 +85,10 @@ if testing:
             return jsonify(message='Zugriff nicht gestattet! Hello Berechtigung erforderlich'), 403
 ################### END TESTING ROUTES #####################################################################
 
-
 @app.route("/hello")
-#@swag_from('swagger/hello.yml')
+@app.route('/swagger/swagger.json')
+def send_swagger_json():
+    return send_from_directory('swagger', 'swagger.json')
 @jwt_required()
 def hello():
     """

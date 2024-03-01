@@ -31,3 +31,18 @@ Voraussetzung dafür ist Python installiert zu haben.
 Um die Anwendung auszuführen muss folgender Befehl ausgeführt werden
 
     "flask run"
+
+## Swagger
+    Diese Dokumentation beschreibt die Verwendung von Swagger zur Dokumentation von APIs in diesem Projekt. Swagger ist über die Route /swagger erreichbar und die Spezifikationen sind in der Datei swagger/swagger.json definiert.
+
+### Verwendung
+    Um auf die Swagger-Dokumentation zuzugreifen, navigieren Sie einfach zu http://<Ihre_Domain>/swagger in Ihrem Webbrowser.
+
+### Spezifikationen
+    Die Spezifikationen für die APIs sind in der Datei swagger/swagger.json definiert. Diese Datei enthält detaillierte Informationen über die verfügbaren Endpunkte, Parameter, Anfragemethoden und Antworten.
+
+### Interaktion
+    Durch die Verwendung von Swagger können Entwickler die verfügbaren APIs erkunden, deren Parameter verstehen und Beispiele für Anfragen und Antworten anzeigen. Dies erleichtert die Interaktion mit den APIs und ermöglicht eine schnellere Entwicklung von Anwendungen, die auf diesen APIs basieren.
+
+### Weitere Informationen
+    Für weitere Informationen zur Verwendung von Swagger und zur Interpretation der in swagger/swagger.json definierten Spezifikationen, besuchen Sie die offizielle Swagger-Dokumentation.
