@@ -1,6 +1,6 @@
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
-from DB_Repositories.models import Dish
+from DB_Repositories.models import Dish, Allergy
 import base64
 from random import randint
 
@@ -33,7 +33,7 @@ class DishRepository:
         finally:
             session.close()
 
-    def create_dish(self, name, ingredients, dietary_category, meal_type, image=None):
+    def create_dish(self, name, ingredients, dietary_category, meal_type, image=None, allergies=None):
         try:
             session = scoped_session(self.session_factory)
             min_ = 1
@@ -52,10 +52,19 @@ class DishRepository:
                 image=image
             )
 
+            missing_allergies = []
+            if allergies:
+                for allergy_name in allergies:
+                    allergy = session.query(Allergy).filter(Allergy.name == allergy_name).first()
+                    if allergy:
+                        new_dish.allergies.append(allergy)
+                    else:
+                        missing_allergies.append(allergy_name)
+
             session.add(new_dish)
             session.commit()
-            return True
+            return missing_allergies
         except SQLAlchemyError as e:
-            return None
+            return False
         finally:
             session.close()

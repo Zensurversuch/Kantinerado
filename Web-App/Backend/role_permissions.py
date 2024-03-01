@@ -8,5 +8,5 @@ def get_permissions_for_role(role):
 permissions_data = """
 admin:money,users,products,hello
 hungernde:products,hello
-kantinenmitarbeiter:products,hello
+kantinenmitarbeiter:products
 """
