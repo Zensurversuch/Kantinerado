@@ -64,7 +64,7 @@ export class RegisterComponent {
   }
 
   registerUser() {
-    if (this.registerForm.valid && this.registerForm.value.password.equals(this.registerForm.value.confirmpassword)) {
+    if (this.registerForm.valid) {
       const userData: UserData = {
         firstName: this.registerForm.value.firstname,
         lastName: this.registerForm.value.lastname,
