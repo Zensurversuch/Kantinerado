@@ -6,6 +6,7 @@ import {UserData} from '../../interface/user-data';
 import {UserService} from '../../service/user/user.service';
 import {HttpClientModule} from "@angular/common/http";
 import {passwordMatchingValidatior} from "./password-validator";
+import {Role} from "../../interface/role";
 
 
 @Component({
@@ -69,7 +70,8 @@ export class RegisterComponent {
         firstName: this.registerForm.value.firstname,
         lastName: this.registerForm.value.lastname,
         email: this.registerForm.value.email,
-        password: this.registerForm.value.password
+        password: this.registerForm.value.password,
+        role: Role.hungernde
       };
 
       this.userService.createUser(userData).subscribe(
