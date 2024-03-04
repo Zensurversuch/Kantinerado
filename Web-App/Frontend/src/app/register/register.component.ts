@@ -56,7 +56,6 @@ export class RegisterComponent {
   }
 
   register() {
-
   }
 
   protected readonly isFormControl = isFormControl;
