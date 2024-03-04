@@ -3,10 +3,10 @@ import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from '../authentication/auth.service'
+import { AuthService } from '../../authentication/auth.service'
 @Component({
   selector: 'app-hello',
-  standalone: true, 
+  standalone: true,
   imports: [
     FormsModule,
     HeaderComponent

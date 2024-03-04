@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from '../authentication/auth.service'
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../authentication/auth.service'
 @Component({
   selector: 'app-login',
   standalone: true,

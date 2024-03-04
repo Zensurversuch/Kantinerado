@@ -2,6 +2,11 @@ import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, isFormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
 import {NgIf} from "@angular/common";
+import {UserData} from '../../interface/user-data';
+import {UserService} from '../../service/user/user.service';
+import {HttpClientModule} from "@angular/common/http";
+import {passwordMatchingValidatior} from "./password-validator";
+
 
 @Component({
   selector: 'app-register',
@@ -10,7 +15,8 @@ import {NgIf} from "@angular/common";
     ReactiveFormsModule,
     FormsModule,
     HeaderComponent,
-    NgIf
+    NgIf,
+    HttpClientModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -47,17 +53,37 @@ export class RegisterComponent {
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(50),
-        Validators.pattern(this.REGEX_PASSWORD)
+        Validators.pattern(this.REGEX_PASSWORD),
       ],
       [])
-  })
+  },{ validators: passwordMatchingValidatior } );
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.registerForm.valueChanges.subscribe(console.log)
 
   }
 
-  register() {
+  registerUser() {
+    if (this.registerForm.valid && this.registerForm.value.password.equals(this.registerForm.value.confirmpassword)) {
+      const userData: UserData = {
+        firstName: this.registerForm.value.firstname,
+        lastName: this.registerForm.value.lastname,
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password
+      };
+
+      this.userService.createUser(userData).subscribe(
+        response => {
+          console.log('Benutzer wurde erfolgreich erstellt:', response);
+        },
+        error => {
+          console.error('Fehler beim Erstellen des Benutzers:', error);
+
+        }
+      );
+    } else {
+
+    }
   }
 
   protected readonly isFormControl = isFormControl;
