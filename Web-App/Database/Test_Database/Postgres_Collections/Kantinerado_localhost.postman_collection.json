@@ -13,7 +13,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -39,7 +39,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -64,7 +64,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -90,7 +90,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -144,7 +144,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -178,7 +178,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"mypassword\"\r\n}",
+					"raw": "{\r\n    \"email\": \"mail@example.com\",\r\n    \"password\": \"mypassword\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -206,7 +206,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -231,7 +231,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier Token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -249,6 +249,32 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JWT_Token",
+			"value": "token"
 		}
 	]
 }

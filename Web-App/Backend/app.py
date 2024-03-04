@@ -1,15 +1,12 @@
 from flask import Flask, jsonify, request, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
-from flasgger import Swagger
-from role_permissions import get_permissions_for_role
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 from sqlalchemy import create_engine, MetaData
 from DB_Repositories import userRepository, dishesRepository, orderRepository, mealPlanRepository
 import os
 import base64
 from flask_cors import CORS
-from functools import wraps
-
+from decorators import permission_check
 app = Flask(__name__)
 
 # -------------------------- Environment Variables ------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,7 +23,6 @@ engine = create_engine(POSTGRES_URL)
 metadata = MetaData()
 
 jwt = JWTManager(app)
-Swagger(app)
 CORS(app)
 
 user_repo = userRepository.UserRepository(engine)
@@ -48,36 +44,11 @@ app.register_blueprint(swaggerui_blueprint)
 def send_swagger_json():
     return send_from_directory('swagger', 'swagger.json')
 
-# -------------------------- Decorators ------------------------------------------------------------------------------------------------------------------------------------------
-def permission_check():
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            function_name = func.__name__
-            current_user = get_jwt_identity()
-            user_data = user_repo.get_user_by_id(current_user)
-
-            if(user_data):
-                current_role = user_data["role"]
-            else:
-                return jsonify({"msg": "Benutzer existiert nicht"}), 401
-
-            current_permissions = set(get_permissions_for_role(current_role))
-
-            if function_name in current_permissions:
-                return func(*args, **kwargs)
-            else:
-                return jsonify(message=f'Zugriff nicht gestattet! {function_name} Berechtigung erforderlich'), 403
-
-        return wrapper
-    return decorator
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 # -------------------------- Client Routes ---------------------------------------------------------------------------------------------------------------------------------------
 @app.route("/hello")
 @jwt_required()
-@permission_check()
+@permission_check(user_repo)
 def hello():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user, message='Zugriff auf Hello gestattet! Hallo, Welt!')
@@ -132,7 +103,7 @@ def create_user():
 
 @app.route('/all_users')
 @jwt_required()
-@permission_check()
+@permission_check(user_repo)
 def all_users():
     data = user_repo.get_all_users()
     if data:
@@ -142,7 +113,7 @@ def all_users():
 
 @app.route('/user_by_id/<int:user_id>')
 @jwt_required()
-@permission_check()
+@permission_check(user_repo)
 def user_by_id(user_id):
     user = user_repo.get_user_by_id(user_id)
     if user:
@@ -151,7 +122,7 @@ def user_by_id(user_id):
 
 @app.route('/user_by_email/<string:email>')
 @jwt_required()
-@permission_check()
+@permission_check(user_repo)
 def user_by_email(email):
     user = user_repo.get_user_by_email(email)
     if user:
@@ -160,7 +131,7 @@ def user_by_email(email):
 
 @app.route('/allergy_by_userid/<int:user_id>')
 @jwt_required()
-@permission_check()
+@permission_check(user_repo)
 def allergy_by_userid(user_id):
     user_data = user_repo.get_user_by_id(user_id)
     if user_data:
@@ -171,7 +142,7 @@ def allergy_by_userid(user_id):
 # -------------------------- Dish Routes ------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/dish_by_id/<int:dish_id>')
 @jwt_required()
-@permission_check()
+@permission_check(user_repo)
 def dish_by_id(dish_id):
     dish = dish_repo.get_dish_by_id(dish_id)
     if dish:
@@ -180,7 +151,7 @@ def dish_by_id(dish_id):
 
 @app.route('/create_dish', methods=['POST'])
 @jwt_required()
-@permission_check()
+@permission_check(user_repo)
 def create_dish():
     if request.method == 'POST':
         data = request.json
