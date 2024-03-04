@@ -1,4 +1,5 @@
 <app-header class="app-header"></app-header>
+
 <div class="register">
   <h2 class="register__title">Registrieren</h2>
   <form [formGroup]="registerForm" (submit)="register()">
@@ -22,7 +23,7 @@
       <label for="confirmpassword" class="register__label">Bestätige Passwort:</label>
       <input id="confirmpassword" formControlName="confirmpassword" type="password" class="register__input">
     </div>
-    <button [disabled]="!registerForm.valid"  class="register__submit-btn" type="submit">Registrieren</button>
+    <button [disabled]="!registerForm.valid" class="register__submit-btn" type="submit">Registrieren</button>
   </form>
 </div>
 
