@@ -1,1 +1,28 @@
-<p>register works!</p>
+<app-header class="app-header"></app-header>
+<div class="register">
+  <h2 class="register__title">Registrieren</h2>
+  <form [formGroup]="registerForm" (submit)="register()">
+    <div class="register__form-group">
+      <label for="username" class="register__label">Nachname:</label>
+      <input id="lastname" formControlName="lastname" type="text" class="register__input">
+    </div>
+    <div class="register__form-group">
+      <label for="firstname" class="register__label">Vorname:</label>
+      <input id="firstname" formControlName="firstname" type="text" class="register__input">
+    </div>
+    <div class="register__form-group">
+      <label for="username" class="register__label">Profilname:</label>
+      <input id="username" formControlName="username" type="text" class="register__input">
+    </div>
+    <div class="register__form-group">
+      <label for="password" class="register__label">Passwort:</label>
+      <input id="password" formControlName="password" type="password" class="register__input">
+    </div>
+    <div class="register__form-group">
+      <label for="confirmpassword" class="register__label">Bestätige Passwort:</label>
+      <input id="confirmpassword" formControlName="confirmpassword" type="password" class="register__input">
+    </div>
+    <button [disabled]="!registerForm.valid"  class="register__submit-btn" type="submit">Registrieren</button>
+  </form>
+</div>
+

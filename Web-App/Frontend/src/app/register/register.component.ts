@@ -1,17 +1,31 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, isFormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {HeaderComponent} from "../header/header.component";
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    HeaderComponent
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  REGEX_PASSWORD:RegExp = /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/;
-  public registrationForm: FormGroup = new FormGroup({
-
+  REGEX_PASSWORD: RegExp = /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/;
+  public registerForm: FormGroup = new FormGroup({
+    lastname: new FormControl('',
+      [
+        Validators.required
+      ],
+      []),
+    firstname: new FormControl('',
+      [
+        Validators.required
+      ],
+      []),
     username: new FormControl('',
       [
         Validators.required,
@@ -25,6 +39,25 @@ export class RegisterComponent {
         Validators.maxLength(50),
         Validators.pattern(this.REGEX_PASSWORD)
       ],
+      []),
+    confirmpassword: new FormControl('',
+      [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(50),
+        Validators.pattern(this.REGEX_PASSWORD)
+      ],
       [])
   })
+
+  constructor() {
+    this.registerForm.valueChanges.subscribe(console.log)
+
+  }
+
+  register() {
+
+  }
+
+  protected readonly isFormControl = isFormControl;
 }
