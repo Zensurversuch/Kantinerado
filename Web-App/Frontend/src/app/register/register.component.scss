@@ -1,7 +1,6 @@
 @import "../color.scss";
 
 .register {
-  width: 100%;
   padding: 2em;
   display: flex;
   justify-content: space-around;
@@ -24,7 +23,7 @@
     }
 
     .register__input {
-      width: calc(100% - 12px);
+      width: 100%;
       padding: 8px;
       border: 1px solid $primary-border-color;
       border-radius: 5px;
@@ -44,7 +43,7 @@
     }
 
     .register__submit-btn {
-      width: calc(100% - 12px);
+      width: 100%;
       padding: 10px;
       border: none;
       border-radius: 5px;
@@ -65,7 +64,7 @@
   }
 }
 
-@media (min-width: 500px) {
+@media (min-width: 400px) {
   .register {
     display: block;
     width: 300px;
