@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, isFormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-register',
@@ -8,7 +9,8 @@ import {HeaderComponent} from "../header/header.component";
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    HeaderComponent
+    HeaderComponent,
+    NgIf
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -59,4 +61,5 @@ export class RegisterComponent {
   }
 
   protected readonly isFormControl = isFormControl;
+  protected readonly parent = parent;
 }
