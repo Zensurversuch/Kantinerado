@@ -24,7 +24,7 @@ Mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) kann man SQL Skripte einfa
 4.2 **Gerichte einfügen:**
    Füge die Gerichte in die Tabelle "dishes" ein.  
 4.3 **Benutzer einfügen:**
-   Füge die Benutzer in die Tabelle "users" ein.  
+   Dies muss manuell über z.B. postman gemacht werden sodass die passwörter gehashed werden. Postman Collections hierfür findet man [hier](./Test_Database/Postman_Collections/)  
 4.4 **Allergien für Benutzer einfügen:**
    Füge die Zuordnung von Benutzern zu ihren Allergien in die Tabelle "user_allergy_association" ein.  
 4.5 **Allergien für Gerichte einfügen:**
