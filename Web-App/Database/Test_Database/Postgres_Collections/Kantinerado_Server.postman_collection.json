@@ -153,6 +153,43 @@
 			"response": []
 		},
 		{
+			"name": "POST /create_user_as_admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <hier Token einfügen>",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"mail@example.com\",\r\n  \"password\": \"mypassword\",\r\n  \"firstName\": \"firstName\",\r\n  \"lastName\": \"lastName\",\r\n  \"role\": \"admin\",\r\n  \"allergies\": [\"Gluten\", \"Lactose\", \"Nuts\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.233.106.149:5000/create_user_as_admin",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"create_user_as_admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "POST /create_dish",
 			"request": {
 				"method": "POST",

@@ -116,7 +116,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"admin@example.com\",\r\n  \"password\": \"mypassword\",\r\n  \"firstName\": \"firstName\",\r\n  \"lastName\": \"lastName\",\r\n  \"role\": \"admin\",\r\n  \"allergies\": [\"Gluten\", \"Lactose\", \"Nuts\"]\r\n}\r\n",
+					"raw": "{\r\n  \"email\": \"user@example.com\",\r\n  \"password\": \"mypassword\",\r\n  \"firstName\": \"firstName\",\r\n  \"lastName\": \"lastName\",\r\n  \"role\": \"hungernde\",\r\n  \"allergies\": [\"Gluten\", \"Lactose\", \"Nuts\"]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -132,6 +132,40 @@
 					"port": "5000",
 					"path": [
 						"create_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /create_user_as_admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"mail@example.com\",\r\n  \"password\": \"mypassword\",\r\n  \"firstName\": \"firstName\",\r\n  \"lastName\": \"lastName\",\r\n  \"role\": \"admin\",\r\n  \"allergies\": [\"Gluten\", \"Lactose\", \"Nuts\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/create_user_as_admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"create_user_as_admin"
 					]
 				}
 			},
