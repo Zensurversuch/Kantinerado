@@ -18,10 +18,10 @@ class UserRepository:
             while session.query(User).filter(User.userID == rand_userid).first() is not None:
                 rand_userid = randint(min_, max_)
 
-            # hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
             new_user = User(userID=rand_userid,
                             email=email,
-                            password=password,
+                            password=hashed_pw,
                             lastName=lastName,
                             firstName=firstName,
                             role=role)

@@ -7,6 +7,7 @@ import os
 import base64
 from flask_cors import CORS
 from decorators import permission_check
+import hashlib
 app = Flask(__name__)
 
 # -------------------------- Environment Variables ------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,13 +64,14 @@ def login():
 
     email = request.json.get('email', None)
     password = request.json.get('password', None)
+    hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
     if not email or not password:
         return jsonify({"msg": "Fehlender Benutzername oder Passwort"}), 400
 
     user_data = user_repo.get_user_by_email(email)
 
-    if user_data and (password == user_data["password"]):
+    if user_data and (hashed_pw == user_data["password"]):
         access_token = create_access_token(identity=user_data["userID"])
         return jsonify(access_token=access_token), 200
     else:
