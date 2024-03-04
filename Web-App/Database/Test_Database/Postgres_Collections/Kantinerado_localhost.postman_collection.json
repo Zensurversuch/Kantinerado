@@ -223,6 +223,32 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GET /allergy_by_userid/<id>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <hier Token einfügen>",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/allergy_by_userid/698804265",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"allergy_by_userid",
+						"698804265"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

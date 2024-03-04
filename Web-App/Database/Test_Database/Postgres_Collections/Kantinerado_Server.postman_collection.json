@@ -247,6 +247,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GET /allergy_by_userid/<id>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <hier token einfügen>",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/allergy_by_userid/698804265",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"allergy_by_userid",
+						"698804265"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

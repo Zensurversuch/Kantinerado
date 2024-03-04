@@ -158,6 +158,15 @@ def user_by_email(email):
         return user
     return jsonify({"message": "User not found"}), 404
 
+@app.route('/allergy_by_userid/<int:user_id>')
+@jwt_required()
+@permission_check()
+def allergy_by_userid(user_id):
+    user_data = user_repo.get_user_by_id(user_id)
+    if user_data:
+        return user_data["allergies"]
+    return jsonify({"message": "User not found"}), 404
+
 
 # -------------------------- Dish Routes ------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/dish_by_id/<int:dish_id>')
