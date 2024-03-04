@@ -3,7 +3,7 @@
   <h2 class="register__title">Registrieren</h2>
   <form [formGroup]="registerForm" (submit)="register()">
     <div class="register__form-group">
-      <label for="username" class="register__label">Nachname:</label>
+      <label for="lastname" class="register__label">Nachname:</label>
       <input id="lastname" formControlName="lastname" type="text" class="register__input">
     </div>
     <div class="register__form-group">
@@ -11,8 +11,8 @@
       <input id="firstname" formControlName="firstname" type="text" class="register__input">
     </div>
     <div class="register__form-group">
-      <label for="username" class="register__label">Profilname:</label>
-      <input id="username" formControlName="username" type="text" class="register__input">
+      <label for="email" class="register__label">E-Mail:</label>
+      <input id="email" formControlName="email" type="email" class="register__input">
     </div>
     <div class="register__form-group">
       <label for="password" class="register__label">Passwort:</label>

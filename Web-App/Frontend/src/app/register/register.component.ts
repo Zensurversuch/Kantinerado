@@ -26,10 +26,10 @@ export class RegisterComponent {
         Validators.required
       ],
       []),
-    username: new FormControl('',
+    email: new FormControl('',
       [
         Validators.required,
-        Validators.minLength(5)
+        Validators.email
       ],
       []),
     password: new FormControl('',
