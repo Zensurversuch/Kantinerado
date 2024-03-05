@@ -12,7 +12,7 @@ class OrderRepository:
         self.engine = engine
         self.session_factory = sessionmaker(bind=self.engine)
 
-    def create_order(self, user_id, meal_plan_id, amount, order_date):
+    def create_order(self, param_userID, param_mealPlanID, param_amount, param_orderDate):
         session = scoped_session(self.session_factory)
         try:
             min_ = 1
@@ -22,10 +22,10 @@ class OrderRepository:
                 rand_orderid = randint(min_, max_)
 
             new_order = Order(orderID = rand_orderid,
-                              userID = user_id,
-                              mealPlanID = meal_plan_id,
-                              amount = amount,
-                              orderDate = order_date)
+                              userID = param_userID,
+                              mealPlanID = param_mealPlanID,
+                              param_amount = param_amount,
+                              orderDate = param_orderDate)
 
             session.add(new_order)
             session.commit()
@@ -37,7 +37,7 @@ class OrderRepository:
 
 
 
-    def get_orders_by_userid(self, user_id, dateBegin, date_end):
+    def get_orders_by_userid(self, param_userID, param_dateBegin, param_dateEnd):
         try:
             session = scoped_session(self.session_factory)
 
@@ -47,9 +47,9 @@ class OrderRepository:
                 Dish, MealPlan.dishID == Dish.dishID        # Dish = Dishes that occur in the MealPlans which occured in the orders
             ).filter(
                 and_(
-                    Order.userID == user_id,
-                    MealPlan.date >= dateBegin,
-                    MealPlan.date <= date_end
+                    Order.userID == param_userID,
+                    MealPlan.date >= param_dateBegin,
+                    MealPlan.date <= param_dateEnd
                 )
             ).all()
 
@@ -62,7 +62,7 @@ class OrderRepository:
                     "mealPlanDate": meal_plan.date,
                     "mealPlanDishID": dish.dishID,
                     "mealPlanDishName": dish.name,
-                    "amount": order.amount,
+                    "param_amount": order.param_amount,
                     "orderDate": order.orderDate
                 }
                 final_orders_list.append(order_dict)
@@ -78,10 +78,10 @@ class OrderRepository:
 
 
 
-    def is_order_already_created(self, userID, meal_plan_id):
+    def is_order_already_created(self, param_userID, param_mealPlanID):
         try:
             session = scoped_session(self.session_factory)
-            order_data = session.query(Order).filter(Order.userID == userID, Order.mealPlanID == meal_plan_id).first()
+            order_data = session.query(Order).filter(Order.userID == param_userID, Order.mealPlanID == param_mealPlanID).first()
             if order_data:
                 return True
             return False
