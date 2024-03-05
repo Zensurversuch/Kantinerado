@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../authentication/auth.service'
+import {environment} from "../../../environments/environment";
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -25,7 +26,7 @@ export class LoginComponent {
       password: this.password
     };
 
-    this.http.post('http://185.233.106.149:5000/login', userData)
+    this.http.post(environment.apiUrl+'/login', userData)
     .subscribe(
       (response: any) => {
         console.log('POST request successful', response);
