@@ -18,10 +18,10 @@ class UserRepository:
             while session.query(User).filter(User.userID == rand_userid).first() is not None:
                 rand_userid = randint(min_, max_)
 
-            # hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
             new_user = User(userID=rand_userid,
                             email=email,
-                            password=password,
+                            password=hashed_pw,
                             lastName=lastName,
                             firstName=firstName,
                             role=role)
@@ -111,33 +111,6 @@ class UserRepository:
                     "allergies": allergies
                 }
                 return user_dict
-            return None
-        except SQLAlchemyError as e:
-            return None
-        finally:
-            session.close()
-
-
-    def get_password_for_user(self, user_id):
-        try:
-            session = scoped_session(self.session_factory)
-            user_pw = session.query(User.password).filter(User.userID == user_id).scalar()
-            return user_pw
-        except SQLAlchemyError as e:
-            return None
-        finally:
-            session.close()
-
-    def get_allergies_for_user(self, user_id):
-        try:
-            session = scoped_session(self.session_factory)
-
-            user = session.query(User).filter(User.userID == user_id).first()
-
-            if user:
-                allergies = [allergy.name for allergy in user.allergies]
-                return allergies
-
             return None
         except SQLAlchemyError as e:
             return None

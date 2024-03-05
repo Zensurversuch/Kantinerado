@@ -477,6 +477,54 @@
           }
         }
       }
+    },
+    "/login": {
+      "post": {
+        "summary": "Benutzeranmelde-Endpunkt",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ein JWT-Token zur Authentifizierung"
+          },
+          "400": {
+            "description": "Fehlende JSON-Anfrage oder fehlender Benutzername oder Passwort"
+          },
+          "401": {
+            "description": "Falscher Benutzername oder Passwort"
+          }
+        }
+      }
+    },
+    "/hello": {
+      "get": {
+        "summary": "Hello-Endpunkt",
+        "responses": {
+          "200": {
+            "description": "Nachricht, wenn die Berechtigung gewährt ist"
+          },
+          "403": {
+            "description": "Nachricht, wenn die Berechtigung erforderlich ist"
+          }
+        }
+      }
     }
   },
   "components": {
