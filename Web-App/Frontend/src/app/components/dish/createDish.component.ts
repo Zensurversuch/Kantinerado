@@ -125,10 +125,12 @@ export class CreateDishComponent implements OnInit {
   this.dishService.createDish(dishData).subscribe(
     response => {
       console.log('Dish created successful:', response);
+      this.createDishForm.reset();
+      alert(response.message); 
     },
     error => {
       console.error('Dish created unsuccessful:', error);
-
+      alert(error.message);
     }
   );
 
