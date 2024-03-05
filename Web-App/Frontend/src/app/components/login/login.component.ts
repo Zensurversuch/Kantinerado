@@ -20,7 +20,7 @@ export class LoginComponent {
   password: string = '';
   constructor(private router: Router, private http: HttpClient, private authService: AuthService) {
   }
-  public onSubmit() {
+  public submit_login() {
     const userData = {
       email: this.username,
       password: this.password
@@ -39,5 +39,9 @@ export class LoginComponent {
         // Handle error as needed
       }
     );
+  }
+
+  navigateToRegister() {
+    this.router.navigate(['/register']); // Navigieren zur Registrierungsseite
   }
 }

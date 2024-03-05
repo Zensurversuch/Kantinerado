@@ -28,7 +28,7 @@
       <label for="password" class="register__label">Passwort*</label>
       <input id="password" formControlName="password" type="password" class="register__input">
       <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
-        <span class="register__error-message">Mindestens eine Zahl, Sonderzeichen und Großbuchstabe erforderlich.</span>
+        <span class="register__error-message">Mindestens 8 Zeichen, eine Zahl, Sonderzeichen und Großbuchstabe erforderlich.</span>
       </div>
     </div>
     <div class="register__form-group">
