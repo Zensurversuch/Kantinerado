@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, FormsModule, isFormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
 import {NgIf} from "@angular/common";
 import {DishService} from '../../service/dish/dish.service';
@@ -62,14 +62,21 @@ export class CreateDishComponent implements OnInit {
   onImageChange(event: any) {
     const file: File = event.target.files[0];
     if (file) {
+      if (file.type !== 'image/png') {
+        event.target.value = ''; 
+        this.createDishForm.patchValue({ image: '' }); 
+        alert('Please select a PNG image file.'); 
+        return;
+      }
       if (file.size > 10 * 1024 * 1024) {
-        event.target.value = ''; // Clear the input value to reset it
-        this.createDishForm.patchValue({ image: '' }); // Reset the image FormControl value
-        alert('File size exceeds the limit of 10MB.'); // Display an error message to the user
+        event.target.value = ''; 
+        this.createDishForm.patchValue({ image: '' }); 
+        alert('File size exceeds the limit of 10MB.'); 
       } else {
         const reader = new FileReader();
         reader.onload = () => {
-          const base64String = reader.result as string;
+          let base64String = reader.result as string;
+          base64String = base64String.replace(/^data:image\/[a-z]+;base64,/, '');
           this.createDishForm.patchValue({ image: base64String });
         };
         reader.readAsDataURL(file);
@@ -109,13 +116,11 @@ export class CreateDishComponent implements OnInit {
     ingredients: allIngredients,
     dietaryCategory: this.createDishForm.value.dietaryCategory,
     mealType: this.createDishForm.value.mealType,
-    allergies: this.selectedAllergies.map((allergyName: string) => ({ name: allergyName })),
+    allergies: this.selectedAllergies,
     image: this.createDishForm.get('image')?.value || ''
   };
 
   console.log('Dish Form Data:', dishData);
-
-
 
   this.dishService.createDish(dishData).subscribe(
     response => {

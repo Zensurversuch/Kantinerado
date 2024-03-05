@@ -18,7 +18,7 @@
       <div *ngFor="let ingredient of ingredients.controls; let i=index" [formGroupName]="i">
         <input formControlName="ingredientName" type="text" class="createDish__input" placeholder="Inhaltstoff {{ i + 1 }}">
       </div>
-      <button (click)="addIngredient()" type="button">Inhaltstoff hunzufügen</button>
+      <button (click)="addIngredient()" type="button">Inhaltstoff hinzufügen</button>
     </div>
   
     <div class="createDish__form-group">
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="createDish__form-group">
-      <label for="allergy" class="createDish__label">Allergien*
+      <label for="allergy" class="createDish__label">Allergien
       </label>
       <div *ngFor="let allergy of allergies">
         <input type="checkbox" [value]="allergy" (change)="updateAllergies($event)">

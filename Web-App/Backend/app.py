@@ -190,11 +190,19 @@ def dish_by_id(dish_id):
         return dish
     return jsonify({"message": "Dish not found"}), 404
 
+@app.route('/dish_by_name/<int:dish_name>')
+@jwt_required()
+@permission_check(user_repo)
+def dish_by_name(dish_name):
+    dish = dish_repo.get_dish_by_name(dish_name)
+    if dish:
+        return dish
+    return jsonify({"message": "Dish not found"}), 404
+
 @app.route('/create_dish', methods=['POST'])
-#@jwt_required()
-#@permission_check(user_repo)
+@jwt_required()
+@permission_check(user_repo)
 def create_dish():
-    if request.method == 'POST':
         data = request.json
         name = data.get('name')
         ingredients = data.get('ingredients')
@@ -202,12 +210,18 @@ def create_dish():
         mealType = data.get('mealType')
         image = data.get('image')
         allergies = data.get('allergies')
-        if not (name and ingredients and dietaryCategory and mealType):
+
+       
+
+        if not (name and dietaryCategory and mealType):
             return jsonify({"message": "Missing required fields"}), 400
+        
+        if dish_repo.get_dish_by_name(name):
+            return jsonify({"message": "Dish exist already"}), 400
 
         image = base64.b64decode(image) if image else None
 
-        ret_value = dish_repo.create_dish(name, ingredients, dietaryCategory, mealType, image, allergies)
+        ret_value = dish_repo.create_dish(name, dietaryCategory, mealType, ingredients, image, allergies)
         if not ret_value:   # If ret_value is empty no allergies were missing
             return jsonify({"message": "Dish created successful"}), 201
         elif ret_value:     # If ret_value contains values allergies were missing
