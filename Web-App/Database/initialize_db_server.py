@@ -9,4 +9,4 @@ postgres_pw = env_vars.get("POSTGRES_PW")
 
 
 if __name__ == "__main__":
-    initialize_database(postgres_pw)
+    initialize_database(postgres_pw, "185.233.106.149")
