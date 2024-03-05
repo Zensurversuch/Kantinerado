@@ -6,7 +6,7 @@ def get_permissions_for_role(role):
     return []
 
 permissions_data = """
-admin:hello,all_users,user_by_id,user_by_email,dish_by_id,create_dish,allergy_by_userid
+admin:hello,all_users,user_by_id,user_by_email,dish_by_id,create_dish,allergy_by_userid,create_user_as_admin
 hungernde:hello,dish_by_id,allergy_by_userid
 kantinenmitarbeiter:dish_by_id,create_dish
 """

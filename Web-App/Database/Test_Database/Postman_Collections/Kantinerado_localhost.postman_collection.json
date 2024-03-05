@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "9d2c3f90-9d4e-4784-8b0b-ef1120687ed5",
-		"name": "Kantinerado_Server",
+		"_postman_id": "872cab51-c293-4087-acfc-c7f0c4177cd5",
+		"name": "Kantinerado_localhost",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29678106"
 	},
@@ -13,18 +13,15 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://185.233.106.149:5000/dish/693692720",
+					"raw": "http://localhost:5000/dish/693692720",
 					"protocol": "http",
 					"host": [
-						"185",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
@@ -42,18 +39,15 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://185.233.106.149:5000/all_users",
+					"raw": "http://localhost:5000/all_users",
 					"protocol": "http",
 					"host": [
-						"185",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
@@ -70,23 +64,20 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://185.233.106.149:5000/user_by_id/1",
+					"raw": "http://localhost:5000/user_by_id/593530207",
 					"protocol": "http",
 					"host": [
-						"185",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"user_by_id",
-						"1"
+						"593530207"
 					]
 				}
 			},
@@ -99,23 +90,20 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://185.233.106.149:5000/user_by_email/example2@example.com",
+					"raw": "http://localhost:5000/user_by_email/mail@example.com",
 					"protocol": "http",
 					"host": [
-						"185",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"user_by_email",
-						"example2@example.com"
+						"mail@example.com"
 					]
 				}
 			},
@@ -128,7 +116,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"test@example.com\",\r\n  \"password\": \"mypassword\",\r\n  \"firstName\": \"firstName\",\r\n  \"lastName\": \"lastName\",\r\n  \"role\": \"kantinenmitarbeiter\",\r\n  \"allergies\": [\"Gluten\", \"Lactose\"]\r\n}\r\n",
+					"raw": "{\r\n  \"email\": \"user@example.com\",\r\n  \"password\": \"mypassword\",\r\n  \"firstName\": \"firstName\",\r\n  \"lastName\": \"lastName\",\r\n  \"role\": \"hungernde\",\r\n  \"allergies\": [\"Gluten\", \"Lactose\", \"Nuts\"]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,17 +124,48 @@
 					}
 				},
 				"url": {
-					"raw": "http://185.233.106.149:5000/create_user",
+					"raw": "http://localhost:5000/create_user",
 					"protocol": "http",
 					"host": [
-						"185",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"create_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /create_user_as_admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"mail@example.com\",\r\n  \"password\": \"mypassword\",\r\n  \"firstName\": \"firstName\",\r\n  \"lastName\": \"lastName\",\r\n  \"role\": \"admin\",\r\n  \"allergies\": [\"Gluten\", \"Lactose\", \"Nuts\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/create_user_as_admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"create_user_as_admin"
 					]
 				}
 			},
@@ -159,7 +178,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
@@ -173,13 +192,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://185.233.106.149:5000/create_dish",
+					"raw": "http://localhost:5000/create_dish",
 					"protocol": "http",
 					"host": [
-						"185",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
@@ -196,7 +212,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"example2@example.com\",\r\n    \"password\": \"password456\"\r\n}",
+					"raw": "{\r\n    \"email\": \"mail@example.com\",\r\n    \"password\": \"mypassword\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -204,13 +220,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://185.233.106.149:5000/login",
+					"raw": "http://localhost:5000/login",
 					"protocol": "http",
 					"host": [
-						"185",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
@@ -227,18 +240,15 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <Hier Token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://85.233.106.149:5000/hello",
+					"raw": "http://localhost:5000/hello",
 					"protocol": "http",
 					"host": [
-						"85",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
@@ -255,18 +265,15 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer <hier token einfügen>",
+						"value": "Bearer {{JWT_Token}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://185.233.106.149:5000/allergy_by_userid/698804265",
+					"raw": "http://localhost:5000/allergy_by_userid/698804265",
 					"protocol": "http",
 					"host": [
-						"185",
-						"233",
-						"106",
-						"149"
+						"localhost"
 					],
 					"port": "5000",
 					"path": [
@@ -276,6 +283,32 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JWT_Token",
+			"value": "token"
 		}
 	]
 }

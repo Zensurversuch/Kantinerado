@@ -7,6 +7,7 @@ import os
 import base64
 from flask_cors import CORS
 from decorators import permission_check
+import hashlib
 app = Flask(__name__)
 
 # -------------------------- Environment Variables ------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,43 +64,72 @@ def login():
 
     email = request.json.get('email', None)
     password = request.json.get('password', None)
+    hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
     if not email or not password:
         return jsonify({"msg": "Fehlender Benutzername oder Passwort"}), 400
 
     user_data = user_repo.get_user_by_email(email)
 
-    if user_data and (password == user_data["password"]):
+    if user_data and (hashed_pw == user_data["password"]):
         access_token = create_access_token(identity=user_data["userID"])
         return jsonify(access_token=access_token), 200
     else:
         return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
 
-
-
 @app.route('/create_user', methods=['POST'])
 def create_user():
-    if request.method == 'POST':
-        data = request.json
-        email = data.get('email')
-        password = data.get('password')
-        lastName = data.get('lastName')
-        firstName = data.get('firstName')
-        role = data.get('role')
-        allergies = data.get('allergies')
-        if not (email and password and lastName and firstName and role):
-            return jsonify({"message": "Missing required fields"}), 400
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+    lastName = data.get('lastName')
+    firstName = data.get('firstName')
+    role = data.get('role')
+    allergies = data.get('allergies')
+    if not (email and password and lastName and firstName and role):
+        return jsonify({"message": "Missing required fields"}), 400
 
-        if user_repo.get_user_by_email(email):
-            return jsonify({"message": f"User with the email {email} already exists"}), 500
+    if role != "hungernde":
+        return jsonify({"message": f"You aren't allowed to create a user with the role: {role}"}), 403
 
-        ret_value = user_repo.create_user(email, password, lastName, firstName, role, allergies)
-        if not ret_value:   # If ret_value is empty no allergies were missing
-            return jsonify({"message": "User created successful"}), 201
-        elif ret_value:     # If ret_value contains values allergies were missing
-            return jsonify({"message": f"User created successful, but the allergies {ret_value} aren't present in the database"}), 201
-        elif ret_value == False:
-            return jsonify({"message": "Failed to create user"}), 500
+    if user_repo.get_user_by_email(email):
+        return jsonify({"message": f"User with the email {email} already exists"}), 500
+
+    ret_value = user_repo.create_user(email, password, lastName, firstName, role, allergies)
+    if not ret_value:   # If ret_value is empty no allergies were missing
+        return jsonify({"message": "User created successful"}), 201
+    elif ret_value:     # If ret_value contains values allergies were missing
+        return jsonify({"message": f"User created successful, but the allergies {ret_value} aren't present in the database"}), 201
+    elif ret_value == False:
+        return jsonify({"message": "Failed to create user"}), 500
+
+@app.route('/create_user_as_admin', methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
+def create_user_as_admin():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+    lastName = data.get('lastName')
+    firstName = data.get('firstName')
+    role = data.get('role')
+    allergies = data.get('allergies')
+    if not (email and password and lastName and firstName and role):
+        return jsonify({"message": "Missing required fields"}), 400
+
+    if role not in ["hungernde", "admin", "kantinenmitarbeiter"]:
+        return jsonify({"message": f"the role: {role} , doesn't exist"}), 400
+
+    if user_repo.get_user_by_email(email):
+        return jsonify({"message": f"User with the email {email} already exists"}), 500
+
+    ret_value = user_repo.create_user(email, password, lastName, firstName, role, allergies)
+    if not ret_value:   # If ret_value is empty no allergies were missing
+        return jsonify({"message": "User created successful"}), 201
+    elif ret_value:     # If ret_value contains values allergies were missing
+        return jsonify({"message": f"User created successful, but the allergies {ret_value} aren't present in the database"}), 201
+    elif ret_value == False:
+        return jsonify({"message": "Failed to create user"}), 500
 
 @app.route('/all_users')
 @jwt_required()
@@ -109,7 +139,6 @@ def all_users():
     if data:
         return jsonify(data)
     return jsonify({"message": "No users found"}), 404
-
 
 @app.route('/user_by_id/<int:user_id>')
 @jwt_required()
