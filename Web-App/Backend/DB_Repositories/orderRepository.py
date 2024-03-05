@@ -24,7 +24,7 @@ class OrderRepository:
             new_order = Order(orderID = rand_orderid,
                               userID = param_userID,
                               mealPlanID = param_mealPlanID,
-                              param_amount = param_amount,
+                              amount = param_amount,
                               orderDate = param_orderDate)
 
             session.add(new_order)
@@ -62,7 +62,7 @@ class OrderRepository:
                     "mealPlanDate": meal_plan.date,
                     "mealPlanDishID": dish.dishID,
                     "mealPlanDishName": dish.name,
-                    "param_amount": order.param_amount,
+                    "amount": order.amount,
                     "orderDate": order.orderDate
                 }
                 final_orders_list.append(order_dict)
