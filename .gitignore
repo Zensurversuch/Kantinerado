@@ -269,6 +269,7 @@ pyrightconfig.json
 /Frontend/bazel-out
 
 # Node
+node_modules/
 /Frontend/node_modules
 /Frontend/npm-debug.log
 /Frontend/yarn-error.log
