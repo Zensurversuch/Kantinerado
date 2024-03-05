@@ -12,7 +12,7 @@ class OrderRepository:
         self.engine = engine
         self.session_factory = sessionmaker(bind=self.engine)
 
-    def create_order(self, userID, mealPlanID, amount, orderDate):
+    def create_order(self, user_id, meal_plan_id, amount, order_date):
         session = scoped_session(self.session_factory)
         try:
             min_ = 1
@@ -22,10 +22,10 @@ class OrderRepository:
                 rand_orderid = randint(min_, max_)
 
             new_order = Order(orderID = rand_orderid,
-                              userID = userID,
-                              mealPlanID = mealPlanID,
+                              userID = user_id,
+                              mealPlanID = meal_plan_id,
                               amount = amount,
-                              orderDate = orderDate)
+                              orderDate = order_date)
 
             session.add(new_order)
             session.commit()
@@ -37,7 +37,7 @@ class OrderRepository:
 
 
 
-    def get_orders_by_userid(self, user_id, date_begin, date_end):
+    def get_orders_by_userid(self, user_id, dateBegin, date_end):
         try:
             session = scoped_session(self.session_factory)
 
@@ -48,7 +48,7 @@ class OrderRepository:
             ).filter(
                 and_(
                     Order.userID == user_id,
-                    MealPlan.date >= date_begin,
+                    MealPlan.date >= dateBegin,
                     MealPlan.date <= date_end
                 )
             ).all()
@@ -78,10 +78,10 @@ class OrderRepository:
 
 
 
-    def is_order_already_created(self, user_id, meal_plan_id):
+    def is_order_already_created(self, userID, meal_plan_id):
         try:
             session = scoped_session(self.session_factory)
-            order_data = session.query(Order).filter(Order.userID == user_id, Order.mealPlanID == meal_plan_id).first()
+            order_data = session.query(Order).filter(Order.userID == userID, Order.mealPlanID == meal_plan_id).first()
             if order_data:
                 return True
             return False
