@@ -4,6 +4,8 @@ import {FormsModule} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../authentication/auth.service'
+import {environment} from "../../../environments/environment";
+
 @Component({
   selector: 'app-hello',
   standalone: true,
@@ -20,7 +22,7 @@ export class HelloComponent {
   }
   public onSubmit() {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-        this.http.get('http://185.233.106.149:5000/hello', { headers })
+        this.http.get(environment.apiUrl+'/hello', { headers })
         .subscribe(
           (helloResponse) => {
             console.log('GET request successful', helloResponse);

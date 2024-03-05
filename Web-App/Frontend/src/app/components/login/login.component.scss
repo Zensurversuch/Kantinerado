@@ -1,4 +1,5 @@
 @import"../../color.scss";
+
 .login {
   width: 300px;
   margin: 50px auto;
@@ -41,6 +42,30 @@
       transition: background-color 0.3s;
       &:hover {
         background-color: $primary-color;
+      }
+    }
+
+    .register {
+      margin-top: 20px;
+      margin-left: auto;
+      font-size: 14px;
+      color: #333;
+
+      align-items: center;
+
+      .login__register-btn {
+        padding-left: 0;
+        width: auto;
+        border: none;
+        background-color: transparent;
+        color: blue;
+        cursor: pointer;
+        transition: color 0.3s;
+
+        &:hover {
+          color: darkblue;
+          text-decoration: underline;
+        }
       }
     }
   }

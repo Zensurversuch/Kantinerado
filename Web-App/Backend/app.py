@@ -84,18 +84,14 @@ def create_user():
     password = data.get('password')
     lastName = data.get('lastName')
     firstName = data.get('firstName')
-    role = data.get('role')
     allergies = data.get('allergies')
-    if not (email and password and lastName and firstName and role):
+    if not (email and password and lastName and firstName):
         return jsonify({"message": "Missing required fields"}), 400
-
-    if role != "hungernde":
-        return jsonify({"message": f"You aren't allowed to create a user with the role: {role}"}), 403
 
     if user_repo.get_user_by_email(email):
         return jsonify({"message": f"User with the email {email} already exists"}), 500
 
-    ret_value = user_repo.create_user(email, password, lastName, firstName, role, allergies)
+    ret_value = user_repo.create_user(email, password, lastName, firstName, "hungernde", allergies)
     if not ret_value:   # If ret_value is empty no allergies were missing
         return jsonify({"message": "User created successful"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing

@@ -292,6 +292,8 @@ node_modules/
 /Frontend/.history/*
 
 # Miscellaneous
+.angular/cache/
+cache/
 /Frontend/.angular/cache
 /Frontend/.sass-cache/
 /Frontend/connect.lock
