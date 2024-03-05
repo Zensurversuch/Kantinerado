@@ -283,6 +283,67 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "POST /create_order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mealPlanID\": \"7\",\r\n    \"amount\": \"1\",\r\n    \"orderDate\": \"2024-03-05\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/create_order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"create_order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /orders_by_user/<string:start_date>/<string:end_date>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/orders_by_user/2024-03-05/2024-03-10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders_by_user",
+						"2024-03-05",
+						"2024-03-10"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
