@@ -11,7 +11,13 @@
       </div>
     </div>
 
-    
+    <div class="createDish__form-group">
+      <label for="price" class="createDish__label">Preis*</label>
+      <input id="price" formControlName="price" type="text" class="createDish__input">
+      <div *ngIf="createDishForm.get('price')?.invalid && (createDishForm.get('price')?.dirty || createDishForm.get('price')?.touched)">
+        <span class="createDish__error-message">Preis ist erforderlich (Bsp. 12.99).</span>
+      </div>
+    </div>
 
     <div class="createDish__form-group" formArrayName="ingredients">
       <label class="createDish__label">Inhaltstoffe</label>
@@ -30,6 +36,7 @@
         <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
       </div>
     </div>
+
     <div class="createDish__form-group">
       <label for="mealType" class="createDish__label">Mahlzeitentyp*</label>
       <select id="mealType" formControlName="mealType" class="createDish__input">
@@ -39,6 +46,7 @@
         <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
       </div>
     </div>
+
     <div class="createDish__form-group">
       <label for="allergy" class="createDish__label">Allergien
       </label>
@@ -50,6 +58,7 @@
         <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
       </div>
     </div>
+    
     <div class="createDish__form-group">
       <label class="createDish__label">Bild</label>
       <input type="file" (change)="onImageChange($event)" accept="image/*">

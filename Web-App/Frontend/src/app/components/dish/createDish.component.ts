@@ -47,6 +47,7 @@ export class CreateDishComponent implements OnInit {
 
     this.createDishForm = this.fb.group({
       name: ['', Validators.required],
+      price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
       ingredients: this.fb.array([]),
       dietaryCategory: ['', Validators.required],
       mealType: ['', Validators.required],
@@ -113,6 +114,7 @@ export class CreateDishComponent implements OnInit {
 
   const dishData: DishData = {
     name: this.createDishForm.value.name,
+    price:  this.createDishForm.value.price,
     ingredients: allIngredients,
     dietaryCategory: this.createDishForm.value.dietaryCategory,
     mealType: this.createDishForm.value.mealType,
