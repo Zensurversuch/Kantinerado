@@ -55,7 +55,7 @@ class Order(Base):
 
     orderID = Column(Integer, primary_key=True, autoincrement=True)
     userID = Column(Integer, ForeignKey('users.userID'), nullable=False)
-    dishID = Column(Integer, ForeignKey('dishes.dishID'), nullable=False)
+    mealPlanID = Column(Integer, ForeignKey('mealPlan.mealPlanID'), nullable=False)
     amount = Column(Integer, nullable=False)
     orderDate = Column(Date)
 
