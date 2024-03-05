@@ -42,9 +42,9 @@ class OrderRepository:
             session = scoped_session(self.session_factory)
 
             orders_list = session.query(Order, MealPlan, Dish).join(
-                MealPlan, Order.mealPlanID == MealPlan.mealPlanID
+                MealPlan, Order.mealPlanID == MealPlan.mealPlanID           # MealPlan = MealPlans which occur in the orders
             ).join(
-                Dish, MealPlan.dishID == Dish.dishID
+                Dish, MealPlan.dishID == Dish.dishID        # Dish = Dishes that occur in the MealPlans which occured in the orders
             ).filter(
                 and_(
                     Order.userID == user_id,
