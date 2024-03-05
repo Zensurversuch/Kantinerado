@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {MenuComponent} from "../menu/menu.component";
 import {NgIf, NgOptimizedImage} from "@angular/common";
+import {Router} from "@angular/router";
+
 
 
 @Component({
@@ -17,7 +19,7 @@ import {NgIf, NgOptimizedImage} from "@angular/common";
 export class HeaderComponent {
     username?: string;
 
-    constructor() {
+    constructor(private router:Router) {
     }
 
     menuState = 'in';
@@ -28,4 +30,7 @@ export class HeaderComponent {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
+  navigateToHome() {
+    this.router.navigate(['/']);
+  }
 }
