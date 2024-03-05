@@ -11,6 +11,7 @@ Dieses Docker-Compose-Setup ermöglicht es, eine einfache Webanwendung mit einer
 
    POSTGRES_PW=test      # Setzen Sie hier das Passwort für Ihre PostgreSQL-Datenbank fest
    JWT_SECRET_KEY=test   # Setzen Sie hier das Secret für den JWT Token
+   ANGULAR_ENVIRONMENT=development || production    # Zum lokalen test development, auf dem server production
    ```
 
 ## Schritte zum Starten der Anwendung: 
