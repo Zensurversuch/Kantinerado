@@ -33,6 +33,29 @@ class DishRepository:
         finally:
             session.close()
 
+    def get_dish_by_name(self, dish_name):
+        try:
+            session = scoped_session(self.session_factory)
+            dish_data = session.query(Dish).filter(Dish.name == dish_name).first()
+            if dish_data:
+                allergies = [allergy.name for allergy in dish_data.allergies] if dish_data.allergies else None
+                dish_dict = {
+                    "dish_id": dish_data.dishID,
+                    "name": dish_data.name,
+                    "allergies": allergies,
+                    "ingredients": dish_data.ingredients,
+                    "dietaryCategorie": dish_data.dietaryCategory,
+                    "mealType": dish_data.mealType,
+                    "image": base64.b64encode(dish_data.image).decode() if dish_data.image else None
+
+                }
+                return dish_dict
+            return None
+        except SQLAlchemyError as e:
+            return None
+        finally:
+            session.close()         
+
     def create_dish(self, name, ingredients, dietary_category, meal_type, image=None, allergies=None):
         try:
             session = scoped_session(self.session_factory)

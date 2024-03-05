@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, FormsModule, isFormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
 import {NgIf} from "@angular/common";
-import {UserData} from '../../interface/user-data';
-import {UserService} from '../../service/user/user.service';
+import {DishService} from '../../service/dish/dish.service';
 import {HttpClientModule} from "@angular/common/http";
-import {Role} from "../../interface/role";
 import { CommonModule } from '@angular/common';
-import { DietaryCategories, DietaryCategoriesArray } from '../../interface/dietaryCategories';
-import { MealTypesArray } from '../../interface/mealTypes';
+import { DietaryCategoriesArray } from '../../interface/dietaryCategory';
+import { MealTypesArray } from '../../interface/mealType';
+import { AllergyService } from '../../service/allergy/allergy.service';
+import { DishData } from '../../interface/dishData';
 
 
 @Component({
@@ -29,15 +29,29 @@ export class CreateDishComponent implements OnInit {
   createDishForm!: FormGroup;
   dietaryCategories = DietaryCategoriesArray;
   mealTypes = MealTypesArray;
+  allergies: string[] = [];
+  selectedAllergies: string[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private allergyService: AllergyService, private dishService: DishService) {}
 
   ngOnInit(): void {
+    this.allergyService.getAllergies().subscribe(
+      response => {
+        this.allergies = response.map((allergy: any) => allergy.name);
+      },
+      error => {
+        console.error('Error fetching allergies:', error);
+        this.allergies = ["Error Loading Allergies"];
+      }
+    );
+
     this.createDishForm = this.fb.group({
       name: ['', Validators.required],
-      ingredients: this.fb.array([]), // Initialize with empty array
+      ingredients: this.fb.array([]),
       dietaryCategory: ['', Validators.required],
-      mealType: ['', Validators.required]
+      mealType: ['', Validators.required],
+      allergies: [''],
+      image: ['']
     });
   }
 
@@ -45,30 +59,73 @@ export class CreateDishComponent implements OnInit {
     return this.createDishForm.get('ingredients') as FormArray;
   }
 
-  createIngredientFormGroup(): FormGroup {
-    return this.fb.group({
-      ingredientName: [''] // Set the default value to an empty string
-    });
+  onImageChange(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        event.target.value = ''; // Clear the input value to reset it
+        this.createDishForm.patchValue({ image: '' }); // Reset the image FormControl value
+        alert('File size exceeds the limit of 10MB.'); // Display an error message to the user
+      } else {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64String = reader.result as string;
+          this.createDishForm.patchValue({ image: base64String });
+        };
+        reader.readAsDataURL(file);
+      }
+    }
   }
 
   addIngredient(): void {
     this.ingredients.push(this.createIngredientFormGroup());
   }
 
-  getControls() {
-    return (this.createDishForm.get('ingredients') as FormArray).controls;
+  createIngredientFormGroup(): FormGroup {
+    return this.fb.group({
+      ingredientName: ['']
+    });
   }
 
-  registerUser(): void {
-    const dishData = this.createDishForm.value;
-    console.log('Name:', dishData.name);
-    
-    const allIngredients = this.ingredients.value.map((ingredient: any) => ingredient.ingredientName);
-    console.log('Ingredients:', allIngredients);
+  updateAllergies(event: any): void {
+    const value = event?.target?.value;
+    if (value) {
+      const index = this.selectedAllergies.indexOf(value);
+      if (index !== -1) {
+        this.selectedAllergies.splice(index, 1); // Remove the allergy if unchecked
+      } else {
+        this.selectedAllergies.push(value); // Add the allergy if checked
+      }
+    }
+  }
 
-    console.log('Dietary Category:', dishData.dietaryCategory);
-    console.log('Meal Type:', dishData.mealType);
+  createDishSubmit(): void {
+  const allIngredients = this.ingredients.value
+    .map((ingredient: any) => ingredient.ingredientName)
+    .filter((item: string) => item.trim() !== "");
 
-    // Your form submission logic goes here
+  const dishData: DishData = {
+    name: this.createDishForm.value.name,
+    ingredients: allIngredients,
+    dietaryCategory: this.createDishForm.value.dietaryCategory,
+    mealType: this.createDishForm.value.mealType,
+    allergies: this.selectedAllergies.map((allergyName: string) => ({ name: allergyName })),
+    image: this.createDishForm.get('image')?.value || ''
+  };
+
+  console.log('Dish Form Data:', dishData);
+
+
+
+  this.dishService.createDish(dishData).subscribe(
+    response => {
+      console.log('Dish created successful:', response);
+    },
+    error => {
+      console.error('Dish created unsuccessful:', error);
+
+    }
+  );
+
   }
 }
