@@ -33,6 +33,7 @@ export class LoginComponent {
         this.authService.setJwtToken(response.access_token);
         console.log('POST request successful', this.authService.getJwtToken());
         this.router.navigate(['/hello']);
+        this.authService.setUserRole("hungernde"); // Setzen der Rolle des Benutzers muss noch implementiert werden
       },
       (error) => {
         console.error('Error occurred:', error);
