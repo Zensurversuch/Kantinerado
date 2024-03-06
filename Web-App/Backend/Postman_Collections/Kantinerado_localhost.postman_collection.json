@@ -18,15 +18,15 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/dish/693692720",
+					"raw": "http://localhost:5000/dish_by_id/275046400",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
-						"dish",
-						"693692720"
+						"dish_by_id",
+						"275046400"
 					]
 				}
 			},
@@ -184,7 +184,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Currywurst\",\r\n    \"ingredients\": [\"dough\", \"cheese\", \"tomato sauce\", \"toppings\"],\r\n    \"dietary_category\": \"Italian\",\r\n    \"meal_type\": \"Main\",\r\n    \"allergies\": [\"Gluten\", \"Lactose\"]\r\n}\r\n",
+					"raw": "{\r\n    \"name\": \"Pizza\",\r\n    \"price\": \"3\",\r\n    \"ingredients\": [\"dough\", \"cheese\", \"tomato sauce\", \"toppings\"],\r\n    \"dietaryCategory\": \"Italian\",\r\n    \"mealType\": \"Main\",\r\n    \"allergies\": [\"Gluten\", \"Lactose\"]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -212,7 +212,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"mail@example.com\",\r\n    \"password\": \"mypassword\"\r\n}",
+					"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"mypassword\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
