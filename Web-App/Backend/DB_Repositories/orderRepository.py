@@ -23,15 +23,21 @@ class OrderRepository:
 
             today_date = datetime.today().strftime('%Y-%m-%d')
 
-            new_order = Order(orderID = rand_orderid,
-                              userID = param_userID,
-                              mealPlanID = param_mealPlanID,
-                              amount = param_amount,
-                              orderDate = today_date)
-
-            session.add(new_order)
-            session.commit()
-            return True
+            order_data = self.is_order_already_created(param_userID, param_mealPlanID)
+            if order_data is not False:
+                order_data.amount = order_data.amount + int(param_amount)
+                session.add(order_data)
+                session.commit()
+                return "updated"
+            else:
+                new_order = Order(orderID = rand_orderid,
+                                  userID = param_userID,
+                                  mealPlanID = param_mealPlanID,
+                                  amount = param_amount,
+                                  orderDate = today_date)
+                session.add(new_order)
+                session.commit()
+                return "created"
         except SQLAlchemyError as e:
             return False
         finally:
@@ -80,7 +86,7 @@ class OrderRepository:
             session = scoped_session(self.session_factory)
             order_data = session.query(Order).filter(Order.userID == param_userID, Order.mealPlanID == param_mealPlanID).first()
             if order_data:
-                return True
+                return order_data
             return False
         except SQLAlchemyError as e:
             return None

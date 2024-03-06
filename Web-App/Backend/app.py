@@ -8,6 +8,7 @@ import base64
 from flask_cors import CORS
 from decorators import permission_check
 import hashlib
+import datetime
 app = Flask(__name__)
 
 # -------------------------- Environment Variables ------------------------------------------------------------------------------------------------------------------------------------------
@@ -73,7 +74,7 @@ def login():
     user_data = user_repo.get_user_by_email(email)
 
     if user_data and (hashed_pw == user_data["password"]):
-        access_token = create_access_token(identity=user_data["userID"])
+        access_token = create_access_token(identity=user_data["userID"], expires_delta=datetime.timedelta(hours=1))
         return jsonify(access_token=access_token), 200
     else:
         return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
@@ -242,11 +243,11 @@ def create_order():
     if not (userID and mealPlanID and amount):
         return jsonify({"message": "Missing required fields"}), 400
 
-    if order_repo.is_order_already_created(userID, mealPlanID):
-        return jsonify({"message": "This order was already created"}), 500
-    
-    if order_repo.create_order(userID, mealPlanID, amount):
+    ret_value = order_repo.create_order(userID, mealPlanID, amount)
+    if ret_value=="created":
         return jsonify({"message": "Order created successful"}), 201
+    elif ret_value=="updated":
+        return jsonify({"message": "Order updated successful"}), 201
     return jsonify({"message": "Failed to create Order"}), 500
 
 @app.route('/orders_by_user/<string:start_date>/<string:end_date>')
