@@ -30,7 +30,6 @@ export class AuthGuard implements CanActivate {
     
     const rolePermissions = this.permissionService.getPermissionsForRole(userRole);
     const routePermission = this.getRoutePermission(route);
-    console.log(rolePermissions);
     if (!rolePermissions.includes(routePermission)) {
         this.router.navigate(['/login']);
         return false;
@@ -42,7 +41,6 @@ export class AuthGuard implements CanActivate {
   private getRoutePermission(route: ActivatedRouteSnapshot): string {
     const urlSegments: UrlSegment[] = route.url;
     const mainRoute = urlSegments.length > 0 ? urlSegments[0].path : '';
-    console.log(mainRoute);
     return mainRoute;
   }
 }
