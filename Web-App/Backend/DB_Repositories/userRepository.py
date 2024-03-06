@@ -9,7 +9,7 @@ class UserRepository:
         self.engine = engine
         self.session_factory = sessionmaker(bind=self.engine)
 
-    def create_user(self, email, password, lastName, firstName, role, allergies=None):
+    def create_user(self, param_email, param_password, param_lastName, param_firstName, param_role, param_allergies=None):
         session = scoped_session(self.session_factory)
         try:
             min_ = 1
@@ -18,17 +18,17 @@ class UserRepository:
             while session.query(User).filter(User.userID == rand_userid).first() is not None:
                 rand_userid = randint(min_, max_)
 
-            hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            hashed_pw = hashlib.sha256(param_password.encode('utf-8')).hexdigest()
             new_user = User(userID=rand_userid,
-                            email=email,
+                            email=param_email,
                             password=hashed_pw,
-                            lastName=lastName,
-                            firstName=firstName,
-                            role=role)
+                            lastName=param_lastName,
+                            firstName=param_firstName,
+                            role=param_role)
 
             missing_allergies = []
-            if allergies:
-                for allergy_name in allergies:
+            if param_allergies:
+                for allergy_name in param_allergies:
                     allergy = session.query(Allergy).filter(Allergy.name == allergy_name).first()
                     if allergy:
                         new_user.allergies.append(allergy)
@@ -71,10 +71,10 @@ class UserRepository:
         finally:
             session.close()
 
-    def get_user_by_id(self, user_id):
+    def get_user_by_id(self, param_userID):
         try:
             session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.userID == user_id).first()
+            user_data = session.query(User).filter(User.userID == param_userID).first()
             if user_data:
                 allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
 
@@ -94,10 +94,10 @@ class UserRepository:
         finally:
             session.close()
 
-    def get_user_by_email(self, email):
+    def get_user_by_email(self, param_email):
         try:
             session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.email == email).first()
+            user_data = session.query(User).filter(User.email == param_email).first()
             if user_data:
                 allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
 

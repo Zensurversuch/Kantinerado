@@ -53,8 +53,8 @@ def send_swagger_json():
 @jwt_required()
 @permission_check(user_repo)
 def hello():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user, message='Zugriff auf Hello gestattet! Hallo, Welt!')
+    jwt_userID = get_jwt_identity()
+    return jsonify(logged_in_as=jwt_userID, message='Zugriff auf Hello gestattet! Hallo, Welt!')
 
 
 
@@ -64,14 +64,14 @@ def login():
     if not request.is_json:
         return jsonify({"msg": "Fehlendes JSON in der Anfrage"}), 400
 
-    email = request.json.get('email', None)
-    password = request.json.get('password', None)
-    hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    data_email = request.json.get('email', None)
+    data_password = request.json.get('password', None)
+    hashed_pw = hashlib.sha256(data_password.encode('utf-8')).hexdigest()
 
-    if not email or not password:
+    if not data_email or not data_password:
         return jsonify({"msg": "Fehlender Benutzername oder Passwort"}), 400
 
-    user_data = user_repo.get_user_by_email(email)
+    user_data = user_repo.get_user_by_email(data_email)
 
     if user_data and (hashed_pw == user_data["password"]):
         access_token = create_access_token(identity=user_data["userID"], expires_delta=datetime.timedelta(hours=1))
@@ -82,18 +82,18 @@ def login():
 @app.route('/create_user', methods=['POST'])
 def create_user():
     data = request.json
-    email = data.get('email')
-    password = data.get('password')
-    lastName = data.get('lastName')
-    firstName = data.get('firstName')
-    allergies = data.get('allergies')
-    if not (email and password and lastName and firstName):
+    data_email = data.get('email')
+    data_password = data.get('password')
+    data_lastName = data.get('lastName')
+    data_firstName = data.get('firstName')
+    data_allergies = data.get('allergies')
+    if not (data_email and data_password and data_lastName and data_firstName):
         return jsonify({"message": "Missing required fields"}), 400
 
-    if user_repo.get_user_by_email(email):
-        return jsonify({"message": f"User with the email {email} already exists"}), 500
+    if user_repo.get_user_by_email(data_email):
+        return jsonify({"message": f"User with the email {data_email} already exists"}), 500
 
-    ret_value = user_repo.create_user(email, password, lastName, firstName, "hungernde", allergies)
+    ret_value = user_repo.create_user(data_email, data_password, data_lastName, data_firstName, "hungernde", data_allergies)
     if not ret_value:   # If ret_value is empty no allergies were missing
         return jsonify({"message": "User created successful"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing
@@ -106,22 +106,22 @@ def create_user():
 @permission_check(user_repo)
 def create_user_as_admin():
     data = request.json
-    email = data.get('email')
-    password = data.get('password')
-    lastName = data.get('lastName')
-    firstName = data.get('firstName')
-    role = data.get('role')
-    allergies = data.get('allergies')
-    if not (email and password and lastName and firstName and role):
+    data_email = data.get('email')
+    data_password = data.get('password')
+    data_lastName = data.get('lastName')
+    data_firstName = data.get('firstName')
+    data_role = data.get('role')
+    data_allergies = data.get('allergies')
+    if not (data_email and data_password and data_lastName and data_firstName and data_role):
         return jsonify({"message": "Missing required fields"}), 400
 
-    if role not in ["hungernde", "admin", "kantinenmitarbeiter"]:
-        return jsonify({"message": f"the role: {role} , doesn't exist"}), 400
+    if data_role not in ["hungernde", "admin", "kantinenmitarbeiter"]:
+        return jsonify({"message": f"the role: {data_role} , doesn't exist"}), 400
 
-    if user_repo.get_user_by_email(email):
-        return jsonify({"message": f"User with the email {email} already exists"}), 500
+    if user_repo.get_user_by_email(data_email):
+        return jsonify({"message": f"User with the email {data_email} already exists"}), 500
 
-    ret_value = user_repo.create_user(email, password, lastName, firstName, role, allergies)
+    ret_value = user_repo.create_user(data_email, data_password, data_lastName, data_firstName, data_role, data_allergies)
     if not ret_value:   # If ret_value is empty no allergies were missing
         return jsonify({"message": "User created successful"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing
@@ -204,30 +204,30 @@ def dish_by_name(dish_name):
 @jwt_required()
 @permission_check(user_repo)
 def create_dish():
-        data = request.json
-        name = data.get('name')
-        price = data.get('price')
-        ingredients = data.get('ingredients')
-        dietaryCategory = data.get('dietaryCategory')
-        mealType = data.get('mealType')
-        image = data.get('image')
-        allergies = data.get('allergies')
+    data = request.json
+    data_name = data.get('name')
+    data_price = data.get('price')
+    data_ingredients = data.get('ingredients')
+    data_dietaryCategory = data.get('dietaryCategory')
+    data_mealType = data.get('mealType')
+    data_image = data.get('image')
+    data_allergies = data.get('allergies')
 
-        if not (name and price and dietaryCategory and mealType):
-            return jsonify({"message": "Missing required fields"}), 400
+    if not (data_name and data_price and data_dietaryCategory and data_mealType):
+        return jsonify({"message": "Missing required fields"}), 400
 
-        if dish_repo.get_dish_by_name(name):
-            return jsonify({"message": "Dish exist already"}), 400
+    if dish_repo.get_dish_by_name(data_name):
+        return jsonify({"message": "Dish exist already"}), 400
 
-        image = base64.b64decode(image) if image else None
+    decoded_image = base64.b64decode(data_image) if data_image else None
 
-        ret_value = dish_repo.create_dish(name, price, dietaryCategory, mealType, ingredients, image, allergies)
-        if not ret_value:   # If ret_value is empty no allergies were missing
-            return jsonify({"message": "Dish created successful"}), 201
-        elif ret_value:     # If ret_value contains values allergies were missing
-            return jsonify({"message": f"Dish created successful, but the allergies {ret_value} aren't present in the database"}), 201
-        elif ret_value == False:
-            return jsonify({"message": "Failed to create Dish"}), 500
+    ret_value = dish_repo.create_dish(data_name, data_price, data_dietaryCategory, data_mealType, data_ingredients, decoded_image, data_allergies)
+    if not ret_value:   # If ret_value is empty no allergies were missing
+        return jsonify({"message": "Dish created successful"}), 201
+    elif ret_value:     # If ret_value contains values allergies were missing
+        return jsonify({"message": f"Dish created successful, but the allergies {ret_value} aren't present in the database"}), 201
+    elif ret_value == False:
+        return jsonify({"message": "Failed to create Dish"}), 500
 
 
 # -------------------------- Order Routes ------------------------------------------------------------------------------------------------------------------------------------------
@@ -236,14 +236,14 @@ def create_dish():
 @permission_check(user_repo)
 def create_order():
     data = request.json
-    userID = get_jwt_identity()
-    mealPlanID = data.get('mealPlanID')
-    amount = data.get('amount')
+    jwt_userID = get_jwt_identity()
+    data_mealPlanID = data.get('mealPlanID')
+    data_amount = data.get('amount')
 
-    if not (userID and mealPlanID and amount):
+    if not (data_mealPlanID and data_amount):
         return jsonify({"message": "Missing required fields"}), 400
 
-    ret_value = order_repo.create_order(userID, mealPlanID, amount)
+    ret_value = order_repo.create_order(jwt_userID, data_mealPlanID, data_amount)
     if ret_value=="created":
         return jsonify({"message": "Order created successful"}), 201
     elif ret_value=="updated":
@@ -254,8 +254,8 @@ def create_order():
 @jwt_required()
 @permission_check(user_repo)
 def orders_by_user(start_date, end_date):
-    current_user = get_jwt_identity()
-    orders = order_repo.get_orders_by_userid(current_user, start_date, end_date)
+    jwt_userID = get_jwt_identity()
+    orders = order_repo.get_orders_by_userid(jwt_userID, start_date, end_date)
 
     if orders:
         return jsonify(orders)

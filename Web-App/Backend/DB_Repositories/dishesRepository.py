@@ -9,10 +9,10 @@ class DishRepository:
         self.engine = engine
         self.session_factory = sessionmaker(bind=self.engine)
 
-    def get_dish_by_id(self, dish_id):
+    def get_dish_by_id(self, param_dishID):
         try:
             session = scoped_session(self.session_factory)
-            dish_data = session.query(Dish).filter(Dish.dishID == dish_id).first()
+            dish_data = session.query(Dish).filter(Dish.dishID == param_dishID).first()
             if dish_data:
                 allergies = [allergy.name for allergy in dish_data.allergies] if dish_data.allergies else None
 
@@ -34,10 +34,10 @@ class DishRepository:
         finally:
             session.close()
 
-    def get_dish_by_name(self, dish_name):
+    def get_dish_by_name(self, param_name):
         try:
             session = scoped_session(self.session_factory)
-            dish_data = session.query(Dish).filter(Dish.name == dish_name).first()
+            dish_data = session.query(Dish).filter(Dish.name == param_name).first()
             if dish_data:
                 allergies = [allergy.name for allergy in dish_data.allergies] if dish_data.allergies else None
                 dish_dict = {
@@ -58,7 +58,7 @@ class DishRepository:
         finally:
             session.close()         
 
-    def create_dish(self, name, price, dietary_category, meal_type, ingredients=None, image=None, allergies=None):
+    def create_dish(self, param_name, param_price, param_dietaryCategory, param_mealType, param_ingredients=None, param_image=None, param_allergies=None):
         try:
             session = scoped_session(self.session_factory)
             min_ = 1
@@ -70,17 +70,17 @@ class DishRepository:
 
             new_dish = Dish(
                 dishID=rand_dishID,
-                name=name,
-                price=price,
-                ingredients=ingredients,
-                dietaryCategory=dietary_category,
-                mealType=meal_type,
-                image=image
+                name=param_name,
+                price=param_price,
+                ingredients=param_ingredients,
+                dietaryCategory=param_dietaryCategory,
+                mealType=param_mealType,
+                image=param_image
             )
 
             missing_allergies = []
-            if allergies:
-                for allergy_name in allergies:
+            if param_allergies:
+                for allergy_name in param_allergies:
                     allergy = session.query(Allergy).filter(Allergy.name == allergy_name).first()
                     if allergy:
                         new_dish.allergies.append(allergy)
