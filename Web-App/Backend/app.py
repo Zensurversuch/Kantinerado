@@ -205,13 +205,14 @@ def dish_by_name(dish_name):
 def create_dish():
         data = request.json
         name = data.get('name')
+        price = data.get('price')
         ingredients = data.get('ingredients')
         dietaryCategory = data.get('dietaryCategory')
         mealType = data.get('mealType')
         image = data.get('image')
         allergies = data.get('allergies')
 
-        if not (name and dietaryCategory and mealType):
+        if not (name and price and dietaryCategory and mealType):
             return jsonify({"message": "Missing required fields"}), 400
 
         if dish_repo.get_dish_by_name(name):
@@ -219,7 +220,7 @@ def create_dish():
 
         image = base64.b64decode(image) if image else None
 
-        ret_value = dish_repo.create_dish(name, dietaryCategory, mealType, ingredients, image, allergies)
+        ret_value = dish_repo.create_dish(name, price, dietaryCategory, mealType, ingredients, image, allergies)
         if not ret_value:   # If ret_value is empty no allergies were missing
             return jsonify({"message": "Dish created successful"}), 201
         elif ret_value:     # If ret_value contains values allergies were missing

@@ -19,6 +19,7 @@ class DishRepository:
                 dish_dict = {
                     "dish_id": dish_data.dishID,
                     "name": dish_data.name,
+                    "price": dish_data.price,
                     "allergies": allergies,
                     "ingredients": dish_data.ingredients,
                     "dietaryCategorie": dish_data.dietaryCategory,
@@ -42,6 +43,7 @@ class DishRepository:
                 dish_dict = {
                     "dish_id": dish_data.dishID,
                     "name": dish_data.name,
+                    "price": dish_data.price,
                     "allergies": allergies,
                     "ingredients": dish_data.ingredients,
                     "dietaryCategorie": dish_data.dietaryCategory,
@@ -56,7 +58,7 @@ class DishRepository:
         finally:
             session.close()         
 
-    def create_dish(self, name,  dietary_category, meal_type, ingredients=None, image=None, allergies=None):
+    def create_dish(self, name, price, dietary_category, meal_type, ingredients=None, image=None, allergies=None):
         try:
             session = scoped_session(self.session_factory)
             min_ = 1
@@ -69,6 +71,7 @@ class DishRepository:
             new_dish = Dish(
                 dishID=rand_dishID,
                 name=name,
+                price=price,
                 ingredients=ingredients,
                 dietaryCategory=dietary_category,
                 mealType=meal_type,
