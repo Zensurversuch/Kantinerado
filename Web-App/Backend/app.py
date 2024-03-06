@@ -211,11 +211,9 @@ def create_dish():
         image = data.get('image')
         allergies = data.get('allergies')
 
-       
-
         if not (name and dietaryCategory and mealType):
             return jsonify({"message": "Missing required fields"}), 400
-        
+
         if dish_repo.get_dish_by_name(name):
             return jsonify({"message": "Dish exist already"}), 400
 
@@ -228,6 +226,38 @@ def create_dish():
             return jsonify({"message": f"Dish created successful, but the allergies {ret_value} aren't present in the database"}), 201
         elif ret_value == False:
             return jsonify({"message": "Failed to create Dish"}), 500
+
+
+# -------------------------- Order Routes ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/create_order', methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
+def create_order():
+    data = request.json
+    userID = get_jwt_identity()
+    mealPlanID = data.get('mealPlanID')
+    amount = data.get('amount')
+
+    if not (userID and mealPlanID and amount):
+        return jsonify({"message": "Missing required fields"}), 400
+
+    if order_repo.is_order_already_created(userID, mealPlanID):
+        return jsonify({"message": "This order was already created"}), 500
+    
+    if order_repo.create_order(userID, mealPlanID, amount):
+        return jsonify({"message": "Order created successful"}), 201
+    return jsonify({"message": "Failed to create Order"}), 500
+
+@app.route('/orders_by_user/<string:start_date>/<string:end_date>')
+@jwt_required()
+@permission_check(user_repo)
+def orders_by_user(start_date, end_date):
+    current_user = get_jwt_identity()
+    orders = order_repo.get_orders_by_userid(current_user, start_date, end_date)
+
+    if orders:
+        return jsonify(orders)
+    return jsonify({"message": "No orders for you found in the selected timespan"}), 404
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

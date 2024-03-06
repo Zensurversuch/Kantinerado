@@ -24,7 +24,7 @@ Mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) kann man SQL Skripte einfa
 4.2 **Gerichte einfügen:**
    Füge die Gerichte in die Tabelle "dishes" ein.  
 4.3 **Benutzer einfügen:**
-   Dies muss manuell über z.B. postman gemacht werden sodass die passwörter gehashed werden. Postman Collections hierfür findet man [hier](./Test_Database/Postman_Collections/)  
+   Dies muss manuell über z.B. postman gemacht werden sodass die passwörter gehashed werden. Postman Collections hierfür findet man [hier](../Backend/Postman_Collections/)  
 4.5 **Allergien für Gerichte einfügen:**
    Füge die Zuordnung von Gerichten zu ihren Allergien in die Tabelle "dish_allergy_association" ein.  
 4.6 **Einträge für das Meal Plan einfügen:**
