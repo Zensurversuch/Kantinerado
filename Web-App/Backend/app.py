@@ -200,6 +200,16 @@ def dish_by_name(dish_name):
         return dish
     return jsonify({"message": "Dish not found"}), 404
 
+@app.route('/dish_by_mealType/<string:dish_mealType>')
+#@jwt_required()
+#@permission_check(user_repo)
+def dish_by_mealType(dish_mealType):
+    dishes = dish_repo.get_dishes_by_mealType(dish_mealType)
+    if dishes:
+        return dishes
+    return jsonify({"message": "No Dishes found"}), 404
+
+
 @app.route('/create_dish', methods=['POST'])
 @jwt_required()
 @permission_check(user_repo)
