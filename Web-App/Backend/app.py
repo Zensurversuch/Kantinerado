@@ -208,15 +208,14 @@ def create_order():
     userID = get_jwt_identity()
     mealPlanID = data.get('mealPlanID')
     amount = data.get('amount')
-    orderDate = data.get('orderDate')
 
-    if not (userID and mealPlanID and amount and orderDate):
+    if not (userID and mealPlanID and amount):
         return jsonify({"message": "Missing required fields"}), 400
 
     if order_repo.is_order_already_created(userID, mealPlanID):
         return jsonify({"message": "This order was already created"}), 500
     
-    if order_repo.create_order(userID, mealPlanID, amount, orderDate):
+    if order_repo.create_order(userID, mealPlanID, amount):
         return jsonify({"message": "Order created successful"}), 201
     return jsonify({"message": "Failed to create Order"}), 500
 
