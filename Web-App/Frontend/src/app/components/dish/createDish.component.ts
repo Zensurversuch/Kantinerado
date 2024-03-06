@@ -46,8 +46,8 @@ export class CreateDishComponent implements OnInit {
     );
 
     this.createDishForm = this.fb.group({
-      name: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+      name: ['', [Validators.required, Validators.maxLength(50)]],
+      price: ['', [Validators.required,Validators.maxLength(50), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
       ingredients: this.fb.array([]),
       dietaryCategory: ['', Validators.required],
       mealType: ['', Validators.required],
