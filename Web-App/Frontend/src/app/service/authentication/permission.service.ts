@@ -13,8 +13,6 @@ export class PermissionService {
   };
 
   getPermissionsForRole(role: string): string[] {
-    console.log(this.permissionsData[role] );
-    console.log(this.permissionsData);
     return this.permissionsData[role] || [];
   }
 
