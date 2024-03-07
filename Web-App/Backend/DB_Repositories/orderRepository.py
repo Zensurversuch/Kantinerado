@@ -66,9 +66,12 @@ class OrderRepository:
                     "userID": order.userID,
                     "mealPlanID": order.mealPlanID,
                     "mealPlanDate": meal_plan.date,
-                    "mealPlanDishID": dish.dishID,
-                    "mealPlanDishName": dish.name,
+                    "dishID": dish.dishID,
+                    "dishName": dish.name,
+                    "dishMealType": dish.mealType,
+                    "dishPrice": dish.price,
                     "amount": order.amount,
+                    "orderPrice": dish.price * order.amount,
                     "orderDate": order.orderDate
                 }
                 final_orders_list.append(order_dict)

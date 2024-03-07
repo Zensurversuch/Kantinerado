@@ -7,9 +7,9 @@ import { Injectable } from '@angular/core';
 export class PermissionService {
   private permissionsData: { [key: string]: string[] } = {
     //Set the permissions for the users here
-    'admin': ['createDish', 'hello'],
-    'hungernde': ['hello'],
-    'kantinenmitarbeiter': ['createDish', 'hello']
+    'admin': ['createDish', 'hello', 'userOrderSummary'],
+    'hungernde': ['hello', 'userOrderSummary'],
+    'kantinenmitarbeiter': ['createDish', 'hello', 'userOrderSummary']
   };
 
   getPermissionsForRole(role: string): string[] {
