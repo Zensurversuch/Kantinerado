@@ -1,0 +1,58 @@
+<app-header class="app-header"></app-header>
+
+<div class="register">
+  <h2 class="register__title">Registrieren</h2>
+  <form [formGroup]="registerForm" (submit)="registerAdmin()">
+    <div class="register__form-group">
+      <label for="lastname" class="register__label">Nachname*</label>
+      <input id="lastname" formControlName="lastname" type="text" class="register__input">
+      <div *ngIf="registerForm.get('lastname')?.invalid && (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)">
+        <span class="register__error-message">Nachname ist erforderlich.</span>
+      </div>
+    </div>
+    <div class="register__form-group">
+      <label for="firstname" class="register__label">Vorname*</label>
+      <input id="firstname" formControlName="firstname" type="text" class="register__input">
+      <div *ngIf="registerForm.get('firstname')?.invalid && (registerForm.get('firstname')?.dirty || registerForm.get('firstname')?.touched)">
+        <span class="register__error-message">Vorname ist erforderlich.</span>
+      </div>
+    </div>
+    <div class="register__form-group">
+      <label for="email" class="register__label">E-Mail*</label>
+      <input id="email" formControlName="email" type="email" class="register__input">
+      <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
+        <span class="register__error-message">Bitte geben Sie eine gültige E-Mail-Adresse ein.</span>
+      </div>
+    </div>
+    <div class="register__form-group">
+      <label for="role" class="register__label">Rolle*</label>
+      <select id="role" formControlName="role" class="register__input">
+        <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+      </select>
+      <div *ngIf="registerForm.get('role')?.invalid && (registerForm.get('role')?.dirty || registerForm.get('role')?.touched)">
+        <span class="register__error-message">Bitte wählen Sie eine gültige Option aus.</span>
+      </div>
+    </div>
+    <div class="register__form-group">
+      <label for="password" class="register__label">Passwort*</label>
+      <input id="password" formControlName="password" type="password" class="register__input">
+      <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
+        <span class="register__error-message">Mindestens 8 Zeichen, eine Zahl, Sonderzeichen und Großbuchstabe erforderlich.</span>
+      </div>
+    </div>
+    <div class="register__form-group">
+      <label for="confirmpassword" class="register__label">Bestätige Passwort*</label>
+      <input id="confirmpassword" formControlName="confirmpassword" type="password" class="register__input">
+      <div *ngIf="registerForm.get('confirmpassword')?.invalid && (registerForm.get('confirmpassword')?.dirty || registerForm.get('confirmpassword')?.touched)">
+        <span class="register__error-message">Passwortbestätigung ist erforderlich.</span>
+      </div>
+      <div *ngIf="registerForm.hasError('passwordMismatch') && (registerForm.get('confirmpassword')?.dirty || registerForm.get('confirmpassword')?.touched)">
+        <span class="register__error-message">Passwörter stimmen nicht überein.</span>
+      </div>
+      <div *ngIf="registerForm.get('password')?.value !== registerForm.get('confirmpassword')?.value && (registerForm.get('confirmpassword')?.dirty || registerForm.get('confirmpassword')?.touched)">
+        <span class="register__error-message">Die Passwörter stimmen nicht überein.</span>
+      </div>
+    </div>
+    <button [disabled]="!registerForm.valid" class="register__submit-btn" type="submit">Registrieren</button>
+  </form>
+</div>
