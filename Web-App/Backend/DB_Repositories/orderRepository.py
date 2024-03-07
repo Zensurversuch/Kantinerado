@@ -82,6 +82,52 @@ class OrderRepository:
         finally:
             session.close()
 
+    def get_orders_sorted_by_dish(self, param_dateBegin, param_dateEnd):
+        try:
+            session = scoped_session(self.session_factory)
+
+            orders_list = session.query(Order, MealPlan, Dish).filter(
+                and_(
+                    MealPlan.date >= param_dateBegin,
+                    MealPlan.date <= param_dateEnd,
+                    Order.mealPlanID == MealPlan.mealPlanID,
+                    Dish.dishID == MealPlan.dishID
+                )
+            ).order_by(asc(MealPlan.date)).all()
+
+            grouped_orders = {}
+            for order, meal_plan, dish in orders_list:
+                meal_plan_date = meal_plan.date
+                dish_id = dish.dishID
+                if meal_plan_date not in grouped_orders:
+                    grouped_orders[meal_plan_date] = {}
+                if dish_id not in grouped_orders[meal_plan_date]:
+                    grouped_orders[meal_plan_date][dish_id] = {
+                        "dishID": dish.dishID,
+                        "dishName": dish.name,
+                        "dishMealType": dish.mealType,
+                        "mealPlanID": meal_plan.mealPlanID,
+                        "dishPrice": dish.price,
+                        "amount": 0,
+                        "completePrice": 0
+                    }
+                grouped_orders[meal_plan_date][dish_id]["amount"] += order.amount
+                grouped_orders[meal_plan_date][dish_id]["completePrice"] = int(grouped_orders[meal_plan_date][dish_id]["amount"]) * int(grouped_orders[meal_plan_date][dish_id]["dishPrice"])
+
+            final_orders_list = []
+            for meal_plan_date, dish_info in grouped_orders.items():
+                dishes = list(dish_info.values())
+                final_orders_list.append({
+                    "mealPlanDate": meal_plan_date,
+                    "dishes": dishes
+                })
+
+            return final_orders_list
+        except SQLAlchemyError as e:
+            return None
+        finally:
+            session.close()
+
 
 
     def is_order_already_created(self, param_userID, param_mealPlanID):
