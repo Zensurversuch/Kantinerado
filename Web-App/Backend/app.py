@@ -270,6 +270,16 @@ def orders_by_user(start_date, end_date):
     if orders:
         return jsonify(orders)
     return jsonify({"message": "No orders for you found in the selected timespan"}), 404
+
+@app.route('/orders_sorted_by_dish/<string:start_date>/<string:end_date>')
+@jwt_required()
+@permission_check(user_repo)
+def orders_sorted_by_dish(start_date, end_date):
+    orders = order_repo.get_orders_sorted_by_dish(start_date, end_date)
+
+    if orders:
+        return jsonify(orders)
+    return jsonify({"message": "No orders for you found in the selected timespan"}), 404
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
