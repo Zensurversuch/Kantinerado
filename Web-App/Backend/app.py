@@ -272,6 +272,8 @@ def orders_by_user(start_date, end_date):
     return jsonify({"message": "No orders for you found in the selected timespan"}), 404
 # -------------------------- Meal plan routes ------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/create_meal_plan', methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
 def create_meal_plan():
     if request.method == 'POST':
         data = request.json
@@ -280,21 +282,23 @@ def create_meal_plan():
             return jsonify({"message": "No meal plan found in the request"}), 400
 
         for meal in meal_plan:
-            dish_id = meal.get('dishID')
+            dishID = meal.get('dishID')
             date = meal.get('date')
-        if not (meal_plan and meal and dish_id and date):
+        if not (meal_plan and meal and dishID and date):
             return jsonify({"message": "Missing required fields"}), 400
         
         ret_value = meal_plan_repo.create_mealPlan(meal_plan)
 
-        if ret_value == True:
+        if ret_value:
             return jsonify({"message": "Meal plan processed successfully"}), 201
         else:
-            return jsonify({"message": "Failed to create Mealplan"}),500 
+            return jsonify({"message": "Failed to create Mealplan"}),420 
     else:
         return jsonify({"message": "Invalid request method"}), 405
 
-@app.route('/get_meal_plan/<string:start_date>/<string:end_date>')
+@app.route('/meal_plan/<string:start_date>/<string:end_date>')
+@jwt_required()
+@permission_check(user_repo)
 def get_dish_by_id(start_date, end_date):
     meal_Plan = meal_plan_repo.get_mealPlan(start_date, end_date)
     if meal_Plan == False:
@@ -304,8 +308,6 @@ def get_dish_by_id(start_date, end_date):
     elif meal_Plan:
         return jsonify(meal_Plan)
     return jsonify({"message": "meal plan not found"}), 404
-
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
