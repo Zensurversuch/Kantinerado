@@ -35,9 +35,9 @@ class MealPlanRepository:
                 session.commit()
                 return True
             except SQLAlchemyError as e:
-                return False
-            #except ValueError as e:
-                #return False
+                return False, e
+            except ValueError as e:
+                return False, e
             finally:
                 session.close()
 
@@ -60,7 +60,7 @@ class MealPlanRepository:
                     return mealPlan_list
                 return None
             except ValueError as e:
-                return(False)
+                return False
             except SQLAlchemyError as e:
                 return None
             finally:

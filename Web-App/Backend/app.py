@@ -288,11 +288,10 @@ def create_meal_plan():
             return jsonify({"message": "Missing required fields"}), 400
         
         ret_value = meal_plan_repo.create_mealPlan(meal_plan)
-
-        if ret_value:
+        if ret_value[0]:
             return jsonify({"message": "Meal plan processed successfully"}), 201
         else:
-            return jsonify({"message": "Failed to create Mealplan"}),420 
+            return jsonify({"message":  str(ret_value[1])}),420 
     else:
         return jsonify({"message": "Invalid request method"}), 405
 
@@ -301,12 +300,10 @@ def create_meal_plan():
 @permission_check(user_repo)
 def get_dish_by_id(start_date, end_date):
     meal_Plan = meal_plan_repo.get_mealPlan(start_date, end_date)
+    if meal_Plan == None:
+        return jsonify({"message": "dates weren`t"})
     if meal_Plan == False:
-        return jsonify({"message": "Dates weren't valid"}),400
-    elif meal_Plan == None:
-        return jsonify({"message": "mealplan couldn't be created"}),500
-    elif meal_Plan:
-        return jsonify(meal_Plan)
+        return jsonify({"message": "mealplan couldn't be returned"}),400
     return jsonify({"message": "meal plan not found"}), 404
 
 if __name__ == "__main__":
