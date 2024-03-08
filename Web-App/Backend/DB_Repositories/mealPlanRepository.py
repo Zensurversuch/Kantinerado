@@ -33,7 +33,7 @@ class MealPlanRepository:
                     )
                     session.add(new_mealPlan)
                 session.commit()
-                return True
+                return True, ''
             except SQLAlchemyError as e:
                 return False, e
             except ValueError as e:
