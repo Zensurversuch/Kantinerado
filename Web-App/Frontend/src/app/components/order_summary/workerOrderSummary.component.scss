@@ -1,0 +1,74 @@
+@import "../../color.scss";
+
+h2 {
+  margin-top: 30px;
+  width: auto;
+  text-align: center;
+}
+
+.day {
+  width: 80%;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow-x: auto; 
+}
+
+.day-header {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.day-content {
+  padding: 10px;
+  border: none;
+}
+
+.toggle-icon {
+  font-size: 1.2em;
+  transition: transform 0.3s ease-in-out;
+}
+
+.day.expanded .toggle-icon {
+  transform: rotate(90deg);
+}
+
+
+table {
+  min-width: 100%;
+  width: auto;
+  border-collapse: collapse;
+  border: 2px solid #ddd;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+thead {
+  background-color: $disabled-color;
+  color: white;
+}
+
+tbody {
+  background-color: white;
+}
+
+tbody tr:hover {
+  background-color: rgb(255, 213, 213);
+}
+
+/* Responsivität */
+@media (max-width: 768px) {
+  .day {
+    width: 100%; /* Bei kleinen Bildschirmen den Container auf volle Breite setzen */
+  }
+}
