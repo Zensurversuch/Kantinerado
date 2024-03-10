@@ -412,7 +412,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"meal-plan\" :\r\n    [\r\n        {\r\n            \"dishID\": \"171069410\",\r\n            \"date\": \"2024-12-17\"\r\n        },\r\n        {\r\n            \"date\": \"2024-12-18\"\r\n        },{\r\n            \"dishID\": \"751618127\",\r\n            \"date\": \"2024-12-19\"\r\n        },\r\n        {\r\n            \"dishID\": \"275046400\",\r\n            \"date\": \"2024-12-17\"\r\n        }\r\n    ]\r\n\r\n}",
+					"raw": "{\r\n    \"mealPlan\" :\r\n    [\r\n        {\r\n            \"dishID\": \"171069410\",\r\n            \"date\": \"2024-12-17\"\r\n        },\r\n        {\r\n            \"dishID\": \"847520853\",\r\n            \"date\": \"2024-12-18\"\r\n        },{\r\n            \"dishID\": \"751618127\",\r\n            \"date\": \"2024-12-19\"\r\n        },\r\n        {\r\n            \"dishID\": \"275046400\",\r\n            \"date\": \"2024-12-17\"\r\n        }\r\n    ]\r\n\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
