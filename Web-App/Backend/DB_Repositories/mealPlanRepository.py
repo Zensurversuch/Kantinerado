@@ -57,11 +57,11 @@ class MealPlanRepository:
                         }
                         mealPlan_list.append(meal_dict)
 
-                    return mealPlan_list
-                return None
+                    return True, mealPlan_list
+                return False, "mealplan not found"
             except ValueError as e:
-                return False
+                return False, e
             except SQLAlchemyError as e:
-                return None
+                return False, e
             finally:
                 session.close()
