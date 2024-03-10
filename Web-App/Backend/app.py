@@ -286,28 +286,25 @@ def orders_sorted_by_dish(start_date, end_date):
 @jwt_required()
 @permission_check(user_repo)
 def create_meal_plan():
-    if request.method == 'POST':
-        data = request.json
-        meal_plan = data.get('mealPlan') 
-        if not meal_plan:
-            return jsonify({"message": "No meal plan found in the request"}), 400
+    data = request.json
+    meal_plan = data.get('mealPlan') 
+    if not meal_plan:
+        return jsonify({"message": "No meal plan found in the request"}), 400
 
-        for meal in meal_plan:
-            dishID = meal.get('dishID')
-            date = meal.get('date')
-            if not (dishID and date):
-                return jsonify({"message": "Missing required fields"}), 400
-        
-        ret_value = meal_plan_repo.create_mealPlan(meal_plan)
-        if ret_value[0]:
-            if ret_value[1] == '':
-                return jsonify({"message": "Meal plan processed successfully"}), 201
-            else:
-                return jsonify({"message": ret_value[1]}), 201
+    for meal in meal_plan:
+        dishID = meal.get('dishID')
+        date = meal.get('date')
+        if not (dishID and date):
+            return jsonify({"message": "Missing required fields"}), 400
+    
+    ret_value = meal_plan_repo.create_mealPlan(meal_plan)
+    if ret_value[0]:
+        if ret_value[1] == '':
+            return jsonify({"message": "Meal plan processed successfully"}), 201
         else:
-            return jsonify({"message":  str(ret_value[1])}),420 
+            return jsonify({"message": ret_value[1]}), 201
     else:
-        return jsonify({"message": "Invalid request method"}), 405
+        return jsonify({"message":  str(ret_value[1])}),420 
 
 @app.route('/meal_plan/<string:start_date>/<string:end_date>')
 @jwt_required()
