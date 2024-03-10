@@ -1,0 +1,47 @@
+<app-header></app-header>
+
+
+<div class="summary" *ngIf="orderSumResponse.length > 0">
+  <h2>Bestellübersicht</h2>
+
+  <div class="day" *ngFor="let days of ordersByDay">
+    <div>
+      <div class="day-header" (click)="toggleDay(days)">
+        <h3>
+          <span class="toggle-icon">{{ days.expanded ? '▼' : '►' }}</span>
+          {{ formatDate(days.date) }}
+        </h3>
+      </div>
+      <div class="day-content" *ngIf="days.expanded">
+        <table>
+          <thead>
+            <tr>
+              <th>BestellungsID</th>
+              <th>Bestellt am</th>
+              <th>Gericht</th>
+              <th>Gerichtsart</th>
+              <th>Gerichtspreis</th>
+              <th>Anzahl</th>
+              <th>Ergibt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of days.orders">
+              <td>{{ order.orderID }}</td>
+              <td>{{ formatDate(order.orderDate) }}</td>
+              <td>{{ order.dishName }}</td>
+              <td>{{ order.dishMealType }}</td>
+              <td>{{ order.dishPrice }}€</td>
+              <td>{{ order.amount }}</td>
+              <td>{{ order.orderPrice }}€</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="orderSumResponse.length === 0">
+  <p>Keine Bestellungen gefunden.</p>
+</div>

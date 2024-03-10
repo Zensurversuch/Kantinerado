@@ -184,7 +184,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Pizza\",\r\n    \"price\": \"3\",\r\n    \"ingredients\": [\"dough\", \"cheese\", \"tomato sauce\", \"toppings\"],\r\n    \"dietaryCategory\": \"Italian\",\r\n    \"mealType\": \"Main\",\r\n    \"allergies\": [\"Gluten\", \"Lactose\"]\r\n}\r\n",
+					"raw": "{\r\n    \"name\": \"Lasagne\",\r\n    \"price\": \"3\",\r\n    \"ingredients\": [\"dough\", \"cheese\", \"tomato sauce\", \"toppings\"],\r\n    \"dietaryCategory\": \"Italian\",\r\n    \"mealType\": \"Main\",\r\n    \"allergies\": [\"Gluten\", \"Lactose\"]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -297,7 +297,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mealPlanID\": \"6\",\r\n    \"amount\": \"1\"\r\n}\r\n",
+					"raw": "{\r\n    \"mealPlanID\": \"3\",\r\n    \"amount\": \"2\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -340,6 +340,94 @@
 						"orders_by_user",
 						"2024-03-04",
 						"2024-03-11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /orders_sorted_by_dish/<start_date>/<end_date>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/orders_sorted_by_dish/2024-03-01/2024-03-31",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders_sorted_by_dish",
+						"2024-03-01",
+						"2024-03-31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /meal_plan/<start_date>/<end_date>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/meal_plan/2024-03-01/2024-03-31",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"meal_plan",
+						"2024-03-01",
+						"2024-03-31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /create_meal_plan",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meal-plan\" :\r\n    [\r\n        {\r\n            \"dishID\": \"171069410\",\r\n            \"date\": \"2024-12-17\"\r\n        },\r\n        {\r\n            \"date\": \"2024-12-18\"\r\n        },{\r\n            \"dishID\": \"751618127\",\r\n            \"date\": \"2024-12-19\"\r\n        },\r\n        {\r\n            \"dishID\": \"275046400\",\r\n            \"date\": \"2024-12-17\"\r\n        }\r\n    ]\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/create_meal_plan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"create_meal_plan"
 					]
 				}
 			},

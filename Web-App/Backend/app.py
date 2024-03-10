@@ -74,7 +74,7 @@ def login():
     user_data = user_repo.get_user_by_email(data_email)
 
     if user_data and (hashed_pw == user_data["password"]):
-        access_token = create_access_token(identity=user_data["userID"], expires_delta=datetime.timedelta(seconds=50))
+        access_token = create_access_token(identity=user_data["userID"], expires_delta=datetime.timedelta(hours=1))
         return jsonify(access_token=access_token, userID = user_data["userID"], role = user_data["role"]), 200
     else:
         return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
@@ -270,6 +270,17 @@ def orders_by_user(start_date, end_date):
     if orders:
         return jsonify(orders)
     return jsonify({"message": "No orders for you found in the selected timespan"}), 404
+ 
+@app.route('/orders_sorted_by_dish/<string:start_date>/<string:end_date>')
+@jwt_required()
+@permission_check(user_repo)
+def orders_sorted_by_dish(start_date, end_date):
+    orders = order_repo.get_orders_sorted_by_dish(start_date, end_date)
+
+    if orders:
+        return jsonify(orders)
+    return jsonify({"message": "No orders for you found in the selected timespan"}), 404
+  
 # -------------------------- Meal plan routes ------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/create_meal_plan', methods=['POST'])
 @jwt_required()

@@ -23,7 +23,7 @@ import {Role} from "../../interface/role";
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  REGEX_PASSWORD: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%?&])[A-Za-z\d$@$!%?&]{8,}$/;
+  REGEX_PASSWORD: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!^_%*#?&])[A-Za-z\d@$!_%*#?&]{8,}$/;
   public registerForm: FormGroup = new FormGroup({
     lastname: new FormControl('',
       [
