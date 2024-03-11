@@ -1,0 +1,27 @@
+@import "../../color.scss";
+
+.calendar-container {
+  border: 2px solid $primary-border-color;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+button {
+  width: 40%; // 50% der Breite des Datepickers
+  margin: 10px 5px; // Margin für die Buttons
+  background-color: $primary-color;
+  color: $primary-text-color;
+  border-radius: 5px; // Runde Ecken
+  padding: 10px; // Innenabstand
+  cursor: pointer; // Zeige den Cursor als Zeigefinger
+  transition: background-color 0.3s; // Flüssige Übergänge für die Hintergrundfarbe
+}
+
+button:hover {
+  background-color: $primary-color; // Dunklere Hintergrundfarbe im Hover-Zustand
+}
+
+.mat-datepicker-content {
+  background-color: $highlight-color; // Verwende die definierte Variable für die Hintergrundfarbe
+  color:$primary-color;
+}
