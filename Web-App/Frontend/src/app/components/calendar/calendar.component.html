@@ -14,6 +14,6 @@
   @if (range.controls.end.hasError('matEndDateInvalid')) {
     <mat-error>Invalid end date</mat-error>
   }
+  <button (click)="setCurrentWeek()">Aktuelle Woche eintragen</button>
+  <button (click)="setNextWeek()">Nächste Woche eintragen</button>
 </mat-form-field>
-
-<p>Selected range: {{range.value | json}}</p>
