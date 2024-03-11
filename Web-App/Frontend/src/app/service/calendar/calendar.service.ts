@@ -11,7 +11,7 @@ export class CalendarService {
 
   constructor(private http: HttpClient) { }
   convertToDate(stringToFormat: Date) {
-    return formatDate(stringToFormat, 'yyyy-MM-dd', 'en-US', 'GMT+1');
+    return formatDate(stringToFormat, 'yyyy-MM-dd', 'en-US', '+0000');
   }
   getDefaultMonday(): Date {
     const today = new Date();
