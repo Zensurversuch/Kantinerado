@@ -8,7 +8,6 @@ import base64
 from flask_cors import CORS
 from decorators import permission_check
 import hashlib
-import datetime
 from datetime import datetime, timedelta
 
 
@@ -77,7 +76,7 @@ def login():
     user_data = user_repo.get_user_by_email(data_email)
 
     if user_data and (hashed_pw == user_data["password"]):
-        access_token = create_access_token(identity=user_data["userID"], expires_delta=datetime.timedelta(hours=1))
+        access_token = create_access_token(identity=user_data["userID"], expires_delta=timedelta(hours=1))
         return jsonify(access_token=access_token, userID = user_data["userID"], role = user_data["role"]), 200
     else:
         return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
