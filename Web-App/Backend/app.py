@@ -8,7 +8,9 @@ import base64
 from flask_cors import CORS
 from decorators import permission_check
 import hashlib
-import datetime
+from datetime import datetime, timedelta
+
+
 app = Flask(__name__)
 
 # -------------------------- Environment Variables ------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,7 +76,7 @@ def login():
     user_data = user_repo.get_user_by_email(data_email)
 
     if user_data and (hashed_pw == user_data["password"]):
-        access_token = create_access_token(identity=user_data["userID"], expires_delta=datetime.timedelta(hours=1))
+        access_token = create_access_token(identity=user_data["userID"], expires_delta=timedelta(hours=1))
         return jsonify(access_token=access_token, userID = user_data["userID"], role = user_data["role"]), 200
     else:
         return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
@@ -270,7 +272,7 @@ def orders_by_user(start_date, end_date):
     if orders:
         return jsonify(orders)
     return jsonify({"message": "No orders for you found in the selected timespan"}), 404
-
+ 
 @app.route('/orders_sorted_by_dish/<string:start_date>/<string:end_date>')
 @jwt_required()
 @permission_check(user_repo)
@@ -280,7 +282,59 @@ def orders_sorted_by_dish(start_date, end_date):
     if orders:
         return jsonify(orders)
     return jsonify({"message": "No orders for you found in the selected timespan"}), 404
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+# -------------------------- Meal plan routes ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/create_meal_plan', methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
+def create_meal_plan():
+    data = request.json
+    meal_plan = data.get('mealPlan') 
+    if not meal_plan:
+        return jsonify({"message": "No meal plan found in the request"}), 400
+
+    for meal in meal_plan:
+        dishID = meal.get('dishID')
+        date = meal.get('date')
+        if not (dishID and date):
+            return jsonify({"message": "Missing required fields"}), 400
+    
+    ret_value = meal_plan_repo.create_mealPlan(meal_plan)
+    if ret_value[0]:
+        if ret_value[1] == '':
+            return jsonify({"message": "Meal plan processed successfully"}), 201
+        else:
+            return jsonify({"message": ret_value[1]}), 201
+    else:
+        return jsonify({"message":  str(ret_value[1])}),420 
+
+@app.route('/meal_plan/<string:start_date>/<string:end_date>')
+@jwt_required()
+@permission_check(user_repo)
+def meal_plan(start_date, end_date):
+    if not (start_date and end_date):
+            return jsonify({"message": "Missing required fields"}), 400
+    meal_Plan = meal_plan_repo.get_mealPlan(start_date, end_date)
+    if meal_Plan[0]:
+        return jsonify({"mealPlan": meal_Plan[1]}), 201
+    else:
+        return jsonify({"message":  str(meal_Plan[1])}),420
+
+# -------------------------- Other Routes  ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/get_this_week')
+def get_this_week():
+    today = datetime.today()
+    monday = today - timedelta(days=today.weekday())
+    sunday = monday + timedelta(days=6)
+    return  jsonify({"monday": monday.strftime("%Y-%m-%d"), "sunday": sunday.strftime("%Y-%m-%d")}), 201
+
+@app.route('/get_next_week')
+def get_next_week():
+    today = datetime.today()
+    monday = today - timedelta(days=today.weekday()) + timedelta(days=7)
+    sunday = monday + timedelta(days=6)
+    return  jsonify({"monday": monday.strftime("%Y-%m-%d"), "sunday": sunday.strftime("%Y-%m-%d")}), 201
+
 
 
 
