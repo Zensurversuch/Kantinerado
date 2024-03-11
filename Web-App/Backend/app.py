@@ -9,6 +9,9 @@ from flask_cors import CORS
 from decorators import permission_check
 import hashlib
 import datetime
+from datetime import datetime, timedelta
+
+
 app = Flask(__name__)
 
 # -------------------------- Environment Variables ------------------------------------------------------------------------------------------------------------------------------------------
@@ -317,6 +320,24 @@ def meal_plan(start_date, end_date):
         return jsonify({"mealPlan": meal_Plan[1]}), 201
     else:
         return jsonify({"message":  str(meal_Plan[1])}),420
+
+# -------------------------- Other Routes  ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/get_this_week')
+def get_this_week():
+    today = datetime.today()
+    monday = today - timedelta(days=today.weekday())
+    sunday = monday + timedelta(days=6)
+    return  jsonify({"monday": monday.strftime("%Y-%m-%d"), "sunday": sunday.strftime("%Y-%m-%d")}), 201
+
+@app.route('/get_next_week')
+def get_next_week():
+    today = datetime.today()
+    monday = today - timedelta(days=today.weekday()) + timedelta(days=7)
+    sunday = monday + timedelta(days=6)
+    return  jsonify({"monday": monday.strftime("%Y-%m-%d"), "sunday": sunday.strftime("%Y-%m-%d")}), 201
+
+
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
