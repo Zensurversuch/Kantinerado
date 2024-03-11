@@ -1,7 +1,13 @@
 <app-header></app-header>
-
+<div class="calendar-container">
+  <app-calendar></app-calendar> <br>
+  <button (click)="setDates()"> Bestätige Datum </button>
+</div>
 
 <div class="summary" *ngIf="orderSumResponse.length > 0">
+  
+  
+
   <h2>Bestellübersicht</h2>
 
   <div class="day" *ngFor="let days of ordersByDay">
@@ -26,7 +32,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let order of days.orders">
+            <tr *ngFor="let order of days.orders" [hidden]="order.amount <= 0">
               <td>{{ order.orderID }}</td>
               <td>{{ formatDate(order.orderDate) }}</td>
               <td>{{ order.dishName }}</td>

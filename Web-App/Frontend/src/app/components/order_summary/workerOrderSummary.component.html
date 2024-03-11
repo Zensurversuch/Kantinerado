@@ -26,7 +26,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let dish of day.dishes">
+            <tr *ngFor="let dish of day.dishes" [hidden]="dish  .amount <= 0">
               <td> <b> {{ dish.dishName }} </b> </td>
               <td>{{ dish.dishID }}</td>
               <td>{{ dish.dishMealType }}</td>
