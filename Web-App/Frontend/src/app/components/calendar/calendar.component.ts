@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {JsonPipe} from "@angular/common";
@@ -46,9 +46,16 @@ export class CalendarComponent {
         this.formattedEnd = null;
       }
     });
-    console.log(this.formattedStart)
-    console.log(this.formattedEnd)
   }
+
+  getFormattedStart(): string | null {
+    return this.formattedStart;
+  }
+
+  getFormattedEnd(): string | null {
+    return this.formattedEnd;
+  }
+
   setCurrentWeek() {
     this.calendarService.setCurrentWeek(this.range);
   }
