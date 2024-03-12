@@ -5,8 +5,8 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../service/authentication/auth.service';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
-import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarService } from '../../service/calendar/calendar.service';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 interface OrderByDay {
   date: string;
@@ -24,23 +24,20 @@ interface OrderByDay {
     CalendarComponent
   ],
   providers:[CalendarService],
-  styleUrls: ['./userOrderSummary.component.scss'],
+  styleUrls: ['./summary.component.scss'],
   templateUrl: './userOrderSummary.component.html'
 })
 export class UserOrderSummaryComponent {
   orderSumResponse: any[] = [];
   datesCreated: string[];
   ordersByDay: OrderByDay[] = [];
-  start_date: string | null;
-  end_date: string | null;
-  calendarComponent: CalendarComponent;
+  start_date: string;
+  end_date: string;
 
-  constructor(private http: HttpClient, private authService: AuthService, private calendarService: CalendarService) {
-    this.start_date = "2024-01-01";
-    this.end_date = "2024-12-01";
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.start_date = "";
+    this.end_date = "";
     this.datesCreated = [];
-    this.calendarComponent = new CalendarComponent(this.calendarService);
-    this.getOrders();
   }
 
   groupOrdersByDay() {
@@ -69,35 +66,41 @@ export class UserOrderSummaryComponent {
   }
 
   getOrders() {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-
-    this.http.get<any[]>(`${environment.apiUrl}/orders_by_user/${this.start_date}/${this.end_date}`, { headers })
-    .subscribe(
-      (orderSumResponse) => {
-        console.log('GET-Anfrage erfolgreich', orderSumResponse);
-        this.orderSumResponse = orderSumResponse;
-        this.orderSumResponse.forEach(order => {
-          if (!this.datesCreated.includes(order.mealPlanDate)) {
-            this.datesCreated.push(order.mealPlanDate);
-          }
-        });
-        this.groupOrdersByDay();
-      },
-      (error) => {
-        console.error('Fehler aufgetreten:', error);
-        this.orderSumResponse = [];
-      }
-    );
+    if(this.start_date && this.end_date) { // Check if not already getting orders
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+  
+      this.orderSumResponse = [];
+      this.ordersByDay = [];
+      this.datesCreated = [];
+  
+      this.http.get<any[]>(`${environment.apiUrl}/orders_by_user/${this.start_date}/${this.end_date}`, { headers })
+      .subscribe(
+        (orderSumResponse) => {
+          console.log('orders_by_user/'+this.start_date+'/'+this.end_date + ' GET-Anfrage erfolgreich', orderSumResponse);
+          this.orderSumResponse = orderSumResponse;
+          this.orderSumResponse.forEach(order => {
+            if (!this.datesCreated.includes(order.mealPlanDate)) {
+              this.datesCreated.push(order.mealPlanDate);
+            }
+          });
+          this.groupOrdersByDay();
+        },
+        (error) => {
+          console.error('Fehler aufgetreten:', error);
+          this.orderSumResponse = [];
+        }
+      );
+    }
   }
 
-  setDates() {
-    this.start_date = this.calendarComponent.getFormattedStart();
-    this.end_date = this.calendarComponent.getFormattedEnd();
+  changedDateHandler(changedDate: string[] | undefined) {
+    if (changedDate != undefined) {
+      this.start_date = changedDate[0];
+      this.end_date = changedDate[1];
+      console.log("Handler Start: " + this.start_date);
+      console.log("Handler End: " + this.end_date);
 
-    console.log("START: " + this.start_date);
-    console.log("ENDE: " + this.end_date);
-
-    this.getOrders();
+      this.getOrders();
+    }
   }
-
 }

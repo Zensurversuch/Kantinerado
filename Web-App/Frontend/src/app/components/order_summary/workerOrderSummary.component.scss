@@ -6,6 +6,15 @@ h2 {
   text-align: center;
 }
 
+.calendar-container {
+  width: 80%;
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  padding-top: 20px;
+  margin: 0 auto;
+}
+
 .summary {
   width: 80%;
   margin: 0 auto;

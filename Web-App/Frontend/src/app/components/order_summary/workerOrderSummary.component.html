@@ -1,5 +1,8 @@
 <app-header></app-header>
 
+<div class="calendar-container">
+</div>
+
 
 <div class="summary" *ngIf="orderSumResponse.length > 0">
   <h2>Bestellübersicht</h2>
@@ -41,7 +44,6 @@
     </div>
   </div>
 </div>
-<app-calendar (changedEndDate)="changedEndDateHandler($event)" (changedStartDate)="changedStartDateHandler($event)"></app-calendar>
-<div *ngIf="orderSumResponse.length === 0">
+<div class="summary" *ngIf="orderSumResponse.length === 0">
   <p>Keine Bestellungen gefunden.</p>
 </div>

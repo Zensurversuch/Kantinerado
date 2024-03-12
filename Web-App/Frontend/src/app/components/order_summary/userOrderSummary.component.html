@@ -1,13 +1,9 @@
 <app-header></app-header>
 <div class="calendar-container">
-  <app-calendar></app-calendar> <br>
-  <button (click)="setDates()"> Bestätige Datum </button>
+  <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
 </div>
 
 <div class="summary" *ngIf="orderSumResponse.length > 0">
-  
-  
-
   <h2>Bestellübersicht</h2>
 
   <div class="day" *ngFor="let days of ordersByDay">
@@ -47,7 +43,9 @@
     </div>
   </div>
 </div>
-
-<div *ngIf="orderSumResponse.length === 0">
-  <p>Keine Bestellungen gefunden.</p>
+<div class="problem" *ngIf="!(start_date && end_date)">
+  <p>Wähle einen Zeitraum</p>
+</div>
+<div class="problem" *ngIf="orderSumResponse.length === 0" [hidden]="!(start_date && end_date)">
+  <p>Keine Bestellungen im gewählten Zeitraum gefunden.</p>
 </div>

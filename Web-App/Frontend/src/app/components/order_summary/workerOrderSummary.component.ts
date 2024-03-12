@@ -35,8 +35,8 @@ export class WorkerOrderSummaryComponent {
 
   constructor(private http: HttpClient, private authService: AuthService,) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-    this.start_date = 'placeholder'     // MUSS WENN KALENDER IMPLEMENTIERT IST ÜBER KALENDER GESETZT WERDEN
-    this.end_date = 'placeholder'       // MUSS WENN KALENDER IMPLEMENTIERT IST ÜBER KALENDER GESETZT WERDEN
+    this.start_date = 'placeholder'
+    this.end_date = 'placeholder'
 
     this.http.get<any[]>(`${environment.apiUrl}/orders_sorted_by_dish/${this.start_date}/${this.end_date}`, {headers})
       .subscribe(
@@ -69,13 +69,4 @@ export class WorkerOrderSummaryComponent {
     orders.expanded = !orders.expanded;
   }
 
-  changedEndDateHandler(EndDate: string) {
-    if (EndDate != undefined)
-      this.end_date = EndDate;
-  }
-
-  changedStartDateHandler(StartDate: string) {
-    if (StartDate != undefined)
-      this.start_date = StartDate;
-  }
 }

@@ -3,7 +3,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {JsonPipe} from "@angular/common";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {provideNativeDateAdapter} from "@angular/material/core";
+import {MAT_DATE_LOCALE, provideNativeDateAdapter} from "@angular/material/core";
 import {CalendarService} from "../../service/calendar/calendar.service";
 
 @Component({
@@ -16,8 +16,8 @@ import {CalendarService} from "../../service/calendar/calendar.service";
 })
 export class CalendarComponent {
 
-  @Output() changedStartDate = new EventEmitter<string>();
-  @Output() changedEndDate = new EventEmitter<string>();
+  @Output() changedDate = new EventEmitter<string[]|undefined>();
+
 
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
@@ -33,7 +33,7 @@ export class CalendarComponent {
   constructor(
     private calendarService: CalendarService
   ) {
-    this.range = this.calendarService.getDefaultRangeFormGroup();
+    this.calendarService.setCurrentWeek(this.range);
 
     this.range.get('start')?.valueChanges.subscribe((newValue: Date | null) => {
       if (newValue) {
@@ -58,16 +58,16 @@ export class CalendarComponent {
   }
 
   emitChangedEvent() {
-    if (this.formattedEnd != undefined &&
-      this.formattedStart != undefined) {
-      if (this.oldDateEnd != this.formattedEnd) {
-        this.changedEndDate.emit(this.formattedEnd);
-        this.oldDateEnd = this.formattedEnd;
-      }
-      if (this.oldDateStart != this.formattedStart) {
-        this.changedStartDate.emit(this.formattedStart);
-        this.oldDateStart = this.formattedStart;
+    if (this.formattedEnd != undefined && this.formattedStart != undefined) {
+      if (this.oldDateEnd != this.formattedEnd || this.oldDateStart != this.formattedStart) {
+        const dateArray:string[]|undefined  = []
+        dateArray?.push(this.formattedStart)
+        dateArray?.push(this.formattedEnd)
+        this.changedDate.emit(dateArray)
+        this.oldDateEnd=this.formattedEnd;
+        this.oldDateStart=this.formattedStart
       }
     }
   }
+
 }

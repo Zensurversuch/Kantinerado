@@ -17,18 +17,4 @@ export class HomeComponent {
   constructor(private calendarService: CalendarService) {
 
   }
-  start_date: string | undefined;
-  end_date: string | undefined ;
-
-
-  changedStartDateHandler(StartDate: string) {
-    if (StartDate != undefined)
-      this.start_date = StartDate;
-    console.log("Startdatum:"+this.start_date)
-  }
-  changedEndDateHandler(EndDate: string) {
-    if (EndDate != undefined)
-      this.end_date = EndDate;
-    console.log("EndDatum:"+this.end_date)
-  }
 }
