@@ -66,7 +66,7 @@ export class UserOrderSummaryComponent {
   }
 
   getOrders() {
-    if(this.start_date && this.end_date) { // Check if not already getting orders
+    if(this.start_date && this.end_date) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
   
       this.orderSumResponse = [];

@@ -18,9 +18,9 @@
         <table>
           <thead>
             <tr>
-              <th>BestellungsID</th>
-              <th>Bestellt am</th>
               <th>Gericht</th>
+              <th>Bestellt am</th>
+              <th>BestellungsID</th>
               <th>Gerichtsart</th>
               <th>Gerichtspreis</th>
               <th>Anzahl</th>
@@ -28,10 +28,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let order of days.orders" [hidden]="order.amount <= 0">
-              <td>{{ order.orderID }}</td>
+            <tr *ngFor="let order of days.orders">
+              <td><b> {{ order.dishName }} </b> </td>
               <td>{{ formatDate(order.orderDate) }}</td>
-              <td>{{ order.dishName }}</td>
+              <td>{{ order.orderID }}</td>
               <td>{{ order.dishMealType }}</td>
               <td>{{ order.dishPrice }}€</td>
               <td>{{ order.amount }}</td>

@@ -24,7 +24,7 @@ interface OrderByDay {
     CalendarComponent
   ],
   providers: [CalendarService],
-  styleUrls: ['./workerOrderSummary.component.scss'],
+  styleUrls: ['./summary.component.scss'],
   templateUrl: './workerOrderSummary.component.html'
 })
 export class WorkerOrderSummaryComponent {
@@ -34,27 +34,10 @@ export class WorkerOrderSummaryComponent {
   ordersByDay: OrderByDay[] = []
 
   constructor(private http: HttpClient, private authService: AuthService,) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-    this.start_date = 'placeholder'
-    this.end_date = 'placeholder'
+    this.start_date = "";
+    this.end_date = "";
 
-    this.http.get<any[]>(`${environment.apiUrl}/orders_sorted_by_dish/${this.start_date}/${this.end_date}`, {headers})
-      .subscribe(
-        (orderSumResponse) => {
-          console.log('GET request successful', orderSumResponse);
-          this.orderSumResponse = orderSumResponse;
-
-          this.ordersByDay = this.orderSumResponse.map(order => ({
-            date: order.mealPlanDate,
-            dishes: order.dishes,
-            expanded: true
-          }));
-        },
-        (error) => {
-          console.error('Error occurred:', error);
-          this.orderSumResponse = [];
-        }
-      );
+    
   }
 
   formatDate(dateString: string): string {
@@ -67,6 +50,42 @@ export class WorkerOrderSummaryComponent {
 
   toggleDay(orders: OrderByDay) {
     orders.expanded = !orders.expanded;
+  }
+
+  getOrders() {
+    if(this.start_date && this.end_date) {
+
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+
+      this.http.get<any[]>(`${environment.apiUrl}/orders_sorted_by_dish/${this.start_date}/${this.end_date}`, {headers})
+        .subscribe(
+          (orderSumResponse) => {
+            console.log('GET request successful', orderSumResponse);
+            this.orderSumResponse = orderSumResponse;
+
+            this.ordersByDay = this.orderSumResponse.map(order => ({
+              date: order.mealPlanDate,
+              dishes: order.dishes,
+              expanded: true
+            }));
+          },
+          (error) => {
+            console.error('Error occurred:', error);
+            this.orderSumResponse = [];
+          }
+        );
+    }
+  }
+
+  changedDateHandler(changedDate: string[] | undefined) {
+    if (changedDate != undefined) {
+      this.start_date = changedDate[0];
+      this.end_date = changedDate[1];
+      console.log("Handler Start: " + this.start_date);
+      console.log("Handler End: " + this.end_date);
+
+      this.getOrders();
+    }
   }
 
 }
