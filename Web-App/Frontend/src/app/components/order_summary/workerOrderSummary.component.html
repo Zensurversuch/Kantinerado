@@ -41,7 +41,7 @@
     </div>
   </div>
 </div>
-
+<app-calendar (changedEndDate)="changedEndDateHandler($event)" (changedStartDate)="changedStartDateHandler($event)"></app-calendar>
 <div *ngIf="orderSumResponse.length === 0">
   <p>Keine Bestellungen gefunden.</p>
 </div>
