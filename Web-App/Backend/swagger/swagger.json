@@ -28,6 +28,18 @@
     {
       "name": "allergies",
       "description": "routes regarding allergies"
+    },
+    {
+      "name": "orders",
+      "description": "routes regarding orders"
+    },
+    {
+      "name": "mealplans",
+      "description": "routes regarding mealplans"
+    },
+    {
+      "name": "others",
+      "description": "other routes"
     }
   ],
   "paths": {
@@ -757,6 +769,57 @@
           }
         }
       }
+    },
+    "/create_meal_plan": {
+      "post": {
+        "tags": [
+          "mealplans"
+        ],
+        "summary": "creates a mealplan",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mealPlan": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "dishID": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "date": {
+                          "type": "string",
+                          "example": "2024-12-17"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "meal plan precessed succesfully"
+          },
+          "400": {
+            "description": "missing required fields"
+          },
+          "420": {
+            "description": "invalid input"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -873,7 +936,7 @@
           },
           "mealType": {
             "type": "string",
-            "example": "lunch"
+            "example": "Main"
           },
           "image": {
             "type": "string"
@@ -909,6 +972,19 @@
           "name": {
             "type": "string",
             "example": "nuts"
+          }
+        }
+      },
+      "mealPlan": {
+        "type": "object",
+        "properties": {
+          "dishID": {
+            "type": "string",
+            "example": "1"
+          },
+          "date": {
+            "type": "string",
+            "example": "2024-12-17"
           }
         }
       }
