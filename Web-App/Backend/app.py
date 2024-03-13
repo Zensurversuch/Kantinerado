@@ -193,7 +193,7 @@ def dish_by_id(dish_id):
         return dish
     return jsonify({"message": "Dish not found"}), 404
 
-@app.route('/dish_by_name/<int:dish_name>')
+@app.route('/dish_by_name/<string:dish_name>')
 @jwt_required()
 @permission_check(user_repo)
 def dish_by_name(dish_name):
