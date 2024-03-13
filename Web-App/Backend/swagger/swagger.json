@@ -269,6 +269,67 @@
                 "$ref": "#/components/schemas/User"
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "user created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "user succesfully created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Missing required fields"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/create_user_as_admin": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "creates a new user as admin",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "creates user as admin.",
+        "requestBody": {
+          "description": "create a user as admin",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
           },
           "required": true
         },
@@ -497,7 +558,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "user_password",
+            "name": "user_id",
             "schema": {
               "type": "integer"
             },
@@ -603,25 +664,36 @@
           "role"
         ],
         "properties": {
-          "allergies": {
-            "type": "string",
-            "example": "nuts"
-          },
-          "e-mail": {
+          "email": {
             "type": "string",
             "example": "example@example.com"
           },
-          "first_name": {
+          "password": {
+            "type": "string",
+            "example": "mypassword"
+          },
+          "firstName": {
             "type": "string",
             "example": "Aaron"
           },
-          "second_name": {
+          "lastName": {
             "type": "string",
             "example": "Seidl"
           },
           "role": {
-            "type": "number",
-            "example": 0
+            "type": "string",
+            "example": "admin"
+          },
+          "allergies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Gluten",
+              "Lactose",
+              "Nuts"
+            ]
           }
         }
       },
@@ -677,8 +749,19 @@
             "example": "description of the dish"
           },
           "allergies": {
-            "type": "string",
-            "example": "nuts"
+            "type": "object",
+            "properties": {
+              "allergyList": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": [
+                    "nuts",
+                    "Lactose"
+                  ]
+                }
+              }
+            }
           }
         }
       },
