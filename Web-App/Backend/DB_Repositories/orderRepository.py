@@ -25,7 +25,7 @@ class OrderRepository:
 
             order_data = self.is_order_already_created(param_userID, param_mealPlanID)
             if order_data is not False:
-                order_data.amount = order_data.amount + int(param_amount)
+                order_data.amount = param_amount
                 session.add(order_data)
                 session.commit()
                 return "updated"
@@ -61,20 +61,21 @@ class OrderRepository:
 
             final_orders_list = []
             for order, meal_plan, dish in orders_list:
-                order_dict = {
-                    "orderID": order.orderID,
-                    "userID": order.userID,
-                    "mealPlanID": order.mealPlanID,
-                    "mealPlanDate": meal_plan.date,
-                    "dishID": dish.dishID,
-                    "dishName": dish.name,
-                    "dishMealType": dish.mealType,
-                    "dishPrice": dish.price,
-                    "amount": order.amount,
-                    "orderPrice": dish.price * order.amount,
-                    "orderDate": order.orderDate
-                }
-                final_orders_list.append(order_dict)
+                if order.amount > 0:
+                    order_dict = {
+                        "orderID": order.orderID,
+                        "userID": order.userID,
+                        "mealPlanID": order.mealPlanID,
+                        "mealPlanDate": meal_plan.date,
+                        "dishID": dish.dishID,
+                        "dishName": dish.name,
+                        "dishMealType": dish.mealType,
+                        "dishPrice": dish.price,
+                        "amount": order.amount,
+                        "orderPrice": dish.price * order.amount,
+                        "orderDate": order.orderDate
+                    }
+                    final_orders_list.append(order_dict)
 
             return final_orders_list
         except SQLAlchemyError as e:
@@ -99,20 +100,21 @@ class OrderRepository:
             for order, meal_plan, dish in orders_list:
                 meal_plan_date = meal_plan.date
                 dish_id = dish.dishID
-                if meal_plan_date not in grouped_orders:
-                    grouped_orders[meal_plan_date] = {}
-                if dish_id not in grouped_orders[meal_plan_date]:
-                    grouped_orders[meal_plan_date][dish_id] = {
-                        "dishID": dish.dishID,
-                        "dishName": dish.name,
-                        "dishMealType": dish.mealType,
-                        "mealPlanID": meal_plan.mealPlanID,
-                        "dishPrice": dish.price,
-                        "amount": 0,
-                        "completePrice": 0
-                    }
-                grouped_orders[meal_plan_date][dish_id]["amount"] += order.amount
-                grouped_orders[meal_plan_date][dish_id]["completePrice"] = int(grouped_orders[meal_plan_date][dish_id]["amount"]) * int(grouped_orders[meal_plan_date][dish_id]["dishPrice"])
+                if order.amount > 0:
+                    if meal_plan_date not in grouped_orders:
+                        grouped_orders[meal_plan_date] = {}
+                    if dish_id not in grouped_orders[meal_plan_date]:
+                        grouped_orders[meal_plan_date][dish_id] = {
+                            "dishID": dish.dishID,
+                            "dishName": dish.name,
+                            "dishMealType": dish.mealType,
+                            "mealPlanID": meal_plan.mealPlanID,
+                            "dishPrice": dish.price,
+                            "amount": 0,
+                            "completePrice": 0
+                        }
+                    grouped_orders[meal_plan_date][dish_id]["amount"] += order.amount
+                    grouped_orders[meal_plan_date][dish_id]["completePrice"] = int(grouped_orders[meal_plan_date][dish_id]["amount"]) * int(grouped_orders[meal_plan_date][dish_id]["dishPrice"])
 
             final_orders_list = []
             for meal_plan_date, dish_info in grouped_orders.items():
@@ -127,6 +129,7 @@ class OrderRepository:
             return None
         finally:
             session.close()
+
 
 
 

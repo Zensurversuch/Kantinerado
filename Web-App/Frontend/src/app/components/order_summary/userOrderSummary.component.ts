@@ -5,6 +5,8 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../service/authentication/auth.service';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
+import { CalendarService } from '../../service/calendar/calendar.service';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 interface OrderByDay {
   date: string;
@@ -18,9 +20,11 @@ interface OrderByDay {
   imports: [
     FormsModule,
     HeaderComponent,
-    CommonModule
+    CommonModule,
+    CalendarComponent
   ],
-  styleUrls: ['./userOrderSummary.component.scss'],
+  providers:[CalendarService],
+  styleUrls: ['./summary.component.scss'],
   templateUrl: './userOrderSummary.component.html'
 })
 export class UserOrderSummaryComponent {
@@ -30,30 +34,10 @@ export class UserOrderSummaryComponent {
   start_date: string;
   end_date: string;
 
-
   constructor(private http: HttpClient, private authService: AuthService) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-    this.start_date = '2024-03-01';     // MUSS WENN KALENDER IMPLEMENTIERT IST ÜBER KALENDER GESETZT WERDEN
-    this.end_date = '2024-03-31';       // MUSS WENN KALENDER IMPLEMENTIERT IST ÜBER KALENDER GESETZT WERDEN
+    this.start_date = "";
+    this.end_date = "";
     this.datesCreated = [];
-
-    this.http.get<any[]>(`${environment.apiUrl}/orders_by_user/${this.start_date}/${this.end_date}`, { headers })
-      .subscribe(
-        (orderSumResponse) => {
-          console.log('GET request successful', orderSumResponse);
-          this.orderSumResponse = orderSumResponse;
-          this.orderSumResponse.forEach(order => {
-            if (!this.datesCreated.includes(order.mealPlanDate)) {
-              this.datesCreated.push(order.mealPlanDate);
-            }
-          });
-          this.groupOrdersByDay();
-        },
-        (error) => {
-          console.error('Error occurred:', error);
-          this.orderSumResponse = [];
-        }
-      );
   }
 
   groupOrdersByDay() {
@@ -81,4 +65,42 @@ export class UserOrderSummaryComponent {
     day.expanded = !day.expanded;
   }
 
+  getOrders() {
+    if(this.start_date && this.end_date) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+  
+      this.orderSumResponse = [];
+      this.ordersByDay = [];
+      this.datesCreated = [];
+  
+      this.http.get<any[]>(`${environment.apiUrl}/orders_by_user/${this.start_date}/${this.end_date}`, { headers })
+      .subscribe(
+        (orderSumResponse) => {
+          console.log('orders_by_user/'+this.start_date+'/'+this.end_date + ' GET-Anfrage erfolgreich', orderSumResponse);
+          this.orderSumResponse = orderSumResponse;
+          this.orderSumResponse.forEach(order => {
+            if (!this.datesCreated.includes(order.mealPlanDate)) {
+              this.datesCreated.push(order.mealPlanDate);
+            }
+          });
+          this.groupOrdersByDay();
+        },
+        (error) => {
+          console.error('Fehler aufgetreten:', error);
+          this.orderSumResponse = [];
+        }
+      );
+    }
+  }
+
+  changedDateHandler(changedDate: string[] | undefined) {
+    if (changedDate != undefined) {
+      this.start_date = changedDate[0];
+      this.end_date = changedDate[1];
+      console.log("Handler Start: " + this.start_date);
+      console.log("Handler End: " + this.end_date);
+
+      this.getOrders();
+    }
+  }
 }

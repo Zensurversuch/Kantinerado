@@ -1,5 +1,7 @@
 <app-header></app-header>
-
+<div class="calendar-container">
+  <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
+</div>
 
 <div class="summary" *ngIf="orderSumResponse.length > 0">
   <h2>Bestellübersicht</h2>
@@ -16,9 +18,9 @@
         <table>
           <thead>
             <tr>
-              <th>BestellungsID</th>
-              <th>Bestellt am</th>
               <th>Gericht</th>
+              <th>Bestellt am</th>
+              <th>BestellungsID</th>
               <th>Gerichtsart</th>
               <th>Gerichtspreis</th>
               <th>Anzahl</th>
@@ -27,9 +29,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let order of days.orders">
-              <td>{{ order.orderID }}</td>
+              <td><b> {{ order.dishName }} </b> </td>
               <td>{{ formatDate(order.orderDate) }}</td>
-              <td>{{ order.dishName }}</td>
+              <td>{{ order.orderID }}</td>
               <td>{{ order.dishMealType }}</td>
               <td>{{ order.dishPrice }}€</td>
               <td>{{ order.amount }}</td>
@@ -41,7 +43,9 @@
     </div>
   </div>
 </div>
-
-<div *ngIf="orderSumResponse.length === 0">
-  <p>Keine Bestellungen gefunden.</p>
+<div class="problem" *ngIf="!(start_date && end_date)">
+  <p>Wähle einen Zeitraum</p>
+</div>
+<div class="problem" *ngIf="orderSumResponse.length === 0" [hidden]="!(start_date && end_date)">
+  <p>Keine Bestellungen im gewählten Zeitraum gefunden.</p>
 </div>
