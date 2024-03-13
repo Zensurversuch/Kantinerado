@@ -168,80 +168,6 @@
         }
       }
     },
-    "/order": {
-      "post": {
-        "tags": [
-          "dishes"
-        ],
-        "summary": "sends order returns statuscodes",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "description": "sends order.",
-        "requestBody": {
-          "description": "Make a new order by sending dishIds of ordered dishes",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "Order": {
-                    "type": "array",
-                    "items": {
-                      "type": "number",
-                      "example": [
-                        1,
-                        2
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Order placed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Order succesfully sent"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "wrong Input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "wrong Input"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error"
-          }
-        }
-      }
-    },
     "/create_dish": {
       "post": {
         "tags": [
@@ -896,6 +822,125 @@
           }
         }
       }
+    },
+    "/create_order": {
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "creates an order",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/order"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "order created/updates succesfull"
+          },
+          "400": {
+            "description": "missing required fields"
+          },
+          "500": {
+            "description": "Failed to create order"
+          }
+        }
+      }
+    },
+    "/orders_by_user/{start_date}/{end_date}": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "returns orders of sorted by users in a certain timespan",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "start_date",
+            "schema": {
+              "type": "string",
+              "example": "2024-03-12"
+            },
+            "required": true,
+            "description": "startdate in Format YYYY-MM-DD"
+          },
+          {
+            "in": "path",
+            "name": "end_date",
+            "schema": {
+              "type": "string",
+              "example": "2024-03-13"
+            },
+            "required": true,
+            "description": "enddate in Format YYYY-MM-DD"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "succesfully got orders"
+          },
+          "404": {
+            "description": "no orders found in selected timespan"
+          }
+        }
+      }
+    },
+    "/orders_sorted_by_dish/{start_date}/{end_date}": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "returns orders of sorted by dishes in a certain timespan",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "start_date",
+            "schema": {
+              "type": "string",
+              "example": "2024-03-12"
+            },
+            "required": true,
+            "description": "startdate in Format YYYY-MM-DD"
+          },
+          {
+            "in": "path",
+            "name": "end_date",
+            "schema": {
+              "type": "string",
+              "example": "2024-03-13"
+            },
+            "required": true,
+            "description": "enddate in Format YYYY-MM-DD"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "succesfully got orders"
+          },
+          "404": {
+            "description": "no orders found in selected timespan"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1051,16 +1096,16 @@
           }
         }
       },
-      "mealPlan": {
+      "order": {
         "type": "object",
         "properties": {
-          "dishID": {
-            "type": "string",
-            "example": "1"
+          "mealPlanID": {
+            "type": "number",
+            "example": 1234
           },
-          "date": {
-            "type": "string",
-            "example": "2024-12-17"
+          "amount": {
+            "type": "number",
+            "example": 1
           }
         }
       }
