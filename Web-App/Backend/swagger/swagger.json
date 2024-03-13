@@ -31,54 +31,7 @@
     }
   ],
   "paths": {
-    "/dishes/{allergies}": {
-      "get": {
-        "tags": [
-          "dishes"
-        ],
-        "summary": "returns all filtered dishes",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "allergies",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "allergies to filter dishes with"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returned dishes succesfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "DishesList": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Dish_with_Id"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Fehler"
-          }
-        }
-      }
-    },
-    "/dish/{dish_id}": {
+    "/dish_by_id/{dish_id}": {
       "get": {
         "tags": [
           "dishes"
@@ -107,6 +60,92 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Dish_with_Id"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "dish not found"
+          }
+        }
+      }
+    },
+    "/dish_by_name/{dish_name}": {
+      "get": {
+        "tags": [
+          "dishes"
+        ],
+        "summary": "returns dish by name",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dish_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "name of the dish to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned dish succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dish_with_Id"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "dish not found"
+          }
+        }
+      }
+    },
+    "/dish_by_mealType/{dish_mealType}": {
+      "get": {
+        "tags": [
+          "dishes"
+        ],
+        "summary": "returns dish by name",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dish_mealType",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "name of the dish to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned dish succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Dish_with_Id"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -789,69 +828,74 @@
       },
       "Dish": {
         "required": [
-          "ID",
           "name",
           "ingredients",
           "dietaryCategory",
           "mealtype",
-          "allergies"
+          "allergies",
+          "price",
+          "mealType"
         ],
         "type": "object",
         "properties": {
-          "ID": {
-            "type": "number",
-            "example": 1234
-          },
           "name": {
             "type": "string",
-            "example": "Name"
-          },
-          "dietaryCategory": {
-            "type": "string",
-            "example": "vegan"
-          },
-          "mealType": {
-            "type": "string",
-            "example": "lunch"
+            "example": "Pizza"
           },
           "price": {
             "type": "number",
             "example": "12,34"
           },
-          "description": {
-            "type": "string",
-            "example": "description of the dish"
-          },
           "allergies": {
-            "type": "object",
-            "properties": {
-              "allergyList": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "example": [
-                    "nuts",
-                    "Lactose"
-                  ]
-                }
-              }
-            }
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "nuts",
+              "Lactose"
+            ]
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "dough",
+              "cheese",
+              "tamatosauce"
+            ]
+          },
+          "dietaryCategory": {
+            "type": "string",
+            "example": "italian"
+          },
+          "mealType": {
+            "type": "string",
+            "example": "lunch"
+          },
+          "image": {
+            "type": "string"
           }
         }
       },
       "Dish_with_Id": {
+        "required": [
+          "dish_id"
+        ],
         "allOf": [
-          {
-            "$ref": "#/components/schemas/Dish"
-          },
           {
             "type": "object",
             "properties": {
-              "Id": {
+              "dish_id": {
                 "type": "number",
                 "example": 1234
               }
             }
+          },
+          {
+            "$ref": "#/components/schemas/Dish"
           }
         ]
       },
