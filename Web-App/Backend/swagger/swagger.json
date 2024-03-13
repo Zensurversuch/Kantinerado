@@ -33,6 +33,11 @@
           "dishes"
         ],
         "summary": "returns all filtered dishes",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -75,6 +80,11 @@
           "dishes"
         ],
         "summary": "returns dish by Id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -109,6 +119,11 @@
           "dishes"
         ],
         "summary": "sends order returns statuscodes",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "description": "sends order.",
         "requestBody": {
           "description": "Make a new order by sending dishIds of ordered dishes",
@@ -178,6 +193,11 @@
           "dishes"
         ],
         "summary": "creates a new dish",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "description": "creates dish.",
         "requestBody": {
           "description": "create a dish",
@@ -235,6 +255,11 @@
           "users"
         ],
         "summary": "creates a new user",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "description": "creates user.",
         "requestBody": {
           "description": "create a user",
@@ -292,6 +317,11 @@
           "users"
         ],
         "summary": "returns all users",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "returned users succesfully",
@@ -336,6 +366,11 @@
           "users"
         ],
         "summary": "returns User by Id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -368,6 +403,11 @@
       "get": {
         "tags": [
           "users"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "summary": "returns User by email",
         "parameters": [
@@ -404,6 +444,11 @@
           "users"
         ],
         "summary": "returns allergy of a user by user_id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -438,12 +483,17 @@
         }
       }
     },
-    "/user_password/{user_password}": {
+    "/user_password/{user_id}": {
       "get": {
         "tags": [
           "users"
         ],
         "summary": "returns password of a user by user_id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -463,7 +513,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "allergies": {
+                    "password": {
                       "type": "string",
                       "example": "password"
                     }
@@ -480,6 +530,9 @@
     },
     "/login": {
       "post": {
+        "tags": [
+          "users"
+        ],
         "summary": "Benutzeranmelde-Endpunkt",
         "requestBody": {
           "content": {
@@ -487,14 +540,19 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "username": {
-                    "type": "string"
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "mypassword"
                   }
                 },
-                "required": ["username", "password"]
+                "required": [
+                  "email",
+                  "password"
+                ]
               }
             }
           },
@@ -528,6 +586,13 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "User": {
         "type": "object",
