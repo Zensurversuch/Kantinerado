@@ -706,6 +706,11 @@
           "allergies"
         ],
         "summary": "returns all allergies from the database",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "allergies found",
@@ -817,6 +822,77 @@
           },
           "420": {
             "description": "invalid input"
+          }
+        }
+      }
+    },
+    "/meal_plan/{start_date}/{end_date}": {
+      "get": {
+        "tags": [
+          "mealplans"
+        ],
+        "summary": "returns all mealPlans in given timespan",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "start_date",
+            "schema": {
+              "type": "string",
+              "example": "2024-03-12"
+            },
+            "required": true,
+            "description": "startdate in Format YYYY-MM-DD"
+          },
+          {
+            "in": "path",
+            "name": "end_date",
+            "schema": {
+              "type": "string",
+              "example": "2024-03-13"
+            },
+            "required": true,
+            "description": "enddate in Format YYYY-MM-DD"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "returned mealPlans succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mealPlan": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "dishID": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "date": {
+                            "type": "string",
+                            "example": "2024-12-17"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "missing required fields"
+          },
+          "420": {
+            "description": "couldn't get mealPlans"
           }
         }
       }
