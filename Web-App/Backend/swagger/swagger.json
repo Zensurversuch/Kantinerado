@@ -24,6 +24,10 @@
     {
       "name": "users",
       "description": "routes regarding user"
+    },
+    {
+      "name": "allergies",
+      "description": "routes regarding allergies"
     }
   ],
   "paths": {
@@ -499,7 +503,7 @@
         }
       }
     },
-    "/user_allergy/{user_id}": {
+    "/allergy_by_userid/{user_id}": {
       "get": {
         "tags": [
           "users"
@@ -644,6 +648,76 @@
           }
         }
       }
+    },
+    "/all_allergies": {
+      "get": {
+        "tags": [
+          "allergies"
+        ],
+        "summary": "returns all allergies from the database",
+        "responses": {
+          "200": {
+            "description": "allergies found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "allergyList": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/allergy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "no allergies found"
+          }
+        }
+      }
+    },
+    "/allergy_by_id/{allergy_id}": {
+      "get": {
+        "tags": [
+          "allergies"
+        ],
+        "summary": "returns Allergy by Id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "allergy_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the allergy to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned allergy succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/allergy"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "allergy not found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -780,6 +854,19 @@
             }
           }
         ]
+      },
+      "allergy": {
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "number",
+            "example": 1234
+          },
+          "name": {
+            "type": "string",
+            "example": "nuts"
+          }
+        }
       }
     }
   }
