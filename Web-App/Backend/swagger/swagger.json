@@ -941,6 +941,66 @@
           }
         }
       }
+    },
+    "/get_this_week": {
+      "get": {
+        "tags": [
+          "others"
+        ],
+        "summary": "returns this week",
+        "responses": {
+          "201": {
+            "description": "returned this succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "monday": {
+                      "type": "string",
+                      "example": "2024-01-01T00:00:00.000Z"
+                    },
+                    "sunday": {
+                      "type": "string",
+                      "example": "2024-01-07T00:00:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_next_week": {
+      "get": {
+        "tags": [
+          "others"
+        ],
+        "summary": "returns next week",
+        "responses": {
+          "201": {
+            "description": "returned next succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "monday": {
+                      "type": "string",
+                      "example": "2024-01-08T00:00:00.000Z"
+                    },
+                    "sunday": {
+                      "type": "string",
+                      "example": "2024-01-014"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
