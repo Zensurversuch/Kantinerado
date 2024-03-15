@@ -96,7 +96,7 @@ def create_user():
         return jsonify({"message": f"User with the email {data_email} already exists"}), 500
 
     ret_value = user_repo.create_user(data_email, data_password, data_lastName, data_firstName, "hungernde", data_allergies)
-    if not ret_value:   # If ret_value is empty no allergies were missing
+    if ret_value == []:   # If ret_value is empty no allergies were missing
         return jsonify({"message": "User created successful"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing
         return jsonify({"message": f"User created successful, but the allergies {ret_value} aren't present in the database"}), 201
@@ -124,7 +124,7 @@ def create_user_as_admin():
         return jsonify({"message": f"User with the email {data_email} already exists"}), 500
 
     ret_value = user_repo.create_user(data_email, data_password, data_lastName, data_firstName, data_role, data_allergies)
-    if not ret_value:   # If ret_value is empty no allergies were missing
+    if ret_value == []:   # If ret_value is empty no allergies were missing
         return jsonify({"message": "User created successful"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing
         return jsonify({"message": f"User created successful, but the allergies {ret_value} aren't present in the database"}), 201
@@ -193,7 +193,7 @@ def dish_by_id(dish_id):
         return dish
     return jsonify({"message": "Dish not found"}), 404
 
-@app.route('/dish_by_name/<int:dish_name>')
+@app.route('/dish_by_name/<string:dish_name>')
 @jwt_required()
 @permission_check(user_repo)
 def dish_by_name(dish_name):
@@ -234,7 +234,7 @@ def create_dish():
     decoded_image = base64.b64decode(data_image) if data_image else None
 
     ret_value = dish_repo.create_dish(data_name, data_price, data_dietaryCategory, data_mealType, data_ingredients, decoded_image, data_allergies)
-    if not ret_value:   # If ret_value is empty no allergies were missing
+    if ret_value == []:   # If ret_value is empty no allergies were missing
         return jsonify({"message": "Dish created successful"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing
         return jsonify({"message": f"Dish created successful, but the allergies {ret_value} aren't present in the database"}), 201
