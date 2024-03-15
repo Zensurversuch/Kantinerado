@@ -309,14 +309,14 @@ def create_meal_plan():
         return jsonify({"message":  str(ret_value[1])}),420 
 
 @app.route('/meal_plan/<string:start_date>/<string:end_date>')
-@jwt_required()
-@permission_check(user_repo)
 def meal_plan(start_date, end_date):
     if not (start_date and end_date):
             return jsonify({"message": "Missing required fields"}), 400
     meal_Plan = meal_plan_repo.get_mealPlan(start_date, end_date)
     if meal_Plan[0]:
-        return jsonify({"mealPlan": meal_Plan[1]}), 201
+        return jsonify(meal_Plan[1]), 201
+    elif meal_Plan[0]== None:
+        return jsonify({"message": "no mealplan found"})
     else:
         return jsonify({"message":  str(meal_Plan[1])}),420
 
