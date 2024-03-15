@@ -7,6 +7,7 @@ import { AuthService } from '../../service/authentication/auth.service';
 import { environment } from '../../../environments/environment';
 import {OrderByDay}from '../../interface/order-by-day';
 import { CommonModule } from '@angular/common';
+import { ImageService } from '../../service/picture/picture.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   styleUrls: ['./home.component.scss'],
   imports: [CalendarComponent, HeaderComponent, CommonModule],
-  providers:[CalendarService]
+  providers:[CalendarService, ImageService]
 })
 export class HomeComponent {
   
@@ -25,7 +26,7 @@ export class HomeComponent {
   start_date: string;
   end_date: string;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private imageService: ImageService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
@@ -97,6 +98,17 @@ export class HomeComponent {
       console.log("Handler End: " + this.end_date);
 
       this.getmealPlans();
+    }
+  }
+  async getImage(base64String: string) {
+    try {
+      // Dekodieren Sie das Base64-codierte Bild
+      const blobImage = await this.imageService.decodeImage(base64String);
+      // Konvertieren Sie das Blob-Objekt in eine URL, die im HTML-Template verwendet werden kann
+      return URL.createObjectURL(blobImage);
+    } catch (error) {
+      console.error('Fehler beim Dekodieren des Bildes:', error);
+      return null; // Fehlerbehandlung, z. B. null zurückgeben
     }
   }
 }
