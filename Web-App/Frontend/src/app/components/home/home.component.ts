@@ -26,13 +26,13 @@ export class HomeComponent {
   start_date: string;
   end_date: string;
 
-  constructor(private http: HttpClient, private authService: AuthService, private imageService: ImageService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
   }
 
-  blurred: boolean = false;
+    blurred: boolean = false;
   ToggleBlurred(isOpened: boolean) {
     this.blurred = isOpened;
   }
