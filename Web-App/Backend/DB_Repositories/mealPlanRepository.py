@@ -83,7 +83,7 @@ class MealPlanRepository:
                             "dishingredients": dish.ingredients,
                             "dishdietaryCategorie": dish.dietaryCategory,
                             "dishmealType": dish.mealType,
-                            "dishimage": base64.b6dish4encode(dish.image).decode() if dish.image else None
+                            "dishimage": base64.b64encode(dish.image).decode() if dish.image else None
                         }
                     final_mealPlan_list = []
                     for meal_plan_date, dish_info in grouped_mealPlans.items():
