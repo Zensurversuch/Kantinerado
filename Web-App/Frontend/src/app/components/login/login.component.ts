@@ -32,7 +32,7 @@ export class LoginComponent {
         console.log('POST request successful', response);
         this.authService.setJwtToken(response.access_token);
         console.log('POST request successful', this.authService.getJwtToken());
-        this.router.navigate(['/hello']);
+        this.router.navigate(['/']);
         this.authService.setUserRole(response.role);
         this.authService.setUserID(response.userID);
       },
