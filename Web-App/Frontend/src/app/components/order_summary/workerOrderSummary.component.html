@@ -1,53 +1,55 @@
-<app-header></app-header>
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
 
-<div class="calendar-container">
-  <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
-</div>
+<body [ngClass]="{ 'blurred': blurred }">
+  <div class="calendar-container">
+    <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
+  </div>
 
 
-<div class="summary" *ngIf="orderSumResponse.length > 0">
-  <h2>Bestellübersicht Kantinenmitarbeiter</h2>
+  <div class="summary" *ngIf="orderSumResponse.length > 0">
+    <h2>Bestellübersicht Kantinenmitarbeiter</h2>
 
-  <div class="day" *ngFor="let day of ordersByDay">
-    <div>
-      <div class="day-header" (click)="toggleDay(day)">
-        <h3>
-          <span class="toggle-icon">{{ day.expanded ? '▼' : '►' }}</span>
-          {{ formatDate(day.date) }}
-        </h3>
-      </div>
-      <div class="day-content" *ngIf="day.expanded">
-        <table>
-          <thead>
-            <tr>
-              <th>Gericht</th>
-              <th>GerichtID</th>
-              <th>Gerichtsart</th>
-              <th>Gerichtspreis</th>
-              <th>GerichtsplanID</th>
-              <th>Anz. Bestellungen</th>
-              <th>Gesamtpreis</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let dish of day.dishes">
-              <td> <b> {{ dish.dishName }} </b> </td>
-              <td>{{ dish.dishID }}</td>
-              <td>{{ dish.dishMealType }}</td>
-              <td>{{ dish.dishPrice }}€</td>
-              <td>{{ dish.mealPlanID }}</td>
-              <td> <b> {{ dish.amount }} </b> </td>
-              <td>{{ dish.completePrice }}€</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="day" *ngFor="let day of ordersByDay">
+      <div>
+        <div class="day-header" (click)="toggleDay(day)">
+          <h3>
+            <span class="toggle-icon">{{ day.expanded ? '▼' : '►' }}</span>
+            {{ formatDate(day.date) }}
+          </h3>
+        </div>
+        <div class="day-content" *ngIf="day.expanded">
+          <table>
+            <thead>
+              <tr>
+                <th>Gericht</th>
+                <th>GerichtID</th>
+                <th>Gerichtsart</th>
+                <th>Gerichtspreis</th>
+                <th>GerichtsplanID</th>
+                <th>Anz. Bestellungen</th>
+                <th>Gesamtpreis</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dish of day.dishes">
+                <td> <b> {{ dish.dishName }} </b> </td>
+                <td>{{ dish.dishID }}</td>
+                <td>{{ dish.dishMealType }}</td>
+                <td>{{ dish.dishPrice }}€</td>
+                <td>{{ dish.mealPlanID }}</td>
+                <td> <b> {{ dish.amount }} </b> </td>
+                <td>{{ dish.completePrice }}€</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="problem" *ngIf="!(start_date && end_date)">
-  <p>Wähle einen Zeitraum</p>
-</div>
-<div class="problem" *ngIf="orderSumResponse.length === 0" [hidden]="!(start_date && end_date)">
-  <p>Keine Bestellungen im gewählten Zeitraum gefunden.</p>
-</div>
+  <div class="problem" *ngIf="!(start_date && end_date)">
+    <p>Wähle einen Zeitraum</p>
+  </div>
+  <div class="problem" *ngIf="orderSumResponse.length === 0" [hidden]="!(start_date && end_date)">
+    <p>Keine Bestellungen im gewählten Zeitraum gefunden.</p>
+  </div>
+</body>

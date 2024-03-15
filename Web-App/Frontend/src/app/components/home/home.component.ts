@@ -32,6 +32,11 @@ export class HomeComponent {
     this.datesCreated = [];
   }
 
+  blurred: boolean = false;
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
+  }
+
   groupmealPlansByDay() {
     this.mealPlansByDay = [];
   
