@@ -91,24 +91,15 @@ export class HomeComponent {
   }
 
   changedDateHandler(changedDate: string[] | undefined) {
-    if (changedDate != undefined) {
+    if (changedDate && changedDate.length === 2 && changedDate.every(date => !!date)) {
       this.start_date = changedDate[0];
       this.end_date = changedDate[1];
       console.log("Handler Start: " + this.start_date);
       console.log("Handler End: " + this.end_date);
-
+  
       this.getmealPlans();
-    }
-  }
-  async getImage(base64String: string) {
-    try {
-      // Dekodieren Sie das Base64-codierte Bild
-      const blobImage = await this.imageService.decodeImage(base64String);
-      // Konvertieren Sie das Blob-Objekt in eine URL, die im HTML-Template verwendet werden kann
-      return URL.createObjectURL(blobImage);
-    } catch (error) {
-      console.error('Fehler beim Dekodieren des Bildes:', error);
-      return null; // Fehlerbehandlung, z. B. null zurückgeben
+    } else {
+      console.error("Invalid date range:", changedDate);
     }
   }
 }

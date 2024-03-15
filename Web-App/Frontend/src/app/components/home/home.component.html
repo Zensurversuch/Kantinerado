@@ -19,23 +19,26 @@
             <thead>
               <tr>
                 <th>Gericht</th>
-                <th>Tag</th>
                 <th>Gerichtsart</th>
                 <th>Preis</th>
                 <th>Kategorie</th>
-                <th>Bild</th>
+                <th>Zutaten</th>
+                <th>Id</th>
               </tr>
             </thead>
             <tbody>
                 <ng-container *ngFor="let mealPlan of days.mealPlans">
                     <tr *ngFor="let dish of mealPlan">
                         <td><b>{{ dish.dishName }}</b></td>
-                        <td>{{ mealPlan.date }}</td>
-                        <td>{{ dish.dishID }}</td>
                         <td>{{ dish.dishmealType }}</td>
                         <td>{{ dish.dishPrice }}€</td>
                         <td>{{ dish.dishdietaryCategorie }}</td>
-                        <td><img [src]="getImage(dish.image) | async" alt="Decoded Image" /></td>
+                        <td>
+                          <ul>
+                              <li *ngFor="let ingredient of dish.dishingredients">{{ ingredient }}</li>
+                          </ul>
+                        </td>
+                        <td>{{ dish.dishID }}</td>
                     </tr>
                 </ng-container>
               </tbody>
