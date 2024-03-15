@@ -1,1 +1,36 @@
-<p>create-meal-plan works!</p>
+<app-header></app-header>
+<div class="container">
+  <div class="left-pane">
+    <div class="scrollable">
+      <mat-card class="dropdown-list">
+        <h3>Gerichtart auswählen</h3>
+        <mat-form-field appearance="fill">
+          <mat-label>Gerichtart auswählen</mat-label>
+          <mat-select [(ngModel)]="selectedMealType" (ngModelChange)="loadDishes()">
+            <mat-option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="right-pane">
+    <mat-card class="dropdown-list">
+      <h3>Gericht auswählen</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Gericht auswählen</mat-label>
+        <mat-select [(ngModel)]=selectedDish>
+          <mat-option *ngFor="let dish of dishes" [value]=dish>{{ dish.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+  </div>
+  <div class="right-pane">
+    <div class="weekday" *ngFor="let day of weekDates">
+      <h3>{{ day }}</h3>
+      <div class="droppable-area" cdkDropList (cdkDropListDropped)="onDrop($event)">
+
+      </div>
+    </div>
+  </div>
+</div>
