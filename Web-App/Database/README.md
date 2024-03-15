@@ -1,11 +1,14 @@
 # Datenbank
-## Tabellen initialisieren
+
+## Zu Testzwecken Datenbank Backup laden
+Das DB Backup liegt [hier](DummyDatabase.sql) und kann ![alt text](image-2.png) so geladen werden.
+
+
+## In der Produktion: Tabellen initialisieren
 Wenn die Datenbank erstellt wurde müssen die Tabellen initialisiert werden. Dies wird mit dem Skript [initialize_db.py](initialize_db.py) gemacht. Wichtig ist das man dieses in diesem Ordner ausführt sodass das Passwort der Datenbank richtig gezogen wird.  
 Wenn man dieses Skript ausführt wenn die Tabellen schon initialisiert sind führt dies zu keinem Fehler und auch die Daten die in der DB waren bleiben bestehen. Des Weiteren müssen die Python-Module "python-dotenv", "sqlalchemy" und "sqlalchemy" auf dem System installiert sein.
 
-## Tabellen mit DummyDaten befüllen
-
-Im Ordner [Dummy_SQL_Scripts](./Test_Database/Dummy_SQL_Scripts/) befinden sich SQL Skripte um die Datenbank zu Testzwecken mit Dummy Daten zu befüllen.
+## Tabellen mit DBeaver einsehen befüllen
 
 ### Ausführen der SQL Skripte
 Mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) kann man SQL Skripte einfach in der Datenbank ausführen.
@@ -16,18 +19,3 @@ Mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) kann man SQL Skripte einfa
 2.2 Verbindungsdaten eingeben  
 2.3 Verbindung testen drücken um zu schauen ob die Verbindung hergestellt werden kann  
 2.4 Fertigstellen
-3. Skripte erstellen (Voraussetzung Tabellen wurden schon initialiesiert)
-![alt text](image-1.png)
-4. In den script Tab die folgenden Skripte einzeln einfügen und mit Strg+Enter ausführen. **Wichtig**: Diese müssen in folgender Reihenfolge ausgeführt werden:  <br><br>
-4.1 **Allergien einfügen:**
-   Füge die Allergien in die Tabelle "allergies" ein.  
-4.2 **Gerichte einfügen:**
-   Füge die Gerichte in die Tabelle "dishes" ein.  
-4.3 **Benutzer einfügen:**
-   Dies muss manuell über z.B. postman gemacht werden sodass die passwörter gehashed werden. Postman Collections hierfür findet man [hier](../Backend/Postman_Collections/)  
-4.5 **Allergien für Gerichte einfügen:**
-   Füge die Zuordnung von Gerichten zu ihren Allergien in die Tabelle "dish_allergy_association" ein.  
-4.6 **Einträge für das Meal Plan einfügen:**
-   Füge die Einträge für den Meal Plan in die Tabelle "mealPlan" ein.  
-4.7 **Einträge für Bestellungen einfügen:**
-   Füge die Einträge für Bestellungen in die Tabelle "orders" ein.  
