@@ -30,6 +30,10 @@
       }
     }
   }
+  .droppable-area{
+    border: 2px dashed $primary-border-color;
+    background-color: $highlight-color;
+  }
 
   .right-pane {
     width: 55%;

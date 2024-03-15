@@ -11,25 +11,33 @@
           </mat-select>
         </mat-form-field>
       </mat-card>
-    </div>
-  </div>
 
-  <div class="right-pane">
-    <mat-card class="dropdown-list">
-      <h3>Gericht auswählen</h3>
-      <mat-form-field appearance="fill">
-        <mat-label>Gericht auswählen</mat-label>
-        <mat-select [(ngModel)]=selectedDish>
-          <mat-option *ngFor="let dish of dishes" [value]=dish>{{ dish.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <mat-card class="dropdown-list">
+        <h3>Gericht auswählen</h3>
+        <mat-form-field appearance="fill">
+          <mat-label>Gericht auswählen</mat-label>
+          <mat-select [(ngModel)]="selectedDish" (ngModelChange)="createNewDragItem()">
+            <mat-option *ngFor="let dish of dishes" [value]="dish">{{ dish.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card>
+    </div>
+    <mat-card class="droppable-list">
+      <div class="droppable-area" cdkDropList (cdkDropListDropped)="onDrop($event, '')">
+        <div *ngFor="let dragItem of dragItems['']" class="drag-item" cdkDrag>
+          {{ dragItem.name }} <!-- Annahme, dass 'name' das Attribut ist, das den Titel des Gerichts enthält -->
+        </div>
+      </div>
     </mat-card>
   </div>
+
   <div class="right-pane">
     <div class="weekday" *ngFor="let day of weekDates">
       <h3>{{ day }}</h3>
-      <div class="droppable-area" cdkDropList (cdkDropListDropped)="onDrop($event)">
-
+      <div class="droppable-area" cdkDropList (cdkDropListDropped)="onDrop($event, day)">
+        <div *ngFor="let dragItem of dragItems[day]" class="drag-item" cdkDrag>
+          {{ dragItem.name }}
+        </div>
       </div>
     </div>
   </div>
