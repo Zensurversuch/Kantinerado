@@ -525,6 +525,51 @@
         }
       }
     },
+    "/user_password/{user_id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "returns password of a user by user_id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to get password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returned password succesfully'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "password": {
+                      "type": "string",
+                      "example": "password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found"
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": [
@@ -1043,7 +1088,7 @@
           },
           "price": {
             "type": "number",
-            "example": "12,34"
+            "example": 12.34
           },
           "allergies": {
             "type": "array",
@@ -1075,7 +1120,8 @@
             "example": "Main"
           },
           "image": {
-            "type": "string"
+            "type": "string",
+            "example": "insert base 64 string or remove image-key from json"
           }
         }
       },
