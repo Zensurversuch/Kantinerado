@@ -94,7 +94,7 @@ class MealPlanRepository:
                         })
 
                     return True, final_mealPlan_list
-                return False, "mealplan not found"
+                return None, "mealplan not found"
             except ValueError as e:
                 return False, e
             except SQLAlchemyError as e:

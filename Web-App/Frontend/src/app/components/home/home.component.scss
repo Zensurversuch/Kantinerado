@@ -1,0 +1,107 @@
+@import "../../color.scss";
+
+h2 {
+  margin-top: 30px;
+  width: auto;
+  text-align: center;
+}
+
+.calendar-container {
+  width: 80%;
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  padding-top: 20px;
+  margin: 0 auto;
+}
+
+.calendar-container button {
+  width: 10%;
+  height: 10%;
+}
+
+.summary {
+  width: 80%;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.problem {
+  width: 80%;
+  margin: 0 auto;
+  padding: 10px; /* Zusätzlicher Innenabstand für bessere Lesbarkeit */
+  border: 2px solid red; /* Hinzufügen einer roten Umrandung */
+  border-radius: 5px; /* Abrundung der Ecken */
+  text-align: center; /* Zentrieren des Textes */
+  color: red;
+  font-size: 16px; /* Größere Schriftgröße für bessere Lesbarkeit */
+  font-weight: bold; /* Fettschrift für Betonung */
+  background-color: #fdd; /* Hintergrundfarbe für Kontrast */
+}
+
+.day {
+  width: 100%;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow-x: auto; 
+}
+
+.day-header {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.day-content {
+  padding: 10px;
+  border: none;
+}
+
+.toggle-icon {
+  font-size: 1.2em;
+  transition: transform 0.3s ease-in-out;
+}
+
+.day.expanded .toggle-icon {
+  transform: rotate(90deg);
+}
+
+
+table {
+  min-width: 100%;
+  width: auto;
+  border-collapse: collapse;
+  border: 2px solid #ddd;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+thead {
+  background-color: $disabled-color;
+  color: white;
+}
+
+tbody {
+  background-color: white;
+}
+
+tbody tr:hover {
+  background-color: rgb(255, 213, 213);
+}
+
+/* Responsivität */
+@media (max-width: 768px) {
+  .day {
+    width: 100%; /* Bei kleinen Bildschirmen den Container auf volle Breite setzen */
+  }
+}

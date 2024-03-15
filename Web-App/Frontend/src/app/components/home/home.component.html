@@ -1,2 +1,51 @@
 <app-header></app-header>
+<div class="calendar-container">
+    <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
+  </div>
+  
+  <div class="summary" *ngIf="mealPlanSumResponse.length > 0">
+    <h2>Bestellübersicht</h2>
+  
+    <div class="day" *ngFor="let days of mealPlansByDay">
+      <div>
+        <div class="day-header" (click)="toggleDay(days)">
+          <h3>
+            <span class="toggle-icon">{{ days.expanded ? '▼' : '►' }}</span>
+            {{ formatDate(days.date) }}
+          </h3>
+        </div>
+        <div class="day-content" *ngIf="days.expanded">
+          <table>
+            <thead>
+              <tr>
+                <th>Gericht</th>
+                <th>Tag</th>
+                <th>Gerichtsart</th>
+                <th>Preis</th>
+                <th>Kategorie</th>
+              </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let mealPlan of days.mealPlans">
+                <tr *ngFor="let dish of mealPlan">
+                    <td><b>{{ dish.dishName }}</b></td>
+                    <td>{{ mealPlan.date }}</td>
+                    <td>{{ dish.dishID }}</td>
+                    <td>{{ dish.dishmealType }}</td>
+                    <td>{{ dish.dishPrice }}€</td>
+                    <td>{{ dish.dishdietaryCategorie }}</td>
+                </tr>
+                </ng-container>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="problem" *ngIf="!(start_date && end_date)">
+    <p>Wähle einen Zeitraum</p>
+  </div>
+  <div class="problem" *ngIf="mealPlanSumResponse.length === 0" [hidden]="!(start_date && end_date)">
+    <p>Keine Menüs im gewählten Zeitraum gefunden.</p>
+  </div>
 
