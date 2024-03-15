@@ -3,7 +3,6 @@ import {MenuComponent} from "../menu/menu.component";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
 import { EventEmitter, Output } from '@angular/core';
-import { SettingsComponent } from '../settings/settings.component';
 
 
 
@@ -15,7 +14,6 @@ import { SettingsComponent } from '../settings/settings.component';
     standalone: true,
   imports: [
     MenuComponent,
-    SettingsComponent,
     NgOptimizedImage,
     NgIf
   ],
