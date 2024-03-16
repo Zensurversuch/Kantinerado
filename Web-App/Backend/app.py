@@ -167,6 +167,22 @@ def allergy_by_userid(user_id):
         return user_data["allergies"]
     return jsonify({"message": "User not found"}), 404
 
+
+@app.route('/set_user_allergies',  methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
+def set_user_allergies():
+    data = request.json
+    jwt_userID = get_jwt_identity()
+    data_allergies = data.get('allergies')
+    ret_value = user_repo.set_user_allergies_by_id(jwt_userID, data_allergies)
+    if ret_value == []:   # If ret_value is empty no allergies were missing
+        return jsonify({"message": "Allergies updated successful"}), 201
+    elif ret_value:     # If ret_value contains values allergies were missing
+        return jsonify({"message": f"Allergies updated successful, but the allergies {ret_value} aren't present in the database"}), 201
+    elif ret_value == False:
+        return jsonify({"message": "Failed to update allergies"}), 500
+
 # -------------------------- Allergy Routes ------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/allergy_by_id/<int:allergy_id>')
 def allergy_by_id(allergy_id):
