@@ -249,18 +249,27 @@ def create_dish():
 def create_order():
     data = request.json
     jwt_userID = get_jwt_identity()
-    data_mealPlanID = data.get('mealPlanID')
-    data_amount = data.get('amount')
-
-    if not (data_mealPlanID and data_amount):
+    data_mealPlanIDs = data.get('mealPlanID')
+    data_amounts = data.get('amount')
+    timestamp = datetime.today()
+    if (timestamp.weekday() == 3 and timestamp.hour >= 18) or (timestamp.weekday() > 3):
+        mealPlanDates = meal_plan_repo.get_mealPlan_dates_by_ids(data_mealPlanIDs)
+        if mealPlanDates:
+            monday = timestamp - timedelta(days=timestamp.weekday()) + timedelta(days=7)
+            sunday = monday + timedelta(days=6)
+            if any(datetime.strptime(mealPlanDate, "%Y-%m-%d") < sunday for mealPlanDate in mealPlanDates): 
+                return jsonify({"message": "Cannot order after Thursday 6pm"}), 500
+        else:
+            return jsonify({"message": "Missing mealPlans in Database"}), 400
+        
+    if not (data_mealPlanIDs and data_amounts):
         return jsonify({"message": "Missing required fields"}), 400
 
-    ret_value = order_repo.create_order(jwt_userID, data_mealPlanID, data_amount)
+    ret_value = order_repo.create_order(jwt_userID, data_mealPlanIDs, data_amounts)
     if ret_value=="created":
         return jsonify({"message": "Order created successful"}), 201
-    elif ret_value=="updated":
-        return jsonify({"message": "Order updated successful"}), 201
-    return jsonify({"message": "Failed to create Order"}), 500
+    else:
+        return jsonify({"message": "Failed to create Order"}), 500
 
 @app.route('/orders_by_user/<string:start_date>/<string:end_date>')
 @jwt_required()

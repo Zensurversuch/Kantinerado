@@ -101,3 +101,16 @@ class MealPlanRepository:
                 return False, e
             finally:
                 session.close()
+
+    def get_mealPlan_dates_by_ids(self, param_mealPlanIDs):
+        try:
+            session = scoped_session(self.session_factory)
+            mealPlans = session.query(MealPlan).filter(MealPlan.mealPlanID.in_(param_mealPlanIDs)).all()
+            if mealPlans:
+                mealPlanDates = [datetime.strftime(mealplan.date, "%Y-%m-%d") for mealplan in mealPlans]
+                return mealPlanDates
+            return False
+        except SQLAlchemyError as e:
+            return False
+        finally:
+            session.close()
