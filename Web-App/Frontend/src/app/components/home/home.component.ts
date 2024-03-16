@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 import {OrderByDay}from '../../interface/order-by-day';
 import { CommonModule } from '@angular/common';
 import { ImageService } from '../../service/picture/picture.service';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { ImageService } from '../../service/picture/picture.service';
   templateUrl: './home.component.html',
   standalone: true,
   styleUrls: ['./home.component.scss'],
-  imports: [CalendarComponent, HeaderComponent, CommonModule],
+  imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule],
   providers:[CalendarService, ImageService]
 })
 export class HomeComponent {
@@ -100,6 +101,18 @@ export class HomeComponent {
       this.getmealPlans();
     } else {
       console.error("Invalid date range:", changedDate);
+    }
+  }
+  onQuantityChange(event: Event, dish: any, mealPlan: any) {
+    const target = event.currentTarget as HTMLSelectElement;
+    if (target) {
+      const quantity = target.value;
+      dish.quantity = quantity;
+      const selectedDish = {
+        quantity: quantity,
+        mealPlan: mealPlan
+      };
+      console.log(selectedDish);
     }
   }
 }
