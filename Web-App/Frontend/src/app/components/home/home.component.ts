@@ -53,6 +53,7 @@ export class HomeComponent {
       mealPlansForDay.mealPlans = plansForDay.map(plan => plan.dishes); // Fügen Sie alle Gerichte für den Tag hinzu
       this.mealPlansByDay.push(mealPlansForDay);
     });
+    this.resetAmountMenus();
   }
   
 
@@ -89,7 +90,7 @@ export class HomeComponent {
           //resets chosen orders if new date is chosen
           this.order_list = [];
           this.groupmealPlansByDay();
-          this.getOrdersByUser();
+          
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
@@ -100,7 +101,7 @@ export class HomeComponent {
   }
   getOrdersByUser(){
     //TODO: authService function doesn' work
-    if(this.start_date && this.end_date && this.authService.isLoggedIn()) {
+    if(this.start_date && this.end_date) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
       this.http.get<any[]>(`${environment.apiUrl}/orders_by_user/${this.start_date}/${this.end_date}`, { headers })
       .subscribe(
@@ -154,9 +155,7 @@ export class HomeComponent {
   }
   pushOrders(orders: Array<Object>)
   {
-    const jsonOrders = JSON.stringify({ "orders": orders });
-    console.log(jsonOrders);
-    if(orders) {
+    if(orders && this.authService.isLoggedIn() && !this.authService.isTokenExpired()) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
       headers.set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
       this.http.post(environment.apiUrl+'/create_order', {"orders": orders}, { headers })
@@ -192,13 +191,16 @@ export class HomeComponent {
   }
   resetAmountMenus()
   {
-    this.mealPlansByDay.forEach(days => {
-      days.mealPlans.forEach(mealPlan => {
-        mealPlan.forEach((dish: Dish) => {
-            dish.amount = 0;
+    if(this.authService.isLoggedIn() && !this.authService.isTokenExpired())
+    {
+      this.mealPlansByDay.forEach(days => {
+        days.mealPlans.forEach(mealPlan => {
+          mealPlan.forEach((dish: Dish) => {
+              dish.amount = 0;
+          });
         });
       });
-    });
-    this.getOrdersByUser();
+      this.getOrdersByUser();
+    }
   }
 }
