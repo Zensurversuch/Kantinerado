@@ -11,6 +11,7 @@ import { ImageService } from '../../service/picture/picture.service';
 import { FormsModule } from '@angular/forms';
 import { Order } from '../../interface/order';
 import { MatIconModule } from '@angular/material/icon';
+import { Dish } from '../../interface/dish';
 
 
 @Component({
@@ -24,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class HomeComponent {
   
   mealPlanSumResponse: any[] = [];
+  ordersByUser: Array<Order>;
   datesCreated: string[];
   mealPlansByDay: OrderByDay[] = [];
   start_date: string;
@@ -35,6 +37,7 @@ export class HomeComponent {
     this.end_date = "";
     this.datesCreated = [];
     this.order_list = [];
+    this.ordersByUser = [];
   }
 
   groupmealPlansByDay() {
@@ -84,8 +87,9 @@ export class HomeComponent {
             }
           });
           //resets chosen orders if new date is chosen
-          this.order_list = [];
+          //this.order_list = [];
           this.groupmealPlansByDay();
+          this.getOrdersByUser();
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
@@ -94,6 +98,26 @@ export class HomeComponent {
           this.mealPlanSumResponse = [];
         }
       );
+    }
+  }
+  getOrdersByUser(){
+    //TODO: authService function doesn' work
+    if(this.start_date && this.end_date && this.authService.isLoggedIn()) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+      this.http.get<any[]>(`${environment.apiUrl}/orders_by_user/${this.start_date}/${this.end_date}`, { headers })
+      .subscribe(
+        (ordersByUserResponse) => {
+          console.log('orders_by_user/'+this.start_date+'/'+this.end_date + ' GET-Anfrage erfolgreich', ordersByUserResponse);
+          this.ordersByUser = ordersByUserResponse;
+          this.fillAmountMenus();
+        },
+        (error) => {
+          console.error('Fehler aufgetreten:', error);
+          // Fehlermeldung ausgeben
+          //alert('Fehler aufgetreten: ' + error.message);
+          this.mealPlanSumResponse = [];
+        }
+      )
     }
   }
 
@@ -105,6 +129,8 @@ export class HomeComponent {
       console.log("Handler End: " + this.end_date);
       
       this.getmealPlans();
+      
+      
     } else {
       console.error("Invalid date range:", changedDate);
     }
@@ -150,5 +176,31 @@ export class HomeComponent {
   }
   onPushOrdersButtonClick() {
     this.pushOrders(this.order_list);
+  }
+  fillAmountMenus()
+  {
+    this.ordersByUser.forEach((order: Order) => {
+      this.mealPlansByDay.forEach(days => {
+        days.mealPlans.forEach(mealPlan => {
+          mealPlan.forEach((dish: Dish) => {
+            if (dish.mealPlanID === order.mealPlanID) {
+              dish.amount = order.amount;
+            }
+          });
+        });
+      });
+    });
+
+  }
+  resetAmountMenus()
+  {
+    this.mealPlansByDay.forEach(days => {
+      days.mealPlans.forEach(mealPlan => {
+        mealPlan.forEach((dish: Dish) => {
+            dish.amount = 0;
+        });
+      });
+    });
+    this.getOrdersByUser();
   }
 }

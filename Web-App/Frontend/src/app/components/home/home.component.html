@@ -6,8 +6,11 @@
   <div class="summary" *ngIf="mealPlanSumResponse.length > 0">
     <h2>Speiseplan Übersicht</h2>
     <div>
-      <button mat-icon-button (click)="onPushOrdersButtonClick()">
+      <button save-button (click)="onPushOrdersButtonClick()">
         <mat-icon>save</mat-icon>
+      </button>
+      <button reset-button (click)="resetAmountMenus()">
+        <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
     <div class="day" *ngFor="let days of mealPlansByDay">
@@ -52,7 +55,7 @@
                           </ng-container>
                         </td>
                         <td>
-                          <select (change)="onQuantityChange($event, dish, dish.mealPlanID)">
+                          <select [(ngModel)]="dish.amount" (change)="onQuantityChange($event, dish, dish.mealPlanID)">
                             <option *ngFor="let num of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ num }}</option>
                           </select>
                         </td>
