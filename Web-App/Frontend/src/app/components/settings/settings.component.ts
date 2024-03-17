@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AllergyService } from '../../service/allergy/allergy.service';
 import { AuthService } from '../../service/authentication/auth.service';
+import { HeaderComponent } from '../header/header.component';
 
 interface Allergy {
   name: string;
@@ -25,7 +26,7 @@ export class SettingsComponent implements OnInit {
   darkMode: boolean = false;
   headers: HttpHeaders;
 
-  constructor(private allergyService: AllergyService, private http: HttpClient, private authService: AuthService) {
+  constructor(private allergyService: AllergyService, private http: HttpClient, private authService: AuthService, private header: HeaderComponent) {
     this.headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
   }
 
@@ -48,6 +49,9 @@ export class SettingsComponent implements OnInit {
     );
   }
 
+  closeSettings() {
+    this.header.toggleSettings();
+  }
 
 
   toggleDarkMode() {

@@ -1,4 +1,10 @@
 <div class="settings">
+  <div (click)="closeSettings()" class="close-container">
+    <div class="leftright"></div>
+    <div class="rightleft"></div>
+    <label class="close">close</label>
+  </div>
+
   <h2>Einstellungen</h2>
   <br>
   <div class="toggle-wrapper">
@@ -9,6 +15,7 @@
     </label>
   </div>
   <br>
+
   <h3>Wähle deine Allergien:</h3>
   <div class="allergies">
     <label *ngFor="let allergy of allergies" class="allergy-label">

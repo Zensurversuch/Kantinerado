@@ -17,6 +17,8 @@
   border-radius: 15px;
 }
 
+
+
 .allergies {
   margin-top: 10px;
   display: flex;
@@ -133,6 +135,71 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
 }
+
+.close-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.leftright{
+  height: 3px;
+  width: 30px;
+  position: absolute;
+  margin-top: 24px;
+  background-color: #F25C66;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  transition: all .3s ease-in;
+}
+
+.rightleft{
+  height: 3px;
+  width: 30px;
+  position: absolute;
+  margin-top: 24px;
+  background-color: #F25C66;
+  border-radius: 2px;
+  transform: rotate(-45deg);
+  transition: all .3s ease-in;
+}
+.close{
+  color: black;
+  margin: 60px 0 0 5px;
+  position: absolute;
+}
+
+.close-container:hover .leftright{
+  transform: rotate(-45deg);
+  background-color: #F25C66;
+}
+.close-container:hover .rightleft{
+  transform: rotate(45deg);
+  background-color: #F25C66;
+}
+.close-container label {
+  position: absolute;
+  color: black;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: .3em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0;
+  margin-top: 60px;
+  transition: opacity 0.3s ease-in;
+}
+
+.close-container:hover label {
+  opacity: 1;
+}
+
+
 
 /* Responsivität */
 @media (max-width: 768px) {

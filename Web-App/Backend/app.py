@@ -181,7 +181,9 @@ def set_user_allergies():
     ret_value = user_repo.set_user_allergies_by_id(jwt_userID, data_allergies)
     if ret_value == []:   # If ret_value is empty no allergies were missing
         return jsonify({"message": "Allergies updated successful"}), 201
-    elif ret_value:     # If ret_value contains values allergies were missing
+    elif ret_value:     # If ret_value contains values allergies were missing or the user wasn't found
+        if ret_value == "User not found!":
+            return jsonify({"message": "User not found"}), 404
         return jsonify({"message": f"Allergies updated successful, but the allergies {ret_value} aren't present in the database"}), 201
     elif ret_value == False:
         return jsonify({"message": "Failed to update allergies"}), 500
