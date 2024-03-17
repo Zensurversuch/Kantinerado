@@ -349,7 +349,7 @@ def meal_plan(start_date, end_date):
     if meal_Plan[0]:
         return jsonify(meal_Plan[1]), 201
     elif meal_Plan[0]== None:
-        return jsonify({"message": "no mealplan found"})
+        return jsonify({"message": "no mealplan found"}), 404
     else:
         return jsonify({"message":  str(meal_Plan[1])}),420
 
