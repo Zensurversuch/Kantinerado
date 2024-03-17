@@ -164,7 +164,10 @@ def user_by_email(email):
 def allergy_by_userid(user_id):
     user_data = user_repo.get_user_by_id(user_id)
     if user_data:
-        return user_data["allergies"]
+        if user_data["allergies"] != None:
+            return user_data["allergies"]  
+        else:
+            return jsonify({"message": "No allergies found for this user"}), 404
     return jsonify({"message": "User not found"}), 404
 
 # -------------------------- Allergy Routes ------------------------------------------------------------------------------------------------------------------------------------------
