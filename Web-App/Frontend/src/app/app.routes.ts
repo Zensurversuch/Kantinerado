@@ -8,6 +8,7 @@ import {WorkerOrderSummaryComponent} from "./components/order_summary/workerOrde
 import { CreateDishComponent } from './components/dish/createDish.component';
 import { AuthGuard } from './guard/auth.guard';
 import { RegisterAdminComponent } from './components/register/registerAdmin.component';
+import {CreateMealPlanComponent} from "./components/meal_plan/create-meal-plan.component";
 
 
 
@@ -19,5 +20,5 @@ export const routes: Routes = [
   { path: 'userOrderSummary', component: UserOrderSummaryComponent, canActivate: [AuthGuard]},
   { path: 'workerOrderSummary', component: WorkerOrderSummaryComponent, canActivate: [AuthGuard]},
   { path: 'registerAdmin', component: RegisterAdminComponent, canActivate: [AuthGuard]},
-  { path: '', component: HomeComponent}
+  { path: '', component: CreateMealPlanComponent}
 ];

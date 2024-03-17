@@ -1,44 +1,106 @@
 <app-header></app-header>
 <div class="container">
   <div class="left-pane">
-    <div class="scrollable">
-      <mat-card class="dropdown-list">
-        <h3>Gerichtart auswählen</h3>
-        <mat-form-field appearance="fill">
-          <mat-label>Gerichtart auswählen</mat-label>
-          <mat-select [(ngModel)]="selectedMealType" (ngModelChange)="loadDishes()">
-            <mat-option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-card>
+    <mat-card class="Dropdown MealType">
+      <h3>Gerichtsart auswählen</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Gerichtsart auswählen</mat-label>
+        <mat-select [(ngModel)]="selectedMealType" (ngModelChange)="loadDishes()">
+          <mat-option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
 
-      <mat-card class="dropdown-list">
-        <h3>Gericht auswählen</h3>
-        <mat-form-field appearance="fill">
-          <mat-label>Gericht auswählen</mat-label>
-          <mat-select [(ngModel)]="selectedDish" (ngModelChange)="createNewDragItem()">
-            <mat-option *ngFor="let dish of dishes" [value]="dish">{{ dish.name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-card>
-    </div>
-    <mat-card class="droppable-list">
-      <div class="droppable-area" cdkDropList (cdkDropListDropped)="onDrop($event, '')">
-        <div *ngFor="let dragItem of dragItems['']" class="drag-item" cdkDrag>
-          {{ dragItem.name }} <!-- Annahme, dass 'name' das Attribut ist, das den Titel des Gerichts enthält -->
-        </div>
+    <mat-card class="Dropdown Dish">
+      <h3>Gericht auswählen</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Gericht auswählen</mat-label>
+        <mat-select [(ngModel)]="selectedDish" (ngModelChange)="createNewDishCard()">
+          <mat-option *ngFor="let dish of dishesAfterType" [value]="dish">{{ dish.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="dishArea">
+      <div
+        cdkDropList
+        #DishList="cdkDropList"
+        [cdkDropListData]="dishList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of dishList" cdkDrag>{{ item.name }}</div>
       </div>
     </mat-card>
   </div>
-
   <div class="right-pane">
-    <div class="weekday" *ngFor="let day of weekDates">
-      <h3>{{ day }}</h3>
-      <div class="droppable-area" cdkDropList (cdkDropListDropped)="onDrop($event, day)">
-        <div *ngFor="let dragItem of dragItems[day]" class="drag-item" cdkDrag>
-          {{ dragItem.name }}
-        </div>
+    <div class="scrollable">
+      <div
+        cdkDropList
+        #Monday="cdkDropList"
+        [cdkDropListData]="mondayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        @for (item of mondayList; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
+      <div
+        cdkDropList
+        #Tuesday="cdkDropList"
+        [cdkDropListData]="tuesdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        @for (item of tuesdayList; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
+      <div
+        cdkDropList
+        #Wednesday="cdkDropList"
+        [cdkDropListData]="wednesdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        @for (item of wednesdayList; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
+      <div
+        cdkDropList
+        #Thursday="cdkDropList"
+        [cdkDropListData]="thursdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        @for (item of thursdayList; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
+      <div
+        cdkDropList
+        #Friday="cdkDropList"
+        [cdkDropListData]="fridayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        @for (item of fridayList; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+        }
+      </div>
+      <div
+        cdkDropList
+        #Saturday="cdkDropList"
+        [cdkDropListData]="saturdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        @for (item of saturdayList; track item) {
+          <div class="example-box" cdkDrag>{{ item }}</div>
+        }
       </div>
     </div>
   </div>
 </div>
+

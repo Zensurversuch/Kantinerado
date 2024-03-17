@@ -19,7 +19,7 @@ export class DishService {
     return this.http.post<any>(url, dishData, { headers });
   }
 
-  getDishByMealType(mealType: MealType){
+  getDishByMealType(mealType: string){
     const url = environment.apiUrl+'/dish_by_mealType/'+mealType.toString();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
     return this.http.get<any>(url,{ headers });
