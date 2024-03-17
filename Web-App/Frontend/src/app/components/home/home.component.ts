@@ -9,6 +9,8 @@ import {OrderByDay}from '../../interface/order-by-day';
 import { CommonModule } from '@angular/common';
 import { ImageService } from '../../service/picture/picture.service';
 import { FormsModule } from '@angular/forms';
+import { Order } from '../../interface/order';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -16,7 +18,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './home.component.html',
   standalone: true,
   styleUrls: ['./home.component.scss'],
-  imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule],
+  imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule, MatIconModule],
   providers:[CalendarService, ImageService]
 })
 export class HomeComponent {
@@ -26,11 +28,13 @@ export class HomeComponent {
   mealPlansByDay: OrderByDay[] = [];
   start_date: string;
   end_date: string;
+  order_list: Order[];
 
   constructor(private http: HttpClient, private authService: AuthService, private imageService: ImageService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
+    this.order_list = [];
   }
 
   groupmealPlansByDay() {
@@ -79,6 +83,8 @@ export class HomeComponent {
               this.datesCreated.push(meal.mealPlanDate);
             }
           });
+          //resets chosen orders if new date is chosen
+          this.order_list = [];
           this.groupmealPlansByDay();
         },
         (error) => {
@@ -97,22 +103,52 @@ export class HomeComponent {
       this.end_date = changedDate[1];
       console.log("Handler Start: " + this.start_date);
       console.log("Handler End: " + this.end_date);
-  
+      
       this.getmealPlans();
     } else {
       console.error("Invalid date range:", changedDate);
     }
   }
-  onQuantityChange(event: Event, dish: any, mealPlan: any) {
+  onQuantityChange(event: Event, dish: any, mealPlanID: any) {
     const target = event.currentTarget as HTMLSelectElement;
     if (target) {
       const quantity = target.value;
       dish.quantity = quantity;
-      const selectedDish = {
-        quantity: quantity,
-        mealPlan: mealPlan
+      const existingOrderIndex = this.order_list.findIndex(order => order.mealPlanID === mealPlanID);
+    //checks if mealPlan is already part of the list
+    //if it is existing entity gets updated
+    if (existingOrderIndex !== -1) {
+      this.order_list[existingOrderIndex].amount = quantity;
+    } else {
+      const order = {
+        mealPlanID: mealPlanID,
+        amount: quantity
       };
-      console.log(selectedDish);
+      this.order_list.push(order);
     }
+    }
+  }
+  pushOrders(orders: Array<Object>)
+  {
+    const jsonOrders = JSON.stringify({ "orders": orders });
+    console.log(jsonOrders);
+    if(orders) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+      headers.set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+      this.http.post(environment.apiUrl+'/create_order', {"orders": orders}, { headers })
+      .subscribe(
+        (response: any) => {
+          console.log('POST request successful', response);
+        },
+        (error) => {
+          console.error('Fehler aufgetreten:', error.response);
+          console.log(error);
+          alert('Fehler aufgetreten: ' + error.message);
+        }
+      )
+    }
+  }
+  onPushOrdersButtonClick() {
+    this.pushOrders(this.order_list);
   }
 }
