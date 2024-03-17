@@ -87,14 +87,12 @@ export class HomeComponent {
             }
           });
           //resets chosen orders if new date is chosen
-          //this.order_list = [];
+          this.order_list = [];
           this.groupmealPlansByDay();
           this.getOrdersByUser();
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
-          // Fehlermeldung ausgeben
-          alert('Fehler aufgetreten: ' + error.message);
           this.mealPlanSumResponse = [];
         }
       );
@@ -115,7 +113,7 @@ export class HomeComponent {
           console.error('Fehler aufgetreten:', error);
           // Fehlermeldung ausgeben
           //alert('Fehler aufgetreten: ' + error.message);
-          this.mealPlanSumResponse = [];
+          this.ordersByUser = [];
         }
       )
     }
