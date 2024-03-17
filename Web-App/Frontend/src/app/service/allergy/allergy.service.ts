@@ -22,7 +22,7 @@ export class AllergyService {
 
 
   setAllergies(allergiesData: any, headers: any): Observable<any> {
-    const url = environment.apiUrl + '/create_allergies';
+    const url = environment.apiUrl + '/set_user_allergies';
     return this.http.post<any>(url, allergiesData, { headers });
   }
 
