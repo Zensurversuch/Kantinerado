@@ -100,7 +100,6 @@ export class HomeComponent {
     }
   }
   getOrdersByUser(){
-    //TODO: authService function doesn' work
     if(this.start_date && this.end_date) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
       this.http.get<any[]>(`${environment.apiUrl}/orders_by_user/${this.start_date}/${this.end_date}`, { headers })
