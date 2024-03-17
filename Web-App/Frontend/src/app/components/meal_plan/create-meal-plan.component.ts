@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {CalendarService} from "../../service/calendar/calendar.service";
 import {MealTypesArray} from "../../interface/mealType";
@@ -30,7 +30,7 @@ import {HeaderComponent} from "../header/header.component";
   styleUrl: './create-meal-plan.component.scss'
 })
 export class CreateMealPlanComponent {
-  constructor(protected calendarService: CalendarService, private dishService: DishService, private cdr: ChangeDetectorRef) {
+  constructor(protected calendarService: CalendarService, private dishService: DishService) {
   }
 
   mealTypes: string[] = MealTypesArray;
@@ -60,14 +60,9 @@ export class CreateMealPlanComponent {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      const dishName = event.previousContainer.data[event.previousIndex];
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex )
     }
+    console.log(event)
   }
 
   createNewDishCard() {

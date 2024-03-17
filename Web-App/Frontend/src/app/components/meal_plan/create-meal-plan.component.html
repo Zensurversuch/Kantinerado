@@ -20,7 +20,6 @@
         </mat-select>
       </mat-form-field>
     </mat-card>
-
     <mat-card class="dishArea">
       <div
         cdkDropList
@@ -28,12 +27,14 @@
         [cdkDropListData]="dishList"
         [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of dishList" cdkDrag>{{ item.name }}</div>
+        <div class="DishItem" *ngFor="let item of dishList" cdkDrag>{{ item.name }}</div>
       </div>
     </mat-card>
   </div>
+
   <div class="right-pane">
     <div class="scrollable">
+      <h3>Monday: </h3>
       <div
         cdkDropList
         #Monday="cdkDropList"
@@ -41,9 +42,7 @@
         [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
         class="dayList"
         (cdkDropListDropped)="drop($event)">
-        @for (item of mondayList; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-        }
+        <div class="DishItem" *ngFor="let item of mondayList" cdkDrag>{{ item.name }}</div>
       </div>
       <div
         cdkDropList
@@ -52,9 +51,7 @@
         [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
         class="dayList"
         (cdkDropListDropped)="drop($event)">
-        @for (item of tuesdayList; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-        }
+        <div class="DishItem" *ngFor="let item of tuesdayList" cdkDrag>{{ item.name }}</div>
       </div>
       <div
         cdkDropList
@@ -63,9 +60,7 @@
         [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
         class="dayList"
         (cdkDropListDropped)="drop($event)">
-        @for (item of wednesdayList; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-        }
+        <div class="DishItem" *ngFor="let item of wednesdayList" cdkDrag>{{ item.name }}</div>
       </div>
       <div
         cdkDropList
@@ -74,9 +69,7 @@
         [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
         class="dayList"
         (cdkDropListDropped)="drop($event)">
-        @for (item of thursdayList; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-        }
+        <div class="DishItem" *ngFor="let item of thursdayList" cdkDrag>{{ item.name }}</div>
       </div>
       <div
         cdkDropList
@@ -85,9 +78,7 @@
         [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
         class="dayList"
         (cdkDropListDropped)="drop($event)">
-        @for (item of fridayList; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-        }
+        <div class="DishItem" *ngFor="let item of fridayList" cdkDrag>{{ item.name }}</div>
       </div>
       <div
         cdkDropList
@@ -96,9 +87,7 @@
         [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
         class="dayList"
         (cdkDropListDropped)="drop($event)">
-        @for (item of saturdayList; track item) {
-          <div class="example-box" cdkDrag>{{ item }}</div>
-        }
+        <div class="DishItem" *ngFor="let item of saturdayList" cdkDrag>{{ item.name }}</div>
       </div>
     </div>
   </div>
