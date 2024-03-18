@@ -154,7 +154,7 @@ export class HomeComponent {
   }
   pushOrders(orders: Array<Object>)
   {
-    if(orders && this.authService.isLoggedIn() && !this.authService.isTokenExpired()) {
+    if(orders && this.isLoggedIn()) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
       headers.set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
       this.http.post(environment.apiUrl+'/create_order', {"orders": orders}, { headers })
@@ -190,7 +190,7 @@ export class HomeComponent {
   }
   resetAmountMenus()
   {
-    if(this.authService.isLoggedIn() && !this.authService.isTokenExpired())
+    if(this.isLoggedIn())
     {
       this.mealPlansByDay.forEach(days => {
         days.mealPlans.forEach(mealPlan => {
@@ -201,5 +201,9 @@ export class HomeComponent {
       });
       this.getOrdersByUser();
     }
+  }
+  isLoggedIn(): boolean
+  {
+    return(this.authService.isLoggedIn() && !this.authService.isTokenExpired());
   }
 }

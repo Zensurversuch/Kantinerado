@@ -5,7 +5,7 @@
   
   <div class="summary" *ngIf="mealPlanSumResponse.length > 0">
     <h2>Speiseplan Übersicht</h2>
-    <div>
+    <div *ngIf="isLoggedIn()">
       <button save-button (click)="onPushOrdersButtonClick()">
         <mat-icon>save</mat-icon>
       </button>
@@ -31,7 +31,7 @@
                 <th>Kategorie</th>
                 <th>Zutaten</th>
                 <th>Bild</th>
-                <th>Anzahl</th>
+                <th *ngIf="isLoggedIn()">Anzahl</th>
               </tr>
             </thead>
             <tbody>
@@ -54,7 +54,7 @@
                             <img style="display:block; width:100px;height:100px;" src="../../../assets/no-image-icon-23494.png">
                           </ng-container>
                         </td>
-                        <td>
+                        <td *ngIf="isLoggedIn()">
                           <select [(ngModel)]="dish.amount" (change)="onQuantityChange($event, dish, dish.mealPlanID)">
                             <option *ngFor="let num of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ num }}</option>
                           </select>
