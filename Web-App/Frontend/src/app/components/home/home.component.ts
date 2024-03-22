@@ -39,24 +39,7 @@ export class HomeComponent {
     this.order_list = [];
     this.ordersByUser = [];
   }
-
-  groupmealPlansByDay() {
-    this.mealPlansByDay = [];
   
-    // Iteration über alle eindeutigen Datumswerte
-    this.datesCreated.forEach(date => {
-      // Filtern der Mahlzeitenpläne für das aktuelle Datum
-      const plansForDay = this.mealPlanSumResponse.filter(plan => plan.mealPlanDate === date);
-      
-      // Erstellen einer neuen Mahlzeitenplan-Struktur für den aktuellen Tag
-      const mealPlansForDay: OrderByDay = { date: date, mealPlans: [], expanded: true };
-      mealPlansForDay.mealPlans = plansForDay.map(plan => plan.dishes); // Fügen Sie alle Gerichte für den Tag hinzu
-      this.mealPlansByDay.push(mealPlansForDay);
-    });
-    this.resetAmountMenus();
-  }
-  
-
   formatDate(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
     const date = new Date(dateString);
@@ -67,6 +50,9 @@ export class HomeComponent {
 
   toggleDay(day: OrderByDay) {
     day.expanded = !day.expanded;
+  }
+  toggleMealPlan(mealPlan: OrderByDay) {
+    mealPlan.expanded = !mealPlan.expanded
   }
 
   getmealPlans() {
@@ -82,14 +68,9 @@ export class HomeComponent {
         (mealPlanSumResponse) => {
           console.log('meal_plan/'+this.start_date+'/'+this.end_date + ' GET-Anfrage erfolgreich', mealPlanSumResponse);
           this.mealPlanSumResponse = mealPlanSumResponse;
-          this.mealPlanSumResponse.forEach(meal => {
-            if (!this.datesCreated.includes(meal.mealPlanDate)) {
-              this.datesCreated.push(meal.mealPlanDate);
-            }
-          });
           //resets chosen orders if new date is chosen
           this.order_list = [];
-          this.groupmealPlansByDay();
+          this.resetAmountMenus();
           
         },
         (error) => {
@@ -176,13 +157,11 @@ export class HomeComponent {
   fillAmountMenus()
   {
     this.ordersByUser.forEach((order: Order) => {
-      this.mealPlansByDay.forEach(days => {
-        days.mealPlans.forEach(mealPlan => {
-          mealPlan.forEach((dish: Dish) => {
+      this.mealPlanSumResponse.forEach(days => {
+          days.forEach((dish: Dish) => {
             if (dish.mealPlanID === order.mealPlanID) {
               dish.amount = order.amount;
             }
-          });
         });
       });
     });
@@ -192,11 +171,9 @@ export class HomeComponent {
   {
     if(this.isLoggedIn())
     {
-      this.mealPlansByDay.forEach(days => {
-        days.mealPlans.forEach(mealPlan => {
-          mealPlan.forEach((dish: Dish) => {
+      this.mealPlanSumResponse.forEach(days => {
+        days.forEach((dish: Dish) => {
               dish.amount = 0;
-          });
         });
       });
       this.getOrdersByUser();

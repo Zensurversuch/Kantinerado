@@ -13,56 +13,41 @@
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
-    <div class="day" *ngFor="let days of mealPlansByDay">
+    <div class="day" *ngFor="let days of mealPlanSumResponse">
       <div>
         <div class="day-header" (click)="toggleDay(days)">
           <h3>
             <span class="toggle-icon">{{ days.expanded ? '▼' : '►' }}</span>
-            {{ formatDate(days.date) }}
+            {{ formatDate(days.mealPlanDate) }}
           </h3>
         </div>
-        <div class="day-content" *ngIf="days.expanded">
-          <table>
-            <thead>
-              <tr>
-                <th>Gericht</th>
-                <th>Gerichtsart</th>
-                <th>Preis</th>
-                <th>Kategorie</th>
-                <th>Zutaten</th>
-                <th>Bild</th>
-                <th *ngIf="isLoggedIn()">Anzahl</th>
-              </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let mealPlan of days.mealPlans">
-                    <tr *ngFor="let dish of mealPlan">
-                        <td><b>{{ dish.dishName }}</b></td>
-                        <td>{{ dish.dishmealType }}</td>
-                        <td>{{ dish.dishPrice }}€</td>
-                        <td>{{ dish.dishdietaryCategorie }}</td>
-                        <td>
-                          <ul>
-                              <li *ngFor="let ingredient of dish.dishingredients">{{ ingredient }}</li>
-                          </ul>
-                        </td>
-                        <td>
-                          <ng-container *ngIf="dish.dishimage">
-                            <img style="display:block; width:100px;height:100px;" id="base64image" [src]="'data:image/jpeg;base64,' + dish.dishimage">
-                          </ng-container>
-                          <ng-container *ngIf="!dish.dishimage">
-                            <img style="display:block; width:100px;height:100px;" src="../../../assets/no-image-icon-23494.png">
-                          </ng-container>
-                        </td>
-                        <td *ngIf="isLoggedIn()">
-                          <select [(ngModel)]="dish.amount" (change)="onQuantityChange($event, dish, dish.mealPlanID)">
-                            <option *ngFor="let num of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ num }}</option>
-                          </select>
-                        </td>
-                    </tr>
-                </ng-container>
-              </tbody>
-          </table>
+        <div class="day-content"  *ngIf="days.expanded">
+          <div *ngFor="let dish of days.dishes">
+            <!--<span class="toggle-icon">{{ mealPlan.expanded ? '▼' : '►' }}</span>-->
+            <ng-container *ngIf="dish.dishimage">
+              <img style="display:block; width:100px;height:100px;" id="base64image" [src]="'data:image/jpeg;base64,' + dish.dishimage">
+            </ng-container>
+            <ng-container *ngIf="!dish.dishimage">
+              <img style="display:block; width:100px;height:100px;" src="../../../assets/no-image-icon-23494.png">
+            </ng-container>
+            <h3>{{ dish.dishName }}</h3>
+            <div> <!--*ngIf="mealPlan.expanded"-->
+              <p>Gerichtsart: {{ dish.dishmealType }}</p>
+              <p>Preis: {{ dish.dishPrice }}€</p>
+              <p>Kategorie: {{ dish.dishdietaryCategorie }}</p>
+              <div>
+                <p>Zutaten</p>
+                <ul>
+                  <li *ngFor="let ingredient of dish.dishingredients">{{ ingredient }}</li>
+                </ul>
+              </div>
+              <div *ngIf="isLoggedIn()">
+                <select [(ngModel)]="dish.amount" (change)="onQuantityChange($event, dish, dish.mealPlanID)">
+                  <option *ngFor="let num of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ num }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
