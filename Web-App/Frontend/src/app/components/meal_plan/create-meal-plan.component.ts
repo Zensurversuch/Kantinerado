@@ -12,6 +12,7 @@ import {HeaderComponent} from "../header/header.component";
 import {WeekdayArray} from "../../interface/weekday";
 import {MatButton} from "@angular/material/button";
 import {Dish} from "../../interface/dish";
+import {MealPlanService} from "../../service/mealplan/meal-plan.service";
 
 @Component({
   selector: 'app-create-meal-plan',
@@ -34,7 +35,7 @@ import {Dish} from "../../interface/dish";
 })
 export class CreateMealPlanComponent implements OnInit {
 
-  constructor(protected calendarService: CalendarService, private dishService: DishService) {
+  constructor(protected calendarService: CalendarService, private dishService: DishService, private mealPlanService:MealPlanService) {
   }
 
   ngOnInit(): void {
@@ -59,14 +60,15 @@ export class CreateMealPlanComponent implements OnInit {
   [key: string]: any;
 
   createDishPlan() {
-    const mealPlanArray: { mealPlan: { dishId: number; date: string; }[] } = { mealPlan: [] };
+    const mealPlanArray: { mealPlan: { "dishID": number; "date": string; }[] } = { mealPlan: [] };
     const weekDayLists = ['mondayList', 'tuesdayList', 'wednesdayList', 'thursdayList', 'fridayList', 'saturdayList'];
     weekDayLists.forEach((dayList, index) => {
       this[dayList].forEach((dish: Dish) => {
-        const dishJSON ={dishId: dish.dish_id, date:this.dates[index]};
+        const dishJSON ={"dishID": dish.dish_id, "date": this.dates[index]};
         mealPlanArray.mealPlan.push(dishJSON)
       })
     })
+    this.mealPlanService.createMealPlan(mealPlanArray)
   }
 
   loadDishes() {
