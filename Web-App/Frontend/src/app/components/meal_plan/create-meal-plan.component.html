@@ -30,11 +30,12 @@
         <div class="DishItem" *ngFor="let item of dishList" cdkDrag>{{ item.name }}</div>
       </div>
     </mat-card>
+    <button mat-raised-button color="primary" (click)="createDishPlan()">Wochenplan Bestätigen</button>
   </div>
 
   <div class="right-pane">
     <div class="scrollable">
-      <h3>Monday: </h3>
+      <h3>{{weekday[0]}}: {{ dates[0]}}</h3>
       <div
         cdkDropList
         #Monday="cdkDropList"
@@ -44,6 +45,7 @@
         (cdkDropListDropped)="drop($event)">
         <div class="DishItem" *ngFor="let item of mondayList" cdkDrag>{{ item.name }}</div>
       </div>
+      <h3>{{weekday[1]}}: {{ dates[1]}}</h3>
       <div
         cdkDropList
         #Tuesday="cdkDropList"
@@ -53,6 +55,7 @@
         (cdkDropListDropped)="drop($event)">
         <div class="DishItem" *ngFor="let item of tuesdayList" cdkDrag>{{ item.name }}</div>
       </div>
+      <h3>{{weekday[2]}}: {{ dates[2]}}</h3>
       <div
         cdkDropList
         #Wednesday="cdkDropList"
@@ -62,6 +65,7 @@
         (cdkDropListDropped)="drop($event)">
         <div class="DishItem" *ngFor="let item of wednesdayList" cdkDrag>{{ item.name }}</div>
       </div>
+      <h3>{{weekday[3]}}: {{ dates[3]}}</h3>
       <div
         cdkDropList
         #Thursday="cdkDropList"
@@ -71,6 +75,7 @@
         (cdkDropListDropped)="drop($event)">
         <div class="DishItem" *ngFor="let item of thursdayList" cdkDrag>{{ item.name }}</div>
       </div>
+      <h3>{{weekday[4]}}: {{ dates[4]}}</h3>
       <div
         cdkDropList
         #Friday="cdkDropList"
@@ -80,6 +85,7 @@
         (cdkDropListDropped)="drop($event)">
         <div class="DishItem" *ngFor="let item of fridayList" cdkDrag>{{ item.name }}</div>
       </div>
+      <h3>{{weekday[5]}}: {{ dates[5]}}</h3>
       <div
         cdkDropList
         #Saturday="cdkDropList"

@@ -64,15 +64,15 @@ export class CreateDishComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       if (file.type !== 'image/png') {
-        event.target.value = ''; 
-        this.createDishForm.patchValue({ image: '' }); 
-        alert('Please select a PNG image file.'); 
+        event.target.value = '';
+        this.createDishForm.patchValue({ image: '' });
+        alert('Please select a PNG image file.');
         return;
       }
       if (file.size > 10 * 1024 * 1024) {
-        event.target.value = ''; 
-        this.createDishForm.patchValue({ image: '' }); 
-        alert('File size exceeds the limit of 10MB.'); 
+        event.target.value = '';
+        this.createDishForm.patchValue({ image: '' });
+        alert('File size exceeds the limit of 10MB.');
       } else {
         const reader = new FileReader();
         reader.onload = () => {
@@ -128,7 +128,7 @@ export class CreateDishComponent implements OnInit {
     response => {
       console.log('Dish created successful:', response);
       this.createDishForm.reset();
-      alert(response.message); 
+      alert(response.message);
     },
     error => {
       console.error('Dish created unsuccessful:', error);
