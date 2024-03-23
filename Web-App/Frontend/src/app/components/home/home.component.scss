@@ -1,44 +1,44 @@
+/* Standardstile für Header und Container */
 @import "../../color.scss";
 
 h2 {
   margin-top: 30px;
-  width: auto;
   text-align: center;
 }
 
 .calendar-container {
-  width: 80%;
-  display: flex;
-  justify-content: right;
-  align-items: right;
-  padding-top: 20px;
+  width: 100%; /* Vollständige Breite für mobile Geräte */
   margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-top: 20px;
 }
 
 .calendar-container button {
-  width: 10%;
-  height: 10%;
+  width: 20%; /* Größere Schaltflächen für mobile Geräte */
+  height: auto; /* Automatische Höhe, um den Text besser passen zu lassen */
 }
 
 .summary {
-  width: 80%;
+  width: 100%; /* Vollständige Breite für mobile Geräte */
   margin: 0 auto;
-  align-items: center;
 }
 
 .problem {
-  width: 80%;
+  width: 100%; /* Vollständige Breite für mobile Geräte */
   margin: 0 auto;
-  padding: 10px; /* Zusätzlicher Innenabstand für bessere Lesbarkeit */
-  border: 2px solid red; /* Hinzufügen einer roten Umrandung */
-  border-radius: 5px; /* Abrundung der Ecken */
-  text-align: center; /* Zentrieren des Textes */
+  padding: 10px;
+  border: 2px solid red;
+  border-radius: 5px;
+  text-align: center;
   color: red;
-  font-size: 16px; /* Größere Schriftgröße für bessere Lesbarkeit */
-  font-weight: bold; /* Fettschrift für Betonung */
-  background-color: #fdd; /* Hintergrundfarbe für Kontrast */
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #fdd;
 }
 
+/* Stile für die Tagesdarstellung */
 .day {
   width: 100%;
   margin: 0 auto;
@@ -46,7 +46,6 @@ h2 {
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px;
-  overflow-x: auto; 
 }
 
 .day-header {
@@ -58,20 +57,57 @@ h2 {
 }
 
 .day-content {
-  padding: 10px;
   border: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+.day-content.expanded {
+  max-height: 1000px; /* Setzen Sie die maximale Höhe auf eine ausreichend große Zahl, um das Ausklappen zu ermöglichen */
 }
 
+.day-content > div {
+  flex: 0 0 calc(50% - 20px); /* Zwei Gerichte pro Zeile für mobile Geräte */
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.dish-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease; /* Übergang für die Höhe */
+}
+
+.dish-details.expanded {
+  max-height: 1000px; /* Setzen Sie die maximale Höhe auf eine ausreichend große Zahl, um das Ausklappen zu ermöglichen */
+}
+
+/* Stile für das Toggle-Icon */
 .toggle-icon {
   font-size: 1.2em;
   transition: transform 0.3s ease-in-out;
 }
 
+.toggle-dish-container {
+  cursor: pointer; /* Zeiger-Cursor, um anzuzeigen, dass es klickbar ist */
+}
+
+.toggle-dish {
+  font-size: 1.2em;
+  transition: transform 0.3s ease-in-out;
+  font-family: 'Material Icons'; /* Material Design Icons verwenden */
+}
+.toggle-dish.expanded {
+  transform: rotate(90deg); /* Drehung des Icons, wenn expanded */
+}
 .day.expanded .toggle-icon {
   transform: rotate(90deg);
 }
 
-
+/* Tabellenstile */
 table {
   min-width: 100%;
   width: auto;
@@ -100,8 +136,24 @@ tbody tr:hover {
 }
 
 /* Responsivität */
-@media (max-width: 768px) {
-  .day {
-    width: 100%; /* Bei kleinen Bildschirmen den Container auf volle Breite setzen */
+@media (min-width: 769px) {
+  /* Stile für größere Bildschirme */
+  .calendar-container {
+    width: 80%;
+    justify-content: right;
+    align-items: right;
+  }
+
+  .calendar-container button {
+    width: 10%;
+  }
+
+  .summary,
+  .problem {
+    width: 80%;
+  }
+
+  .day-content > div {
+    flex: 0 0 calc(33.33% - 20px);
   }
 }

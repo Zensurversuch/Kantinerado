@@ -21,11 +21,8 @@
             {{ formatDate(days.mealPlanDate) }}
           </h3>
         </div>
-        <div class="day-content"  *ngIf="days.expanded">
-          <div *ngFor="let dish of days.dishes">
-            <div (click)="toggleDish(dish)">
-              <span class="toggle-icon">{{ dish.expanded ? '▼' : '►' }}</span>
-            </div>
+        <div class="day-content"  [ngClass]="{'expanded': days.expanded}" >
+          <div class="dish" *ngFor="let dish of days.dishes">
             <ng-container *ngIf="dish.dishimage">
               <img style="display:block; width:100px;height:100px;" id="base64image" [src]="'data:image/jpeg;base64,' + dish.dishimage">
             </ng-container>
@@ -33,7 +30,10 @@
               <img style="display:block; width:100px;height:100px;" src="../../../assets/no-image-icon-23494.png">
             </ng-container>
             <h3>{{ dish.dishName }}</h3>
-            <div *ngIf="dish.expanded">
+            <div class="toggle-dish-container" (click)="toggleDish(dish)">
+              <span class="material-icons toggle-dish" [class.expanded]="dish.expanded">chevron_right</span>
+            </div>
+            <div [ngClass]="{'expanded': dish.expanded}" class="dish-details">
               <div *ngIf="isLoggedIn()">
                 <select [(ngModel)]="dish.amount" (change)="onQuantityChange($event, dish, dish.mealPlanID)">
                   <option *ngFor="let num of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ num }}</option>
