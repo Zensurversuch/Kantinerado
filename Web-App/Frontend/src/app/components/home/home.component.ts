@@ -158,7 +158,7 @@ export class HomeComponent {
   {
     this.ordersByUser.forEach((order: Order) => {
       this.mealPlanSumResponse.forEach(days => {
-          days.forEach((dish: Dish) => {
+          days.dishes.forEach((dish: Dish) => {
             if (dish.mealPlanID === order.mealPlanID) {
               dish.amount = order.amount;
             }
@@ -172,8 +172,8 @@ export class HomeComponent {
     if(this.isLoggedIn())
     {
       this.mealPlanSumResponse.forEach(days => {
-        days.forEach((dish: Dish) => {
-              dish.amount = 0;
+        days.dishes.forEach((dish: Dish) => {
+          dish.amount = 0;
         });
       });
       this.getOrdersByUser();
