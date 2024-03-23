@@ -3,7 +3,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from DB_Repositories.models import MealPlan
-from datetime import datetime
+from datetime import datetime, timedelta
 from random import randint
 
 
@@ -20,6 +20,21 @@ class MealPlanRepository:
                 max_ = 1000000000
                 listOfDuplicates = []
                 rand_mealPlanID = randint(min_, max_)
+                
+                # Bestimmen des Start- und Enddatums der Woche
+                date_str = mealPlan[0].get('date')  # Annahme: Alle Einträge haben das gleiche Datumformat
+                date = datetime.strptime(date_str, "%Y-%m-%d")
+                week_start = date - timedelta(days=date.weekday())
+                week_end = week_start + timedelta(days=6)
+                
+                # Löschen aller vorhandenen Einträge für die betreffende Woche
+                session.query(MealPlan).filter(
+                    and_(
+                        MealPlan.date >= week_start,
+                        MealPlan.date <= week_end
+                    )
+                ).delete()
+                #Hinzufügen aller neuen Eintäge
                 for meal in mealPlan:
                     dish_id = meal.get('dishID')
                     date_str = meal.get('date')
