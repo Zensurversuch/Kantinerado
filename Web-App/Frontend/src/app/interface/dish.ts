@@ -7,4 +7,5 @@ export interface Dish {
   dishimage: string; 
   mealPlanID: number; 
   amount: number;
+  expanded: boolean;
 }

@@ -51,8 +51,8 @@ export class HomeComponent {
   toggleDay(day: OrderByDay) {
     day.expanded = !day.expanded;
   }
-  toggleMealPlan(mealPlan: OrderByDay) {
-    mealPlan.expanded = !mealPlan.expanded
+  toggleDish(dish: Dish) {
+    dish.expanded = !dish.expanded
   }
 
   getmealPlans() {
