@@ -41,12 +41,16 @@ export class HomeComponent {
   end_date: string;
   order_list: Order[];
 
-  constructor(private http: HttpClient, private authService: AuthService, private imageService: ImageService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
     this.order_list = [];
     this.ordersByUser = [];
+  }
+    blurred: boolean = false;
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
   }
   
   formatDate(dateString: string): string {

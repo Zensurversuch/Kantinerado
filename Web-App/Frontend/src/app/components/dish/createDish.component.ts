@@ -34,6 +34,11 @@ export class CreateDishComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private allergyService: AllergyService, private dishService: DishService) {}
 
+  blurred: boolean = false;
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
+  }
+
   ngOnInit(): void {
     this.allergyService.getAllergies().subscribe(
       response => {
