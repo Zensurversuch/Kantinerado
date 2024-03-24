@@ -7,7 +7,7 @@ h2 {
 }
 
 .calendar-container {
-  width: 100%; /* Vollständige Breite für mobile Geräte */
+  width: 100%; 
   margin: 0 auto;
   display: flex;
   justify-content: flex-end;
@@ -16,17 +16,17 @@ h2 {
 }
 
 .calendar-container button {
-  width: 20%; /* Größere Schaltflächen für mobile Geräte */
-  height: auto; /* Automatische Höhe, um den Text besser passen zu lassen */
+  width: 20%; 
+  height: auto; 
 }
 
 .summary {
-  width: 100%; /* Vollständige Breite für mobile Geräte */
+  width: 100%; 
   margin: 0 auto;
 }
 
 .problem {
-  width: 100%; /* Vollständige Breite für mobile Geräte */
+  width: 100%; 
   margin: 0 auto;
   padding: 10px;
   border: 2px solid red;
@@ -57,34 +57,18 @@ h2 {
 }
 
 .day-content {
+  padding-left: 5px;
   border: none;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease;
-}
-.day-content.expanded {
-  max-height: 1000px; /* Setzen Sie die maximale Höhe auf eine ausreichend große Zahl, um das Ausklappen zu ermöglichen */
+  align-items: flex-start;
 }
 
 .day-content > div {
-  flex: 0 0 calc(50% - 20px); /* Zwei Gerichte pro Zeile für mobile Geräte */
-  margin-right: 20px;
+  flex: 0 0 calc(50% - 20px);
   margin-bottom: 20px;
 }
-
-.dish-details {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease; /* Übergang für die Höhe */
-}
-
-.dish-details.expanded {
-  max-height: 1000px; /* Setzen Sie die maximale Höhe auf eine ausreichend große Zahl, um das Ausklappen zu ermöglichen */
-}
-
 /* Stile für das Toggle-Icon */
 .toggle-icon {
   font-size: 1.2em;
@@ -92,16 +76,16 @@ h2 {
 }
 
 .toggle-dish-container {
-  cursor: pointer; /* Zeiger-Cursor, um anzuzeigen, dass es klickbar ist */
+  cursor: pointer; 
 }
 
 .toggle-dish {
   font-size: 1.2em;
   transition: transform 0.3s ease-in-out;
-  font-family: 'Material Icons'; /* Material Design Icons verwenden */
+  font-family: 'Material Icons'; 
 }
 .toggle-dish.expanded {
-  transform: rotate(90deg); /* Drehung des Icons, wenn expanded */
+  transform: rotate(90deg); 
 }
 .day.expanded .toggle-icon {
   transform: rotate(90deg);

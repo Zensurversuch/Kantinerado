@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Order } from '../../interface/order';
 import { MatIconModule } from '@angular/material/icon';
 import { Dish } from '../../interface/dish';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 
 @Component({
@@ -20,7 +21,15 @@ import { Dish } from '../../interface/dish';
   standalone: true,
   styleUrls: ['./home.component.scss'],
   imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule, MatIconModule],
-  providers:[CalendarService, ImageService]
+  providers:[CalendarService, ImageService],
+  animations: [
+    trigger('expandCollapse', [
+      state('collapsed', style({ height: '0', overflow: 'hidden' })),
+      state('expanded', style({ height: '*', overflow: 'hidden' })),
+      transition('collapsed => expanded', animate('0.3s ease-in')),
+      transition('expanded => collapsed', animate('0.3s ease-out'))
+    ])
+  ]
 })
 export class HomeComponent {
   
