@@ -66,7 +66,9 @@ h2 {
 }
 
 .day-content > div {
-  flex: 0 0 calc(50% - 20px);
+  flex: 1 1 auto;
+  margin-left: 40px;
+  margin-right: 40px;
   margin-bottom: 20px;
 }
 /* Stile für das Toggle-Icon */
@@ -90,7 +92,9 @@ h2 {
 .day.expanded .toggle-icon {
   transform: rotate(90deg);
 }
-
+.amount-select{
+  width: 120px;
+}
 /* Tabellenstile */
 table {
   min-width: 100%;
@@ -138,6 +142,7 @@ tbody tr:hover {
   }
 
   .day-content > div {
-    flex: 0 0 calc(33.33% - 20px);
+    flex: 1 1 auto;
+    margin: 20px;
   }
 }

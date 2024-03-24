@@ -13,6 +13,8 @@ import { Order } from '../../interface/order';
 import { MatIconModule } from '@angular/material/icon';
 import { Dish } from '../../interface/dish';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 
 
 @Component({
@@ -20,7 +22,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   templateUrl: './home.component.html',
   standalone: true,
   styleUrls: ['./home.component.scss'],
-  imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule, MatIconModule],
+  imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule, MatIconModule, MatFormFieldModule, MatSelectModule],
   providers:[CalendarService, ImageService],
   animations: [
     trigger('expandCollapse', [
@@ -40,6 +42,7 @@ export class HomeComponent {
   start_date: string;
   end_date: string;
   order_list: Order[];
+  quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(private http: HttpClient, private authService: AuthService, private imageService: ImageService) {
     this.start_date = "";
@@ -101,8 +104,6 @@ export class HomeComponent {
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
-          // Fehlermeldung ausgeben
-          //alert('Fehler aufgetreten: ' + error.message);
           this.ordersByUser = [];
         }
       )
@@ -123,14 +124,12 @@ export class HomeComponent {
       console.error("Invalid date range:", changedDate);
     }
   }
-  onQuantityChange(event: Event, dish: any, mealPlanID: any) {
-    const target = event.currentTarget as HTMLSelectElement;
+  onQuantityChange(event: MatSelectChange, dish: any, mealPlanID: any) {
+    const target = event.value as HTMLSelectElement;
     if (target) {
       const quantity = target.value;
       dish.quantity = quantity;
       const existingOrderIndex = this.order_list.findIndex(order => order.mealPlanID === mealPlanID);
-    //checks if mealPlan is already part of the list
-    //if it is existing entity gets updated
     if (existingOrderIndex !== -1) {
       this.order_list[existingOrderIndex].amount = quantity;
     } else {

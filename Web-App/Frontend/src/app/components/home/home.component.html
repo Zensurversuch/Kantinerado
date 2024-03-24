@@ -24,24 +24,27 @@
         <div class="day-content"  [ngStyle]="{ 'height': days.expanded ? 'auto' : '0' }" [@expandCollapse]="days.expanded ? 'expanded' : 'collapsed'">
           <div class="dish" *ngFor="let dish of days.dishes">
             <ng-container *ngIf="dish.dishimage">
-              <img style="display:block; width:100px;height:100px;" id="base64image" [src]="'data:image/jpeg;base64,' + dish.dishimage">
+              <img style="display:block; width:120px;height:120px;" id="base64image" [src]="'data:image/jpeg;base64,' + dish.dishimage">
             </ng-container>
             <ng-container *ngIf="!dish.dishimage">
-              <img style="display:block; width:100px;height:100px;" src="../../../assets/no-image-icon-23494.png">
+              <img style="display:block; width:120px;height:120px;" src="../../../assets/no-image-icon-23494.png">
             </ng-container>
             <h3>{{ dish.dishName }}</h3>
+            <div *ngIf="isLoggedIn()">
+              <mat-form-field class ="amount-select">
+                <mat-label>Menge</mat-label>
+                <mat-select [(ngModel)]="dish.amount" (selectionChange)="onQuantityChange($event, dish, dish.mealPlanID)">
+                  <mat-option *ngFor="let num of quantityOptions" [value]="num">{{ num }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div class="toggle-dish-container" (click)="toggleDish(dish)">
               <span class="material-icons toggle-dish" [class.expanded]="dish.expanded">chevron_right</span>
             </div>
             <div [ngStyle]="{ 'height': dish.expanded ? 'auto' : '0' }" class="dish-details" [@expandCollapse]="dish.expanded ? 'expanded' : 'collapsed'">
-              <div *ngIf="isLoggedIn()">
-                <select [(ngModel)]="dish.amount" (change)="onQuantityChange($event, dish, dish.mealPlanID)">
-                  <option *ngFor="let num of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ num }}</option>
-                </select>
-              </div>
-              <p>Gerichtsart: {{ dish.dishmealType }}</p>
-              <p>Preis: {{ dish.dishPrice }}€</p>
-              <p>Kategorie: {{ dish.dishdietaryCategorie }}</p>
+              <p>Gerichtsart: <br>{{ dish.dishmealType }}</p>
+              <p>Preis: <br>{{ dish.dishPrice }}€</p>
+              <p>Kategorie: <br>{{ dish.dishdietaryCategorie }}</p>
               <div>
                 <p>Zutaten</p>
                 <ul>
