@@ -11,7 +11,7 @@ import { ImageService } from '../../service/picture/picture.service';
 import { FormsModule } from '@angular/forms';
 import { Order } from '../../interface/order';
 import { MatIconModule } from '@angular/material/icon';
-import { Dish } from '../../interface/dish';
+import { Meal } from '../../interface/Meal';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -67,7 +67,7 @@ export class HomeComponent {
   toggleDay(day: OrderByDay) {
     day.expanded = !day.expanded;
   }
-  toggleDish(dish: Dish) {
+  toggleDish(dish: Meal) {
     dish.expanded = !dish.expanded
   }
 
@@ -170,7 +170,7 @@ export class HomeComponent {
   {
     this.ordersByUser.forEach((order: Order) => {
       this.mealPlanSumResponse.forEach(days => {
-          days.dishes.forEach((dish: Dish) => {
+          days.dishes.forEach((dish: Meal) => {
             if (dish.mealPlanID === order.mealPlanID) {
               dish.amount = order.amount;
             }
@@ -184,7 +184,7 @@ export class HomeComponent {
     if(this.isLoggedIn())
     {
       this.mealPlanSumResponse.forEach(days => {
-        days.dishes.forEach((dish: Dish) => {
+        days.dishes.forEach((dish: Meal) => {
           dish.amount = 0;
         });
       });

@@ -1,6 +1,6 @@
 import { DishData } from "./dishData";
 
-export interface Dish extends DishData{
+export interface Meal extends DishData{
   mealPlanID: number; 
   amount: number;
   expanded: boolean;
