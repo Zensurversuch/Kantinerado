@@ -11,7 +11,7 @@ import {NgForOf} from "@angular/common";
 import {HeaderComponent} from "../header/header.component";
 import {WeekdayArray} from "../../interface/weekday";
 import {MatButton} from "@angular/material/button";
-import {Dish} from "../../interface/dish";
+import {Meal} from "../../interface/meal";
 import {MealPlanService} from "../../service/mealplan/meal-plan.service";
 
 @Component({
@@ -46,16 +46,16 @@ export class CreateMealPlanComponent implements OnInit {
   dates: string[] = [];
   weekday: string[] = WeekdayArray;
   mealTypes: string[] = MealTypesArray;
-  dishesAfterType: Dish[] = [];
-  selectedDish: Dish | undefined;
+  dishesAfterType: Meal[] = [];
+  selectedDish: Meal | undefined;
   selectedMealType: string | undefined;
-  dishList: Dish [] = [];
-  mondayList: Dish [] = [];
-  tuesdayList: Dish [] = [];
-  wednesdayList: Dish [] = [];
-  thursdayList: Dish [] = [];
-  fridayList: Dish [] = [];
-  saturdayList: Dish [] = [];
+  dishList: Meal [] = [];
+  mondayList: Meal [] = [];
+  tuesdayList: Meal [] = [];
+  wednesdayList: Meal [] = [];
+  thursdayList: Meal [] = [];
+  fridayList: Meal [] = [];
+  saturdayList: Meal [] = [];
 
   [key: string]: any;
 
@@ -63,7 +63,7 @@ export class CreateMealPlanComponent implements OnInit {
     const mealPlanArray: { mealPlan: { "dishID": number; "date": string; }[] } = { mealPlan: [] };
     const weekDayLists = ['mondayList', 'tuesdayList', 'wednesdayList', 'thursdayList', 'fridayList', 'saturdayList'];
     weekDayLists.forEach((dayList, index) => {
-      this[dayList].forEach((dish: Dish) => {
+      this[dayList].forEach((dish: Meal) => {
         const dishJSON ={"dishID": dish.dish_id, "date": this.dates[index]};
         mealPlanArray.mealPlan.push(dishJSON)
       })
@@ -74,13 +74,13 @@ export class CreateMealPlanComponent implements OnInit {
   loadDishes() {
     if (this.selectedMealType) {
       this.dishService.getDishByMealType(this.selectedMealType)
-        .subscribe((data: Dish[]) => {
+        .subscribe((data: Meal[]) => {
           this.dishesAfterType = data;
         });
     }
   }
 
-  drop(event: CdkDragDrop<Dish[]>) {
+  drop(event: CdkDragDrop<Meal[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
