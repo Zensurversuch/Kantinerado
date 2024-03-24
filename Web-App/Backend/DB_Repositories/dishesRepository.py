@@ -75,7 +75,7 @@ class DishRepository:
                         "ingredients": dish.ingredients,
                         "dietaryCategorie": dish.dietaryCategory,
                         "mealType": dish.mealType,
-                        "image": base64.b6dish4encode(dish.image).decode() if dish.image else None
+                        "image": base64.b64encode(dish.image).decode() if dish.image else None
                     }
                     dishes_list.append(dish_dict)
                 return dishes_list
