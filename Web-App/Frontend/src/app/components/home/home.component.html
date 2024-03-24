@@ -1,4 +1,7 @@
-<app-header></app-header>
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
+
+<body [ngClass]="{ 'blurred': blurred }">
+
  <div class="calendar-container">
     <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
   </div>
@@ -64,4 +67,4 @@
   <div class="problem" *ngIf="mealPlanSumResponse.length === 0" [hidden]="!(start_date && end_date)">
     <p>Keine Menüs im gewählten Zeitraum gefunden.</p>
   </div>
-
+</body>

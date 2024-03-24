@@ -44,12 +44,16 @@ export class HomeComponent {
   order_list: Order[];
   quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  constructor(private http: HttpClient, private authService: AuthService, private imageService: ImageService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
     this.order_list = [];
     this.ordersByUser = [];
+  }
+    blurred: boolean = false;
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
   }
   
   formatDate(dateString: string): string {

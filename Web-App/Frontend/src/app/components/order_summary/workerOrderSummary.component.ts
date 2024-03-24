@@ -36,8 +36,11 @@ export class WorkerOrderSummaryComponent {
   constructor(private http: HttpClient, private authService: AuthService,) {
     this.start_date = "";
     this.end_date = "";
+  }
 
-    
+  blurred: boolean = false;
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
   }
 
   formatDate(dateString: string): string {

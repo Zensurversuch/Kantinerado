@@ -1,6 +1,11 @@
 /* Standardstile für Header und Container */
 @import "../../color.scss";
 
+.blurred {
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
 h2 {
   margin-top: 30px;
   text-align: center;
