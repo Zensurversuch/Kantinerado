@@ -136,8 +136,7 @@ export class CreateDishComponent implements OnInit {
     response => {
       console.log('Dish created successful:', response);
       this.createDishForm.reset();
-      this.feedbackService.displayMessage(response.response);
-
+      alert(response.message); 
     },
     error => {
       console.error('Dish created unsuccessful:', error);
