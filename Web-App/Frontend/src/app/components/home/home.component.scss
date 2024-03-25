@@ -29,7 +29,16 @@ h2 {
   width: 100%; 
   margin: 0 auto;
 }
+.order-buttons{
+  color: black;
+  background-color: #f5f5f5;
+  border-radius: 5px; // Runde Ecken
+  border: 1px solid #ddd;
+  padding: 5px; // Innenabstand
+  cursor: pointer; // Zeige den Cursor als Zeigefinger
+  margin: 5px;
 
+}
 .problem {
   width: 100%; 
   margin: 0 auto;

@@ -15,14 +15,16 @@ import { Meal } from '../../interface/Meal';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   standalone: true,
   styleUrls: ['./home.component.scss'],
-  imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule, MatIconModule, MatFormFieldModule, MatSelectModule],
+  imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule, MatIconModule, MatFormFieldModule, MatSelectModule, MatTooltipModule,MatDividerModule, MatButtonModule],
   providers:[CalendarService, ImageService],
   animations: [
     trigger('expandCollapse', [
