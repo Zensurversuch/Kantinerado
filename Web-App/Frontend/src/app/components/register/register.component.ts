@@ -5,7 +5,7 @@ import {NgIf} from "@angular/common";
 import {UserData} from '../../interface/user-data';
 import {UserService} from '../../service/user/user.service';
 import {HttpClientModule} from "@angular/common/http";
-import {passwordMatchingValidatior} from "./password-validator";
+import {PasswordValidator} from "./password-validator";
 import {Role} from "../../interface/role";
 
 
@@ -57,7 +57,7 @@ export class RegisterComponent {
         Validators.pattern(this.REGEX_PASSWORD),
       ],
       [])
-  },{ validators: passwordMatchingValidatior } );
+  },{ validators: PasswordValidator } );
 
   constructor(private userService: UserService) {
     this.registerForm.valueChanges.subscribe(console.log)
