@@ -164,6 +164,7 @@ export class HomeComponent {
     }
   }
   onPushOrdersButtonClick() {
+    if(this.order_list.length !== 0)
     this.pushOrders(this.order_list);
   }
   fillAmountMenus()
