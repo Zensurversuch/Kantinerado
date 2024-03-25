@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AuthService} from "../authentication/auth.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,10 @@ export class MealPlanService {
         error: err => console.error(err.message),
         complete: () => console.log('Observable emitted the complete notification')
       });
+  }
+
+  getMealPlans(start_date: string, end_date:string): Observable<any> {
+    const url = environment.apiUrl+'/meal_plan/'+start_date+'/'+end_date;
+    return this.http.get<any>(url);
   }
 }

@@ -1,5 +1,5 @@
 import {DishData} from "./dishData";
 
-export interface Meal extends DishData{
+export interface Dish extends DishData{
   dish_id: number;
 }
