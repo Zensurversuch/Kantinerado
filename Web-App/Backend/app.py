@@ -343,7 +343,7 @@ def meal_plan(start_date, end_date):
     if meal_Plan[0]:
         return jsonify(meal_Plan[1]), 201
     elif meal_Plan[0]== None:
-        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Speiseplan nicht gefunden"})
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Speiseplan nicht gefunden"}), 404
     else:
         return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}{str(meal_Plan[1])}"}),420
 
