@@ -6,11 +6,13 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../service/authentication/auth.service';
 import { FeedbackService } from '../../service/feedback/feedback.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, HeaderComponent],
+  imports: [FormsModule, HeaderComponent, CommonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 
@@ -25,6 +27,10 @@ export class LoginComponent {
     private authService: AuthService,
     private feedbackService: FeedbackService
   ) {}
+  blurred: boolean = false;
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
+  }
 
   public submit_login() {
     const userData = {

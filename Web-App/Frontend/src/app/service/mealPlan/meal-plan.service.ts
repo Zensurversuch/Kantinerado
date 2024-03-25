@@ -26,7 +26,8 @@ export class MealPlanService {
           console.error(err.message);
           this.feedbackService.displayMessage(err.error.response);
         },
-        complete: () => console.log('Observable emitted the complete notification')
+        complete: () => this.feedbackService.displayMessage("Erfolgreich: Der Speiseplan wurde angelegt"),
+
       });
   }
   

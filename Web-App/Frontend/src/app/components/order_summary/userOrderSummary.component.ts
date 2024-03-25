@@ -40,9 +40,6 @@ export class UserOrderSummaryComponent {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
-    if(!this.start_date && !this.end_date) {
-      this.feedbackService.displayMessage("Fehler: Bitte wähle einen Datumsbereich");
-    }
   }
 
   blurred: boolean = false;

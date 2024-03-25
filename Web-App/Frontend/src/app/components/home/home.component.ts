@@ -112,7 +112,6 @@ export class HomeComponent {
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
-          this.feedbackService.displayMessage(error.error.response);
           this.ordersByUser = [];
         }
       )
@@ -160,6 +159,7 @@ export class HomeComponent {
       .subscribe(
         (response: any) => {
           console.log('POST request successful', response);
+          this.feedbackService.displayMessage("Erfolgreich: Deine Bestellung wurde angelegt");
         },
         (error) => {
           console.error('Fehler aufgetreten:', error.response);

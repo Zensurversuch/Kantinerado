@@ -1,5 +1,10 @@
 @import"../../color.scss";
 
+.blurred {
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
 .login {
   width: 300px;
   margin: 50px auto;
