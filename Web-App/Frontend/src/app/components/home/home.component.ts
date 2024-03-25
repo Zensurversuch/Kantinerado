@@ -8,51 +8,56 @@ import { environment } from '../../../environments/environment';
 import {OrderByDay}from '../../interface/order-by-day';
 import { CommonModule } from '@angular/common';
 import { ImageService } from '../../service/picture/picture.service';
-
+import { FormsModule } from '@angular/forms';
+import { Order } from '../../interface/order';
+import { MatIconModule } from '@angular/material/icon';
+import { Meal } from '../../interface/Meal';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   standalone: true,
   styleUrls: ['./home.component.scss'],
-  imports: [CalendarComponent, HeaderComponent, CommonModule],
-  providers:[CalendarService, ImageService]
+  imports: [CalendarComponent, HeaderComponent, CommonModule, FormsModule, MatIconModule, MatFormFieldModule, MatSelectModule, MatTooltipModule,MatDividerModule, MatButtonModule],
+  providers:[CalendarService, ImageService],
+  animations: [
+    trigger('expandCollapse', [
+      state('collapsed', style({ height: '0', overflow: 'hidden' })),
+      state('expanded', style({ height: '*', overflow: 'hidden' })),
+      transition('collapsed => expanded', animate('0.3s ease-in')),
+      transition('expanded => collapsed', animate('0.3s ease-out'))
+    ])
+  ]
 })
 export class HomeComponent {
   
   mealPlanSumResponse: any[] = [];
+  ordersByUser: Array<Order>;
   datesCreated: string[];
   mealPlansByDay: OrderByDay[] = [];
   start_date: string;
   end_date: string;
+  order_list: Order[];
+  quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
+    this.order_list = [];
+    this.ordersByUser = [];
   }
-
     blurred: boolean = false;
   ToggleBlurred(isOpened: boolean) {
     this.blurred = isOpened;
   }
-
-  groupmealPlansByDay() {
-    this.mealPlansByDay = [];
   
-    // Iteration über alle eindeutigen Datumswerte
-    this.datesCreated.forEach(date => {
-      // Filtern der Mahlzeitenpläne für das aktuelle Datum
-      const plansForDay = this.mealPlanSumResponse.filter(plan => plan.mealPlanDate === date);
-      
-      // Erstellen einer neuen Mahlzeitenplan-Struktur für den aktuellen Tag
-      const mealPlansForDay: OrderByDay = { date: date, mealPlans: [], expanded: true };
-      mealPlansForDay.mealPlans = plansForDay.map(plan => plan.dishes); // Fügen Sie alle Gerichte für den Tag hinzu
-      this.mealPlansByDay.push(mealPlansForDay);
-    });
-  }
-  
-
   formatDate(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
     const date = new Date(dateString);
@@ -63,6 +68,9 @@ export class HomeComponent {
 
   toggleDay(day: OrderByDay) {
     day.expanded = !day.expanded;
+  }
+  toggleDish(dish: Meal) {
+    dish.expanded = !dish.expanded
   }
 
   getmealPlans() {
@@ -78,20 +86,33 @@ export class HomeComponent {
         (mealPlanSumResponse) => {
           console.log('meal_plan/'+this.start_date+'/'+this.end_date + ' GET-Anfrage erfolgreich', mealPlanSumResponse);
           this.mealPlanSumResponse = mealPlanSumResponse;
-          this.mealPlanSumResponse.forEach(meal => {
-            if (!this.datesCreated.includes(meal.mealPlanDate)) {
-              this.datesCreated.push(meal.mealPlanDate);
-            }
-          });
-          this.groupmealPlansByDay();
+          //resets chosen orders if new date is chosen
+          this.order_list = [];
+          this.resetAmountMenus();
+          
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
-          // Fehlermeldung ausgeben
-          alert('Fehler aufgetreten: ' + error.message);
           this.mealPlanSumResponse = [];
         }
       );
+    }
+  }
+  getOrdersByUser(){
+    if(this.start_date && this.end_date) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+      this.http.get<any[]>(`${environment.apiUrl}/orders_by_user/${this.start_date}/${this.end_date}`, { headers })
+      .subscribe(
+        (ordersByUserResponse) => {
+          console.log('orders_by_user/'+this.start_date+'/'+this.end_date + ' GET-Anfrage erfolgreich', ordersByUserResponse);
+          this.ordersByUser = ordersByUserResponse;
+          this.fillAmountMenus();
+        },
+        (error) => {
+          console.error('Fehler aufgetreten:', error);
+          this.ordersByUser = [];
+        }
+      )
     }
   }
 
@@ -101,10 +122,81 @@ export class HomeComponent {
       this.end_date = changedDate[1];
       console.log("Handler Start: " + this.start_date);
       console.log("Handler End: " + this.end_date);
-  
+      
       this.getmealPlans();
+      
+      
     } else {
       console.error("Invalid date range:", changedDate);
     }
+  }
+  onQuantityChange(event: MatSelectChange, dish: any, mealPlanID: any) {
+    const target = event.value;
+    if (target !== undefined && target !== null) {
+      const quantity = target;
+      dish.quantity = quantity;
+      const existingOrderIndex = this.order_list.findIndex(order => order.mealPlanID === mealPlanID);
+    if (existingOrderIndex !== -1) {
+      this.order_list[existingOrderIndex].amount = quantity;
+    } else {
+      const order = {
+        "mealPlanID": mealPlanID,
+        "amount": quantity
+      };
+      this.order_list.push(order);
+    }
+    }
+  }
+  pushOrders(orders: Array<Object>)
+  {
+    if(orders && this.isLoggedIn()) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+      headers.set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+      this.http.post(environment.apiUrl+'/create_order', {"orders": orders}, { headers })
+      .subscribe(
+        (response: any) => {
+          console.log('POST request successful', response);
+        },
+        (error) => {
+          console.error('Fehler aufgetreten:', error.response);
+          console.log(error);
+          alert('Fehler aufgetreten: ' + error.message);
+        }
+      )
+    }
+  }
+  onPushOrdersButtonClick() {
+    if(this.order_list.length !== 0)
+    this.pushOrders(this.order_list);
+  }
+  fillAmountMenus()
+  {
+    this.ordersByUser.forEach((order: Order) => {
+      this.mealPlanSumResponse.forEach(days => {
+          days.dishes.forEach((dish: Meal) => {
+            if (dish.mealPlanID === order.mealPlanID) {
+              dish.amount = order.amount;
+            }
+        });
+      });
+    });
+
+  }
+  resetAmountMenus()
+  {
+    if(this.isLoggedIn())
+    {
+      this.mealPlanSumResponse.forEach(days => {
+        days.dishes.forEach((dish: Meal) => {
+          dish.amount = 0;
+        });
+      });
+      this.order_list = [];
+      this.getOrdersByUser();
+    }
+  }
+  isLoggedIn(): boolean
+  {
+    return(this.authService.isLoggedIn() && !this.authService.isTokenExpired());
   }
 }

@@ -268,7 +268,7 @@ def create_order():
     for order in data_Orders:
         mealPlanID = order.get('mealPlanID')
         amount = order.get('amount')
-        if not (mealPlanID and amount):
+        if (mealPlanID == None and amount == None):
             return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
         mealPlan_ids.append(mealPlanID)
 
@@ -343,7 +343,7 @@ def meal_plan(start_date, end_date):
     if meal_Plan[0]:
         return jsonify(meal_Plan[1]), 201
     elif meal_Plan[0]== None:
-        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Speiseplan nicht gefunden"})
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Speiseplan nicht gefunden"}), 404
     else:
         return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}{str(meal_Plan[1])}"}),420
 
