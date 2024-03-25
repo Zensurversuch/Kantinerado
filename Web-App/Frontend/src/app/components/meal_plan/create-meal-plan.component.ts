@@ -12,7 +12,7 @@ import {HeaderComponent} from "../header/header.component";
 import {WeekdayArray} from "../../interface/weekday";
 import {MatButton} from "@angular/material/button";
 import {Dish} from "../../interface/dish";
-import {MealPlanService} from "../../service/mealplan/meal-plan.service";
+import {MealPlanService} from "../../service/mealPlan/meal-plan.service";
 
 @Component({
   selector: 'app-create-meal-plan',
