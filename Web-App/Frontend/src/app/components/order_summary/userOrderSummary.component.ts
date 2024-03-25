@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
 import { CalendarService } from '../../service/calendar/calendar.service';
 import { CalendarComponent } from '../calendar/calendar.component';
+import { FeedbackService } from '../../service/feedback/feedback.service';
+
 
 interface OrderByDay {
   date: string;
@@ -34,10 +36,13 @@ export class UserOrderSummaryComponent {
   start_date: string;
   end_date: string;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
+    if(!this.start_date && !this.end_date) {
+      this.feedbackService.displayMessage("Fehler: Bitte wähle einen Datumsbereich");
+    }
   }
 
   blurred: boolean = false;
@@ -80,6 +85,7 @@ export class UserOrderSummaryComponent {
       .subscribe(
         (orderSumResponse) => {
           console.log('orders_by_user/'+this.start_date+'/'+this.end_date + ' GET-Anfrage erfolgreich', orderSumResponse);
+          
           this.orderSumResponse = orderSumResponse;
           this.orderSumResponse.forEach(order => {
             if (!this.datesCreated.includes(order.mealPlanDate)) {
@@ -90,6 +96,7 @@ export class UserOrderSummaryComponent {
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
+          this.feedbackService.displayMessage(error.error.response);
           this.orderSumResponse = [];
         }
       );

@@ -287,7 +287,7 @@ def create_order():
     if ret_value=="created":
         return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCESS.value}Bestellung erfolgreich"}), 201
     else:
-        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestellung fehlgeschalgen"}), 500
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestellung fehlgeschlagen"}), 500
 
 @app.route('/orders_by_user/<string:start_date>/<string:end_date>')
 @jwt_required()
@@ -308,7 +308,7 @@ def orders_sorted_by_dish(start_date, end_date):
 
     if orders:
         return jsonify(orders)
-    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Sie haben keine Bestellungen in diesem Zeitraum"}), 404
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es gibt Bestellungen in diesem Zeitraum"}), 404
   
 # -------------------------- Meal plan routes ------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/create_meal_plan', methods=['POST'])

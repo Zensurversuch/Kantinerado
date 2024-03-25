@@ -5,7 +5,7 @@ import { HeaderComponent } from '../header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../service/authentication/auth.service';
-import { ErrorService } from '../../service/feedback/feedback.service';
+import { FeedbackService } from '../../service/feedback/feedback.service';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +13,7 @@ import { ErrorService } from '../../service/feedback/feedback.service';
   imports: [FormsModule, HeaderComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
+
 })
 export class LoginComponent {
   username: string = '';
@@ -22,7 +23,7 @@ export class LoginComponent {
     private router: Router,
     private http: HttpClient,
     private authService: AuthService,
-    private errorService: ErrorService
+    private feedbackService: FeedbackService
   ) {}
 
   public submit_login() {
@@ -33,16 +34,16 @@ export class LoginComponent {
 
     this.http.post(environment.apiUrl + '/login', userData).subscribe(
       (response: any) => {
+        this.feedbackService.displayMessage(response.response);
         console.log('POST request successful', response);
         this.authService.setJwtToken(response.access_token);
-        console.log('POST request successful', this.authService.getJwtToken());
         this.router.navigate(['/']);
         this.authService.setUserRole(response.role);
         this.authService.setUserID(response.userID);
       },
       (error) => {
-        console.error('Error occurred:', error);
-        this.errorService.displayErrorMessage('An error occurred while logging in. Please try again.');
+        console.error(error.error.response);
+        this.feedbackService.displayMessage(error.error.response);
       }
     );
   }
