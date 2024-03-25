@@ -3,4 +3,4 @@ from enum import Enum
 class get_api_messages(Enum):
     SUCCESS = "Erfolgreich: "
     WARNING = "Warnung: "
-    ERORR = "Fehler: "
+    ERROR = "Fehler: "
