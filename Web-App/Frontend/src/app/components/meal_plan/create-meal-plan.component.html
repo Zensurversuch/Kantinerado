@@ -1,0 +1,101 @@
+<app-header></app-header>
+<div class="container">
+  <div class="left-pane">
+    <mat-card class="Dropdown MealType">
+      <h3>Gerichtsart auswählen</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Gerichtsart auswählen</mat-label>
+        <mat-select [(ngModel)]="selectedMealType" (ngModelChange)="loadDishes()">
+          <mat-option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="Dropdown Dish">
+      <h3>Gericht auswählen</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Gericht auswählen</mat-label>
+        <mat-select [(ngModel)]="selectedDish" (ngModelChange)="createNewDishCard()">
+          <mat-option *ngFor="let dish of dishesAfterType" [value]="dish">{{ dish.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+    <mat-card class="dishArea">
+      <div
+        cdkDropList
+        #DishList="cdkDropList"
+        [cdkDropListData]="dishList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        (cdkDropListDropped)="drop($event)">
+        <div class="DishItem" *ngFor="let item of dishList" cdkDrag>{{ item.name }}</div>
+      </div>
+    </mat-card>
+    <button mat-raised-button color="primary" (click)="createDishPlan()">Wochenplan Bestätigen</button>
+  </div>
+
+  <div class="right-pane">
+    <div class="scrollable">
+      <h3>{{weekday[0]}}: {{ dates[0]}}</h3>
+      <div
+        cdkDropList
+        #Monday="cdkDropList"
+        [cdkDropListData]="mondayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <div class="DishItem" *ngFor="let item of mondayList" cdkDrag>{{ item.name }}</div>
+      </div>
+      <h3>{{weekday[1]}}: {{ dates[1]}}</h3>
+      <div
+        cdkDropList
+        #Tuesday="cdkDropList"
+        [cdkDropListData]="tuesdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <div class="DishItem" *ngFor="let item of tuesdayList" cdkDrag>{{ item.name }}</div>
+      </div>
+      <h3>{{weekday[2]}}: {{ dates[2]}}</h3>
+      <div
+        cdkDropList
+        #Wednesday="cdkDropList"
+        [cdkDropListData]="wednesdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <div class="DishItem" *ngFor="let item of wednesdayList" cdkDrag>{{ item.name }}</div>
+      </div>
+      <h3>{{weekday[3]}}: {{ dates[3]}}</h3>
+      <div
+        cdkDropList
+        #Thursday="cdkDropList"
+        [cdkDropListData]="thursdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <div class="DishItem" *ngFor="let item of thursdayList" cdkDrag>{{ item.name }}</div>
+      </div>
+      <h3>{{weekday[4]}}: {{ dates[4]}}</h3>
+      <div
+        cdkDropList
+        #Friday="cdkDropList"
+        [cdkDropListData]="fridayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <div class="DishItem" *ngFor="let item of fridayList" cdkDrag>{{ item.name }}</div>
+      </div>
+      <h3>{{weekday[5]}}: {{ dates[5]}}</h3>
+      <div
+        cdkDropList
+        #Saturday="cdkDropList"
+        [cdkDropListData]="saturdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <div class="DishItem" *ngFor="let item of saturdayList" cdkDrag>{{ item.name }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+

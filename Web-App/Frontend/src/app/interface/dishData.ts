@@ -10,4 +10,3 @@ export interface DishData {
     allergies: string[];
     image: string;
   }
-  

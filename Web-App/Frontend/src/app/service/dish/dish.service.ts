@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { DishData } from '../../interface/dishData';
 import { AuthService } from '../authentication/auth.service';
+import {MealType} from "../../interface/mealType";
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +17,11 @@ export class DishService {
     const url = environment.apiUrl+'/create_dish';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
     return this.http.post<any>(url, dishData, { headers });
+  }
+
+  getDishByMealType(mealType: string){
+    const url = environment.apiUrl+'/dish_by_mealType/'+mealType.toString();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+    return this.http.get<any>(url,{ headers });
   }
 }
