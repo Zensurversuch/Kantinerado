@@ -278,7 +278,7 @@ def create_order():
         monday = timestamp - timedelta(days=timestamp.weekday())
         sunday = monday + timedelta(days=6) 
         if any(datetime.strptime(mealPlanDate, "%Y-%m-%d") < sunday for mealPlanDate in mealPlanDates): 
-                return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es können keine Bestellungen mehr für die aktuelle Woche aufgegeben werden"}), 400
+                return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es können keine Bestellungen mehr für die aktuelle und vergangenen Wochen aufgegeben werden"}), 400
         if (timestamp.weekday() == 3 and timestamp.hour >= 18) or (timestamp.weekday() > 3):
             next_monday = timestamp - timedelta(days=timestamp.weekday()) + timedelta(days=7)
             next_sunday = next_monday + timedelta(days=6)
@@ -291,7 +291,7 @@ def create_order():
     if ret_value=="created":
         return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCESS.value}Bestellung erfolgreich"}), 201
     else:
-        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestellung fehlgeschalgen"}), 400
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestellung fehlgeschlagen"}), 400
 
 @app.route('/orders_by_user/<string:start_date>/<string:end_date>')
 @jwt_required()
