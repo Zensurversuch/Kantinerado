@@ -90,7 +90,7 @@ def create_user():
     if ret_value == []:   # If ret_value is empty no allergies were missing
         return jsonify({api_message_descriptor: f"{get_api_messages.SUCCES.value}Benutzer erfolgreich erstellt"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing
-        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Benutzer erfolgreich erstellt, aber die folgenden Allerigie {ret_value} sind nicht in der Datenbank vorhanden"}), 201
+        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Benutzer erfolgreich erstellt, aber die folgenden Allergien {ret_value} sind nicht in der Datenbank vorhanden"}), 201
     elif ret_value == False:
         return jsonify({api_message_descriptor: f"{get_api_messages.ERORR.value}Benutzer konnte nicht erstellt werden"}), 500
 
@@ -118,7 +118,7 @@ def create_user_as_admin():
     if ret_value == []:   # If ret_value is empty no allergies were missing
         return jsonify({api_message_descriptor: f"{get_api_messages.SUCCES.value}Benutzer erfolgreich erstellt"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing
-        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Benutzer erfolgreich erstellt, aber die folgenden Allerigie {ret_value} sind nicht in der Datenbank vorhanden"}), 201
+        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Benutzer erfolgreich erstellt, aber die folgenden Allergien {ret_value} sind nicht in der Datenbank vorhanden"}), 201
     elif ret_value == False:
         return jsonify({api_message_descriptor: f"{get_api_messages.ERORR.value}Benutzer konnte nicht erstellt werden"}), 500
 
@@ -171,11 +171,11 @@ def set_user_allergies():
     data_allergies = data.get('allergies')
     ret_value = user_repo.set_user_allergies_by_id(jwt_userID, data_allergies)
     if ret_value == []:   # If ret_value is empty no allergies were missing
-        return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCES.value}Allergien erfolgriech angepasst"}), 201
+        return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCES.value}Allergien erfolgreich angepasst"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing or the user wasn't found
         if ret_value == "User not found!":
             return jsonify({api_message_descriptor:  f"{get_api_messages.ERORR.value}Benutzer nicht gefunden"}), 404
-        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Allergien erfolgriech angepasst, aber die folgenden Allerigie {ret_value} sind nicht in der Datenbank vorhanden"}), 201
+        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Allergien erfolgreich angepasst, aber die folgenden Allergien {ret_value} sind nicht in der Datenbank vorhanden"}), 201
     elif ret_value == False:
         return jsonify({api_message_descriptor: f"{get_api_messages.ERORR.value}Allergien konnten nicht angepasst werden"}), 500
 
@@ -285,7 +285,7 @@ def create_order():
         
     ret_value = order_repo.create_order(jwt_userID, data_Orders)
     if ret_value=="created":
-        return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCES.value}Bestellelung erfolgreich"}), 201
+        return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCES.value}Bestellung erfolgreich"}), 201
     else:
         return jsonify({api_message_descriptor:  f"{get_api_messages.ERORR.value}Bestellung fehlgeschalgen"}), 500
 
