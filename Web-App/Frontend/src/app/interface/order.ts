@@ -1,4 +1,4 @@
 export interface Order {
-    mealPlanID: any;
-    amount: any;
+    mealPlanID: number;
+    amount: number;
 }
