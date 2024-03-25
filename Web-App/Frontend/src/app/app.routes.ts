@@ -8,11 +8,13 @@ import {WorkerOrderSummaryComponent} from "./components/order_summary/workerOrde
 import { CreateDishComponent } from './components/dish/createDish.component';
 import { AuthGuard } from './guard/auth.guard';
 import { RegisterAdminComponent } from './components/register/registerAdmin.component';
+import {LogoutComponent} from "./components/logout/logout.component";
 
 
 export const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},
+  { path: 'logout', component: LogoutComponent},
   { path: 'createDish', component: CreateDishComponent, canActivate: [AuthGuard]},
   { path: 'hello', component: HelloComponent, canActivate: [AuthGuard]},
   { path: 'userOrderSummary', component: UserOrderSummaryComponent, canActivate: [AuthGuard]},

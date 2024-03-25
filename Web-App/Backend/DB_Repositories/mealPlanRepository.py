@@ -46,7 +46,7 @@ class MealPlanRepository:
                 if listOfDuplicates == []:
                     return True, ''
                 else: 
-                    return True, str(listOfDuplicates)+" were already added"
+                    return True, str(listOfDuplicates)
             except SQLAlchemyError as e:
                 return False, e
             except ValueError as e:

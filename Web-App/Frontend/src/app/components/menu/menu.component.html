@@ -1,11 +1,11 @@
 <div class="menu"> <!-- Block -->
   <ul class="menu__list">
-    <li class="menu__item"><a routerLink="/" class="menu__link">Übersicht</a></li>
-    <li class="menu__item"><a routerLink="/login" class="menu__link">Login</a></li>
-    <li class="menu__item"><a routerLink="/createDish" class="menu__link">Gerichte hinzufügen</a></li>
-    <li class="menu__item"><a routerLink="/userOrderSummary" class="menu__link">Bestellübersicht Benutzer</a></li>
-    <li class="menu__item"><a routerLink="/workerOrderSummary" class="menu__link">Bestellübersicht Kantinenmitarbeiter</a></li>
-    <li class="menu__item"><a routerLink="/registerAdmin" class="menu__link">Benutzer Registrieren</a></li>
-    <li class="menu__item"><a href="#" class="menu__link">Menüpunkt 4</a></li>
+    <li class="menu__item"><img src="../../../assets/Menu_Icons/reshot-icon-menu-RCFVY3EB8J.svg"> <a routerLink="/" class="menu__link">Übersicht</a></li>
+    <li class="menu__item" *ngIf="!isLoggedIn"><img src="../../../assets/Menu_Icons/reshot-icon-check-in-28QDAR4CPV.svg"> <a routerLink="/login" class="menu__link">Login</a></li>
+    <li class="menu__item" *ngIf="isLoggedIn"><img src="../../../assets/Menu_Icons/reshot-icon-check-out-DLKF3BV54J.svg"> <a routerLink="/logout" class="menu__link">Logout</a></li>
+    <li class="menu__item" *ngIf="(userRole === 'admin' || userRole === 'hungernde') && isLoggedIn"><img src="../../../assets/Menu_Icons/reshot-icon-list-UQ7FKRE2YS.svg"> <a routerLink="/userOrderSummary" class="menu__link">Bestellübersicht Benutzer</a></li>
+    <li class="menu__item" *ngIf="(userRole === 'admin' || userRole === 'kantinenmitarbeiter') && isLoggedIn"><img src="../../../assets/Menu_Icons/reshot-icon-add-8TPKZ5UW7V.svg"> <a routerLink="/createDish" class="menu__link">Gerichte hinzufügen</a></li>
+    <li class="menu__item" *ngIf="(userRole === 'admin' || userRole === 'kantinenmitarbeiter') && isLoggedIn"><img src="../../../assets/Menu_Icons/reshot-icon-list-UQ7FKRE2YS.svg"> <a routerLink="/workerOrderSummary" class="menu__link">Bestellübersicht Kantine</a></li>
+    <li class="menu__item" *ngIf="userRole === 'admin' && isLoggedIn"><img src="../../../assets/Menu_Icons/reshot-icon-user-add-4NJEYFWKGB.svg"> <a routerLink="/registerAdmin" class="menu__link">Benutzer Registrieren</a></li>
   </ul>
 </div>
