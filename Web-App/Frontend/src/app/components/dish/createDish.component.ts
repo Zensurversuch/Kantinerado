@@ -52,8 +52,8 @@ export class CreateDishComponent implements OnInit {
 
     this.createDishForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
-      price: ['', [Validators.required,Validators.maxLength(50), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
-      ingredients: this.fb.array([]),
+      price: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+      ingredients: this.fb.array([this.fb.group({ingredientName: [''] })]),
       dietaryCategory: ['', Validators.required],
       mealType: ['', Validators.required],
       allergies: [''],
@@ -112,10 +112,17 @@ export class CreateDishComponent implements OnInit {
     }
   }
 
+  clearIngredients() {
+    while (this.ingredients.length !== 0) {
+      this.ingredients.removeAt(0);
+    }
+  }
+
   createDishSubmit(): void {
   const allIngredients = this.ingredients.value
     .map((ingredient: any) => ingredient.ingredientName)
-    .filter((item: string) => item.trim() !== "");
+    .filter((item: string | null) => item !== null)
+    .map((item: string) => item.trim());
 
   const dishData: DishData = {
     name: this.createDishForm.value.name,
@@ -133,6 +140,7 @@ export class CreateDishComponent implements OnInit {
     response => {
       console.log('Dish created successful:', response);
       this.createDishForm.reset();
+      this.clearIngredients();
       alert(response.message);
     },
     error => {
