@@ -1,5 +1,5 @@
-
 @import "../../color";
+
 .menu {
   position: fixed;
   top: 50px;
@@ -19,8 +19,13 @@
   }
 
   &__item {
-    margin: 2em;
+    margin: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-bottom: solid 1px $primary-border-color;
+    display: flex;
+    text-align: left;
+    align-items: center;
   }
 
   &__link {
@@ -31,13 +36,22 @@
       color: $secondary-border-color;
     }
   }
+
+  &__item img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    padding-left: 15px;
+    filter: invert(100%); /* Make images white */
+  }
 }
+
+
 @media (min-width: 500px) {
-  .menu{
-    max-width: 150px;
+  .menu {
+    max-width: 180px;
     height: 100em;
     display: flex;
     justify-content: space-around;
   }
-
 }
