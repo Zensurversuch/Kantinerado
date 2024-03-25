@@ -1,68 +1,71 @@
-<app-header class="app-header"></app-header>
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
 
-<div class="createDish">
-  <h2 class="createDish__title">Gericht hinzufügen</h2>
-  <form [formGroup]="createDishForm" (submit)="createDishSubmit()">
-    <div class="createDish__form-group">
-      <label for="name" class="createDish__label">Name*</label>
-      <input id="name" formControlName="name" type="text" class="createDish__input">
-      <div *ngIf="createDishForm.get('name')?.invalid && (createDishForm.get('name')?.dirty || createDishForm.get('name')?.touched)">
-        <span class="createDish__error-message">Name ist erforderlich.</span>
-      </div>
-    </div>
+<body [ngClass]="{ 'blurred': blurred }">
 
-    <div class="createDish__form-group">
-      <label for="price" class="createDish__label">Preis*</label>
-      <input id="price" formControlName="price" type="text" class="createDish__input">
-      <div *ngIf="createDishForm.get('price')?.invalid && (createDishForm.get('price')?.dirty || createDishForm.get('price')?.touched)">
-        <span class="createDish__error-message">Preis ist erforderlich (Bsp. 12.99).</span>
+  <div class="createDish">
+    <h2 class="createDish__title">Gericht hinzufügen</h2>
+    <form [formGroup]="createDishForm" (submit)="createDishSubmit()">
+      <div class="createDish__form-group">
+        <label for="name" class="createDish__label">Name*</label>
+        <input id="name" formControlName="name" type="text" class="createDish__input">
+        <div *ngIf="createDishForm.get('name')?.invalid && (createDishForm.get('name')?.dirty || createDishForm.get('name')?.touched)">
+          <span class="createDish__error-message">Name ist erforderlich.</span>
+        </div>
       </div>
-    </div>
 
-    <div class="createDish__form-group" formArrayName="ingredients">
-      <label class="createDish__label">Inhaltstoffe</label>
-      <div *ngFor="let ingredient of ingredients.controls; let i=index" [formGroupName]="i">
-        <input formControlName="ingredientName" type="text" class="createDish__input" placeholder="Inhaltstoff {{ i + 1 }}">
+      <div class="createDish__form-group">
+        <label for="price" class="createDish__label">Preis*</label>
+        <input id="price" formControlName="price" type="text" class="createDish__input">
+        <div *ngIf="createDishForm.get('price')?.invalid && (createDishForm.get('price')?.dirty || createDishForm.get('price')?.touched)">
+          <span class="createDish__error-message">Preis ist erforderlich (Bsp. 12.99).</span>
+        </div>
       </div>
-      <button (click)="addIngredient()" type="button">Inhaltstoff hinzufügen</button>
-    </div>
-  
-    <div class="createDish__form-group">
-      <label for="dietaryCategory" class="createDish__label">Ernährungsklasse*</label>
-      <select id="dietaryCategory" formControlName="dietaryCategory" class="createDish__input">
-        <option *ngFor="let category of dietaryCategories" [value]="category">{{ category }}</option>
-      </select>
-      <div *ngIf="createDishForm.get('dietaryCategory')?.invalid && (createDishForm.get('dietaryCategory')?.dirty || createDishForm.get('dietaryCategory')?.touched)">
-        <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
-      </div>
-    </div>
 
-    <div class="createDish__form-group">
-      <label for="mealType" class="createDish__label">Mahlzeitentyp*</label>
-      <select id="mealType" formControlName="mealType" class="createDish__input">
-        <option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</option>
-      </select>
-      <div *ngIf="createDishForm.get('mealType')?.invalid && (createDishForm.get('mealType')?.dirty || createDishForm.get('mealType')?.touched)">
-        <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
+      <div class="createDish__form-group" formArrayName="ingredients">
+        <label class="createDish__label">Inhaltstoffe</label>
+        <div *ngFor="let ingredient of ingredients.controls; let i=index" [formGroupName]="i">
+          <input formControlName="ingredientName" type="text" class="createDish__input" placeholder="Inhaltstoff {{ i + 1 }}">
+        </div>
+        <button (click)="addIngredient()" type="button">Inhaltstoff hinzufügen</button>
       </div>
-    </div>
-
-    <div class="createDish__form-group">
-      <label for="allergy" class="createDish__label">Allergien
-      </label>
-      <div *ngFor="let allergy of allergies">
-        <input type="checkbox" [value]="allergy" (change)="updateAllergies($event)">
-        {{ allergy }}
-      </div>
-      <div *ngIf="createDishForm.get('allergy')?.invalid && (createDishForm.get('allergy')?.dirty || createDishForm.get('allergy')?.touched)">
-        <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
-      </div>
-    </div>
     
-    <div class="createDish__form-group">
-      <label class="createDish__label">Bild</label>
-      <input type="file" (change)="onImageChange($event)" accept="image/*">
-    </div>
-    <button [disabled]="!createDishForm.valid" class="createDish__submit-btn" type="submit">Speichern</button>
-  </form>
-</div>
+      <div class="createDish__form-group">
+        <label for="dietaryCategory" class="createDish__label">Ernährungsklasse*</label>
+        <select id="dietaryCategory" formControlName="dietaryCategory" class="createDish__input">
+          <option *ngFor="let category of dietaryCategories" [value]="category">{{ category }}</option>
+        </select>
+        <div *ngIf="createDishForm.get('dietaryCategory')?.invalid && (createDishForm.get('dietaryCategory')?.dirty || createDishForm.get('dietaryCategory')?.touched)">
+          <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
+        </div>
+      </div>
+
+      <div class="createDish__form-group">
+        <label for="mealType" class="createDish__label">Mahlzeitentyp*</label>
+        <select id="mealType" formControlName="mealType" class="createDish__input">
+          <option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</option>
+        </select>
+        <div *ngIf="createDishForm.get('mealType')?.invalid && (createDishForm.get('mealType')?.dirty || createDishForm.get('mealType')?.touched)">
+          <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
+        </div>
+      </div>
+
+      <div class="createDish__form-group">
+        <label for="allergy" class="createDish__label">Allergien
+        </label>
+        <div *ngFor="let allergy of allergies">
+          <input type="checkbox" [value]="allergy" (change)="updateAllergies($event)">
+          {{ allergy }}
+        </div>
+        <div *ngIf="createDishForm.get('allergy')?.invalid && (createDishForm.get('allergy')?.dirty || createDishForm.get('allergy')?.touched)">
+          <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
+        </div>
+      </div>
+      
+      <div class="createDish__form-group">
+        <label class="createDish__label">Bild</label>
+        <input type="file" (change)="onImageChange($event)" accept="image/*">
+      </div>
+      <button [disabled]="!createDishForm.valid" class="createDish__submit-btn" type="submit">Speichern</button>
+    </form>
+  </div>
+</body>

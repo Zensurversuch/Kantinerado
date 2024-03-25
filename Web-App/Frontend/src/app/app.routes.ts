@@ -5,20 +5,24 @@ import {HomeComponent} from "./components/home/home.component";
 import {RegisterComponent} from "./components/register/register.component";
 import {UserOrderSummaryComponent} from "./components/order_summary/userOrderSummary.component"
 import {WorkerOrderSummaryComponent} from "./components/order_summary/workerOrderSummary.component"
-import {CreateDishComponent} from './components/dish/createDish.component';
-import {AuthGuard} from './guard/auth.guard';
-import {RegisterAdminComponent} from './components/register/registerAdmin.component';
+import { CreateDishComponent } from './components/dish/createDish.component';
+import { AuthGuard } from './guard/auth.guard';
+import { RegisterAdminComponent } from './components/register/registerAdmin.component';
+import {LogoutComponent} from "./components/logout/logout.component";
 import {CreateMealPlanComponent} from "./components/meal_plan/create-meal-plan.component";
 
 
+
 export const routes: Routes = [
-  {path: 'register', component: RegisterComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'createDish', component: CreateDishComponent, canActivate: [AuthGuard]},
-  {path: 'hello', component: HelloComponent, canActivate: [AuthGuard]},
-  {path: 'createMealPlan', component: CreateMealPlanComponent, canActivate: [AuthGuard]},
-  {path: 'userOrderSummary', component: UserOrderSummaryComponent, canActivate: [AuthGuard]},
-  {path: 'workerOrderSummary', component: WorkerOrderSummaryComponent, canActivate: [AuthGuard]},
-  {path: 'registerAdmin', component: RegisterAdminComponent, canActivate: [AuthGuard]},
-  {path: '', component: HomeComponent}
+  { path: 'register', component: RegisterComponent},
+  { path: 'login', component: LoginComponent},
+  { path: 'logout', component: LogoutComponent},
+  { path: 'createDish', component: CreateDishComponent, canActivate: [AuthGuard]},
+  { path: 'createMealPlan', component: CreateMealPlanComponent, canActivate: [AuthGuard]},
+  { path: 'hello', component: HelloComponent, canActivate: [AuthGuard]},
+  { path: 'userOrderSummary', component: UserOrderSummaryComponent, canActivate: [AuthGuard]},
+  { path: 'workerOrderSummary', component: WorkerOrderSummaryComponent, canActivate: [AuthGuard]},
+  { path: 'registerAdmin', component: RegisterAdminComponent, canActivate: [AuthGuard]},
+  { path: '', component: HomeComponent}
+
 ];

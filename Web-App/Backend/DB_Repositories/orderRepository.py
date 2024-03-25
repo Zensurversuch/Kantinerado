@@ -12,36 +12,40 @@ class OrderRepository:
         self.engine = engine
         self.session_factory = sessionmaker(bind=self.engine)
 
-    def create_order(self, param_userID, param_mealPlanID, param_amount):
+    def create_order(self, param_userID, param_Orders):
         session = scoped_session(self.session_factory)
+        
         try:
-            min_ = 1
-            max_ = 1000000000
-            rand_orderid = randint(min_, max_)
-            while session.query(Order).filter(Order.orderID == rand_orderid).first() is not None:
+            for order in param_Orders:
+                mealPlanID = order.get('mealPlanID')
+                amount = order.get('amount')
+                min_ = 1
+                max_ = 1000000000
                 rand_orderid = randint(min_, max_)
+                while session.query(Order).filter(Order.orderID == rand_orderid).first() is not None:
+                    rand_orderid = randint(min_, max_)
 
-            today_date = datetime.today().strftime('%Y-%m-%d')
+                today_date = datetime.today().strftime('%Y-%m-%d')
 
-            order_data = self.is_order_already_created(param_userID, param_mealPlanID)
-            if order_data is not False:
-                order_data.amount = param_amount
-                session.add(order_data)
-                session.commit()
-                return "updated"
-            else:
-                new_order = Order(orderID = rand_orderid,
-                                  userID = param_userID,
-                                  mealPlanID = param_mealPlanID,
-                                  amount = param_amount,
-                                  orderDate = today_date)
-                session.add(new_order)
-                session.commit()
-                return "created"
+                order_data = self.is_order_already_created(param_userID, mealPlanID)
+                if order_data is not False:
+                    order_data.amount = amount
+                    session.add(order_data)
+                    session.commit()
+                else:
+                    new_order = Order(orderID = rand_orderid,
+                                    userID = param_userID,
+                                    mealPlanID = mealPlanID,
+                                    amount = amount,
+                                    orderDate = today_date)
+                    session.add(new_order)
+                    session.commit()
+            return "created"
         except SQLAlchemyError as e:
             return False
         finally:
             session.close()
+            
 
 
 

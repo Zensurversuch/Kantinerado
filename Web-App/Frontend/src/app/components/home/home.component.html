@@ -1,2 +1,68 @@
-<app-header></app-header>
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
 
+<body [ngClass]="{ 'blurred': blurred }">
+
+ <div class="calendar-container">
+    <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
+  </div>
+  
+  <div class="summary" *ngIf="mealPlanSumResponse.length > 0">
+    <h2>Speiseplan Übersicht</h2>
+  
+    <div class="day" *ngFor="let days of mealPlansByDay">
+      <div>
+        <div class="day-header" (click)="toggleDay(days)">
+          <h3>
+            <span class="toggle-icon">{{ days.expanded ? '▼' : '►' }}</span>
+            {{ formatDate(days.date) }}
+          </h3>
+        </div>
+        <div class="day-content" *ngIf="days.expanded">
+          <table>
+            <thead>
+              <tr>
+                <th>Gericht</th>
+                <th>Gerichtsart</th>
+                <th>Preis</th>
+                <th>Kategorie</th>
+                <th>Zutaten</th>
+                <th>Id</th>
+                <th>Bild</th>
+              </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let mealPlan of days.mealPlans">
+                    <tr *ngFor="let dish of mealPlan">
+                        <td><b>{{ dish.dishName }}</b></td>
+                        <td>{{ dish.dishmealType }}</td>
+                        <td>{{ dish.dishPrice }}€</td>
+                        <td>{{ dish.dishdietaryCategorie }}</td>
+                        <td>
+                          <ul>
+                              <li *ngFor="let ingredient of dish.dishingredients">{{ ingredient }}</li>
+                          </ul>
+                        </td>
+                        <td>{{ dish.dishID }}</td>
+                        <td>
+                          <ng-container *ngIf="dish.dishimage">
+                            <img style="display:block; width:100px;height:100px;" id="base64image" [src]="'data:image/jpeg;base64,' + dish.dishimage">
+                          </ng-container>
+                          <ng-container *ngIf="!dish.dishimage">
+                            <img style="display:block; width:100px;height:100px;" src="../../../assets/no-image-icon-23494.png">
+                          </ng-container>
+                        </td>
+                    </tr>
+                </ng-container>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="problem" *ngIf="!(start_date && end_date)">
+    <p>Wähle einen Zeitraum</p>
+  </div>
+  <div class="problem" *ngIf="mealPlanSumResponse.length === 0" [hidden]="!(start_date && end_date)">
+    <p>Keine Menüs im gewählten Zeitraum gefunden.</p>
+  </div>
+</body>

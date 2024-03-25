@@ -40,6 +40,9 @@ export class UserOrderSummaryComponent {
     this.datesCreated = [];
   }
 
+  blurred: boolean = false;
+
+
   groupOrdersByDay() {
     for (const date of this.datesCreated) {
       const groupedOrdersForDay = [];
@@ -102,5 +105,9 @@ export class UserOrderSummaryComponent {
 
       this.getOrders();
     }
+  }
+
+  ToggleBlurred(isOpened: boolean) {
+      this.blurred = isOpened;
   }
 }

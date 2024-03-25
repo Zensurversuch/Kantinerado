@@ -70,6 +70,11 @@ export class RegisterAdminComponent  {
     this.registerForm.valueChanges.subscribe(console.log)
   }
 
+  blurred: boolean = false;
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
+  }
+
   registerAdmin() {
     if (this.registerForm.valid) {
       const userData: UserData = {

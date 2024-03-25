@@ -116,3 +116,32 @@ class UserRepository:
             return None
         finally:
             session.close()
+
+    
+    def set_user_allergies_by_id(self, param_id, param_allergies):
+        session = scoped_session(self.session_factory)
+        try:
+            user = session.query(User).filter(User.userID == param_id).first()
+            if user: 
+                user.allergies = []
+                session.commit()
+
+                missing_allergies = []
+                if param_allergies:
+                    for allergy_name in param_allergies:
+                        allergy = session.query(Allergy).filter(Allergy.name == allergy_name).first()
+                        if allergy:
+                            user.allergies.append(allergy)
+                        else:
+                            missing_allergies.append(allergy_name)
+
+                session.commit()
+            else:
+                return "User not found!"
+        
+            return missing_allergies
+        except SQLAlchemyError as e:
+            session.rollback()
+            return False
+        finally:
+            session.close()
