@@ -129,17 +129,17 @@ export class HomeComponent {
     }
   }
   onQuantityChange(event: MatSelectChange, dish: any, mealPlanID: any) {
-    const target = event.value as HTMLSelectElement;
-    if (target) {
-      const quantity = target.value;
+    const target = event.value;
+    if (target !== undefined && target !== null) {
+      const quantity = target;
       dish.quantity = quantity;
       const existingOrderIndex = this.order_list.findIndex(order => order.mealPlanID === mealPlanID);
     if (existingOrderIndex !== -1) {
       this.order_list[existingOrderIndex].amount = quantity;
     } else {
       const order = {
-        mealPlanID: mealPlanID,
-        amount: quantity
+        "mealPlanID": mealPlanID,
+        "amount": quantity
       };
       this.order_list.push(order);
     }
@@ -188,6 +188,7 @@ export class HomeComponent {
           dish.amount = 0;
         });
       });
+      this.order_list = [];
       this.getOrdersByUser();
     }
   }
