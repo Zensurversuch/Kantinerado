@@ -279,7 +279,7 @@ def create_order():
     for order in data_Orders:
         mealPlanID = order.get('mealPlanID')
         amount = order.get('amount')
-        if not (mealPlanID and amount):
+        if (mealPlanID == None and amount == None):
             return jsonify({"message": "Missing required fields"}), 400
         mealPlan_ids.append(mealPlanID)
 
