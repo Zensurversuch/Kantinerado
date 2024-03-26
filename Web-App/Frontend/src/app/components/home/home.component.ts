@@ -42,10 +42,10 @@ export class HomeComponent {
   mealPlanSumResponse: any[] = [];
   ordersByUser: Array<Order>;
   datesCreated: string[];
-  mealPlansByDay: OrderByDay[] = [];
   start_date: string;
   end_date: string;
   order_list: Order[];
+  orderPrice: number;
   quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService) {
@@ -54,6 +54,7 @@ export class HomeComponent {
     this.datesCreated = [];
     this.order_list = [];
     this.ordersByUser = [];
+    this.orderPrice= 0;
   }
     blurred: boolean = false;
   ToggleBlurred(isOpened: boolean) {
@@ -80,7 +81,6 @@ export class HomeComponent {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
   
       this.mealPlanSumResponse = [];
-      this.mealPlansByDay = [];
       this.datesCreated = [];
   
       this.http.get<any[]>(`${environment.apiUrl}/meal_plan/${this.start_date}/${this.end_date}`, { headers })
@@ -133,21 +133,22 @@ export class HomeComponent {
       this.feedbackService.displayMessage("Error: Ungültiger Zeitraum: " + changedDate);
     }
   }
-  onQuantityChange(event: MatSelectChange, dish: any, mealPlanID: any) {
+  onQuantityChange(event: MatSelectChange, dish: any, mealPlanID: number) {
     const target = event.value;
     if (target !== undefined && target !== null) {
       const quantity = target;
       dish.quantity = quantity;
       const existingOrderIndex = this.order_list.findIndex(order => order.mealPlanID === mealPlanID);
-    if (existingOrderIndex !== -1) {
-      this.order_list[existingOrderIndex].amount = quantity;
-    } else {
-      const order = {
-        "mealPlanID": mealPlanID,
-        "amount": quantity
-      };
-      this.order_list.push(order);
-    }
+      if (existingOrderIndex !== -1) {
+        this.order_list[existingOrderIndex].amount = quantity;
+      } else {
+        const order = {
+          "mealPlanID": mealPlanID,
+          "amount": quantity
+        };
+        this.order_list.push(order);
+      }
+      this.getOrderPrice();
     }
   }
   pushOrders(orders: Array<Object>)
@@ -197,10 +198,27 @@ export class HomeComponent {
       });
       this.order_list = [];
       this.getOrdersByUser();
+      this.getOrderPrice();
     }
   }
   isLoggedIn(): boolean
   {
     return(this.authService.isLoggedIn() && !this.authService.isTokenExpired());
+  }
+  getOrderPrice()
+  { 
+    this.orderPrice = 0;
+    this.order_list.forEach((order: Order) => {
+      this.mealPlanSumResponse.forEach(days => {
+        days.dishes.forEach((dish: any) => {
+          if(order.mealPlanID == dish.mealPlanID)
+          {
+            this.orderPrice += dish.dishPrice*dish.amount;
+          }
+        });
+      });
+      
+    });
+
   }
 }
