@@ -2,10 +2,10 @@
 
 <body [ngClass]="{ 'blurred': blurred }">
   <div class="calendar-container">
+    <button class="print-button" (click)="generatePDF()"><span class="print-icon"></span></button>
     <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
   </div>
-
-  <button id="drucken_btn" (click)="generatePDF()">Drucken</button>
+  
   <div class="summary" id ="printSummary" *ngIf="orderSumResponse.length > 0">
     <h2>Bestellübersicht Kantinenmitarbeiter</h2>
 

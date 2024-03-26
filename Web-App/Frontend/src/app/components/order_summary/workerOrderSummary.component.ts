@@ -7,8 +7,6 @@ import {FormsModule} from '@angular/forms';
 import {HeaderComponent} from '../header/header.component';
 import {CalendarService} from "../../service/calendar/calendar.service";
 import {CalendarComponent} from "../calendar/calendar.component";
-import jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
 
 interface OrderByDay {
   date: string;
@@ -107,7 +105,7 @@ export class WorkerOrderSummaryComponent {
     const style = document.createElement('style');
     style.innerHTML = `
       @media print {
-        app-header, .calendar-container, #drucken_btn {
+        app-header, .calendar-container, .print-button {
           display: none !important;
         }
       }
@@ -115,12 +113,8 @@ export class WorkerOrderSummaryComponent {
     document.head.appendChild(style);
   
     window.print();
-  
     document.head.removeChild(style);
   }
-  
-  
-  
 }
   
 

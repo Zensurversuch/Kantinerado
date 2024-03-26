@@ -110,4 +110,29 @@ export class UserOrderSummaryComponent {
   ToggleBlurred(isOpened: boolean) {
       this.blurred = isOpened;
   }
+
+  expandAllDays(): void {
+    this.ordersByDay.forEach(day => {
+      day.expanded = true; // Assuming 'expanded' is the property indicating if a day is expanded
+    });
+  }
+
+  async generatePDF(): Promise<void> {
+    this.expandAllDays();
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @media print {
+        app-header, .calendar-container, .print-button {
+          display: none !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  
+    window.print();
+    document.head.removeChild(style);
+  }
 }

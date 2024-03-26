@@ -2,6 +2,7 @@
 
 <body [ngClass]="{ 'blurred': blurred }">
   <div class="calendar-container">
+    <button class="print-button" (click)="generatePDF()"><span class="print-icon"></span></button>
     <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
   </div>
 
