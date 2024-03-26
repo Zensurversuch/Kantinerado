@@ -5,7 +5,7 @@
     <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
   </div>
 
-  <button (click)="generatePDF()">Download PDF</button>
+  <button id="drucken_btn" (click)="generatePDF()">Drucken</button>
   <div class="summary" id ="printSummary" *ngIf="orderSumResponse.length > 0">
     <h2>Bestellübersicht Kantinenmitarbeiter</h2>
 
