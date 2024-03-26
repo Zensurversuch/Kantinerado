@@ -117,7 +117,7 @@ export class UserOrderSummaryComponent {
 
   expandAllDays(): void {
     this.ordersByDay.forEach(day => {
-      day.expanded = true; // Assuming 'expanded' is the property indicating if a day is expanded
+      day.expanded = true;
     });
   }
 
