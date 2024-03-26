@@ -185,6 +185,7 @@ export class HomeComponent {
         });
       });
     });
+    this.getOrderPrice();
 
   }
   resetAmountMenus()
@@ -198,7 +199,6 @@ export class HomeComponent {
       });
       this.order_list = [];
       this.getOrdersByUser();
-      this.getOrderPrice();
     }
   }
   isLoggedIn(): boolean
@@ -207,8 +207,26 @@ export class HomeComponent {
   }
   getOrderPrice()
   { 
+    
+    const orders: Order[] = [];
     this.orderPrice = 0;
-    this.order_list.forEach((order: Order) => {
+
+    this.ordersByUser.forEach(order => {
+      orders.push({
+        amount: order.amount,
+        mealPlanID: order.mealPlanID
+      });
+    });
+    this.order_list.forEach(order => {
+      const index = orders.findIndex(o => o.mealPlanID === order.mealPlanID)
+      if(index !== -1)
+      {
+        orders[index] = {mealPlanID: order.mealPlanID, amount: order.amount}
+      }else{
+        orders.push({mealPlanID: order.mealPlanID, amount: order.amount})
+      }
+    })
+    orders.forEach((order: Order) => {
       this.mealPlanSumResponse.forEach(days => {
         days.dishes.forEach((dish: any) => {
           if(order.mealPlanID == dish.mealPlanID)
