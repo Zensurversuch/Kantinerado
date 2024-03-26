@@ -8,13 +8,17 @@
   
   <div class="summary" *ngIf="mealPlanSumResponse.length > 0">
     <h2>Speiseplan Übersicht</h2>
-    <div *ngIf="isLoggedIn()">
+    <div *ngIf="isLoggedIn()" class="order-container">
+      <div class="order-price">
+        <p>Preis: {{orderPrice}}€</p>
+      </div>
       <button mat-icon-button matTooltip="Bestellung abschicken" (click)="onPushOrdersButtonClick()" class="order-buttons">
         <mat-icon>send</mat-icon>
       </button>
       <button mat-icon-button matTooltip="Änderungen verwerfen" (click)="resetAmountMenus()" class="order-buttons">
         <mat-icon>delete</mat-icon>
       </button>
+      
     </div>
     <div class="day" *ngFor="let days of mealPlanSumResponse">
       <div>

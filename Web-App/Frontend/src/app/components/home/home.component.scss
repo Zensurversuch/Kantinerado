@@ -29,15 +29,29 @@ h2 {
   width: 100%; 
   margin: 0 auto;
 }
+.order-container{
+  display: flex;
+  align-items: center;
+}
 .order-buttons{
   color: black;
   background-color: #f5f5f5;
-  border-radius: 5px; // Runde Ecken
+  border-radius: 5px; 
   border: 1px solid #ddd;
-  padding: 5px; // Innenabstand
-  cursor: pointer; // Zeige den Cursor als Zeigefinger
-  margin: 5px;
+  padding: 12px; 
+  cursor: pointer;
+  margin-right: 5px;
+  margin-bottom: 5px;
 
+}
+.order-price{
+  margin-right: 5px;
+  background-color: #f5f5f5;
+  border-radius: 5px; 
+  border: 1px solid #ddd;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 5px;
 }
 
 /* Stile für die Tagesdarstellung */
