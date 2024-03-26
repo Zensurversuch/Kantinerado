@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {CalendarService} from "../../service/calendar/calendar.service";
 import {MealTypesArray} from "../../interface/mealType";
-import {FormsModule} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DishService} from "../../service/dish/dish.service";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatFormField, MatLabel, MatSelect} from "@angular/material/select";
@@ -29,13 +29,24 @@ import {MealPlanService} from "../../service/mealPlan/meal-plan.service";
     HeaderComponent,
     CdkDropList,
     MatButton,
+    ReactiveFormsModule,
   ],
   templateUrl: './create-meal-plan.component.html',
-  styleUrl: './create-meal-plan.component.scss'
+  styleUrl: './create-meal-plan.component.scss',
 })
 export class CreateMealPlanComponent implements OnInit {
+  public MealPlanForm: FormGroup;
 
-  constructor(protected calendarService: CalendarService, private dishService: DishService, private mealPlanService:MealPlanService) {
+  constructor(protected calendarService: CalendarService, private dishService: DishService, private mealPlanService: MealPlanService) {
+    this.MealPlanForm = new FormGroup({
+      Monday: new FormControl(this.mondayList),
+      Tuesday: new FormControl(this.tuesdayList),
+      Wednesday: new FormControl(this.wednesdayList),
+      Thursday: new FormControl(this.thursdayList),
+      Friday: new FormControl(this.fridayList),
+      Saturday: new FormControl(this.saturdayList)
+    });
+    this.checkLists()
   }
 
   ngOnInit(): void {
@@ -60,11 +71,11 @@ export class CreateMealPlanComponent implements OnInit {
   [key: string]: any;
 
   createDishPlan() {
-    const mealPlanArray: { mealPlan: { "dishID": number; "date": string; }[] } = { mealPlan: [] };
+    const mealPlanArray: { mealPlan: { "dishID": number; "date": string; }[] } = {mealPlan: []};
     const weekDayLists = ['mondayList', 'tuesdayList', 'wednesdayList', 'thursdayList', 'fridayList', 'saturdayList'];
     weekDayLists.forEach((dayList, index) => {
       this[dayList].forEach((dish: Dish) => {
-        const dishJSON ={"dishID": dish.dish_id, "date": this.dates[index]};
+        const dishJSON = {"dishID": dish.dish_id, "date": this.dates[index]};
         mealPlanArray.mealPlan.push(dishJSON)
       })
     })
@@ -86,6 +97,7 @@ export class CreateMealPlanComponent implements OnInit {
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex)
     }
+    this.checkLists();
     console.log(event)
   }
 
@@ -93,6 +105,40 @@ export class CreateMealPlanComponent implements OnInit {
     if (this.selectedDish) {
       this.dishList.push(this.selectedDish);
       this.selectedDish = undefined;
+    }
+  }
+
+  checkLists(): void {
+    const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let allHaveDish = true;
+    let allVegetarian = false;
+
+    weekdays.forEach(day => {
+      const control = this.MealPlanForm.get(day);
+
+      if (control && control.value) {
+        if (!(control.value.length > 0)) {
+          allHaveDish = false;
+          control.setErrors({'noDish': true});
+        } else if (control.value.some((dish: Dish) => dish.dietaryCategorie.toString() === 'Vegetarisch')) {
+          control.setErrors(null);
+          allVegetarian = true;
+        } else {
+          control.setErrors({'noVegetarianDish': true});
+        }
+      }
+    });
+
+    const control = this.MealPlanForm.get("Saturday")
+    let satudaySoup = false
+    if (control?.value.some((dish: Dish) => dish.mealType.toString() === 'Suppe')) {
+      satudaySoup = true;
+    }
+
+    if (allHaveDish && allVegetarian && !satudaySoup) {
+      this.MealPlanForm.setErrors(null);
+    } else {
+      this.MealPlanForm.setErrors({'missingDish': true});
     }
   }
 }

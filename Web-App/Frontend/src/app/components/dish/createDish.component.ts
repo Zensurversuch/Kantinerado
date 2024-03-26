@@ -121,7 +121,7 @@ export class CreateDishComponent implements OnInit {
     name: this.createDishForm.value.name,
     price:  this.createDishForm.value.price,
     ingredients: allIngredients,
-    dietaryCategory: this.createDishForm.value.dietaryCategory,
+    dietaryCategorie: this.createDishForm.value.dietaryCategory,
     mealType: this.createDishForm.value.mealType,
     allergies: this.selectedAllergies,
     image: this.createDishForm.get('image')?.value || ''
