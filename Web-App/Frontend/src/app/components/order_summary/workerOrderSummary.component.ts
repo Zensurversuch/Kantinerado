@@ -7,6 +7,8 @@ import {FormsModule} from '@angular/forms';
 import {HeaderComponent} from '../header/header.component';
 import {CalendarService} from "../../service/calendar/calendar.service";
 import {CalendarComponent} from "../calendar/calendar.component";
+import jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface OrderByDay {
   date: string;
@@ -91,4 +93,76 @@ export class WorkerOrderSummaryComponent {
     }
   }
 
+  expandAllDays(): void {
+    this.ordersByDay.forEach(day => {
+      day.expanded = true; // Assuming 'expanded' is the property indicating if a day is expanded
+    });
+  }
+
+  async generatePDF(): Promise<void> {
+    this.expandAllDays(); // Expand all days
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for the expansion to complete
+  
+    const data = document.getElementById('printSummary');
+    if (data) {
+      const A4_HEIGHT = 841.89;
+      const A4_WIDTH = 595.28;
+  
+      const WIDTH_MARGIN = 10;
+      const HEIGHT_MARGIN = 10;
+      const PAGE_HEIGHT = A4_HEIGHT - 2 * HEIGHT_MARGIN;
+  
+      const pdf = new jspdf('p', 'pt', 'a4');
+      const canvas = await html2canvas(data as HTMLElement);
+  
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+  
+      const imgWidth = A4_WIDTH - 2 * WIDTH_MARGIN;
+      const imgHeight = (imgWidth / canvasWidth) * canvasHeight;
+  
+      const pageImg = canvas.toDataURL('image/png', 1.0);
+  
+      let position = HEIGHT_MARGIN;
+      if (imgHeight > PAGE_HEIGHT) { // need multi-page pdf
+        let heightUnprinted = imgHeight;
+        while (heightUnprinted > 0) {
+          pdf.addImage(
+            pageImg,
+            'PNG',
+            WIDTH_MARGIN,
+            position,
+            imgWidth,
+            Math.min(imgHeight, PAGE_HEIGHT) // Use the smaller of imgHeight and PAGE_HEIGHT
+          );
+  
+          // Draw the margin top and margin bottom if needed
+          pdf.setFillColor(255, 255, 255);
+          pdf.rect(0, 0, A4_WIDTH, HEIGHT_MARGIN, 'F'); // margin top
+          pdf.rect(0, A4_HEIGHT - HEIGHT_MARGIN, A4_WIDTH, HEIGHT_MARGIN, 'F'); // margin bottom
+  
+          heightUnprinted -= PAGE_HEIGHT;
+          position += PAGE_HEIGHT; // next vertical placement
+  
+          // Add another page if there's more contents to print
+          if (heightUnprinted > 0) pdf.addPage();
+        }
+      } else {
+        // Print single-page pdf
+        pdf.addImage(
+          pageImg,
+          'PNG',
+          WIDTH_MARGIN,
+          HEIGHT_MARGIN,
+          imgWidth,
+          imgHeight
+        );
+      }
+  
+      // Save the pdf
+      pdf.save(`myPDF.pdf`);
+    }
+  }
 }
+  
+
