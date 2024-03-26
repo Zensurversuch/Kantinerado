@@ -4,6 +4,7 @@ import {NgIf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
 import { EventEmitter, Output } from '@angular/core';
 import { SettingsComponent } from '../settings/settings.component';
+import { AuthService } from '../../service/authentication/auth.service';
 
 
 
@@ -21,15 +22,14 @@ import { SettingsComponent } from '../settings/settings.component';
   ],
 })
 export class HeaderComponent {
-
-
   username?: string;
 
-  constructor(private router:Router) {
+  constructor(private router:Router, private authService: AuthService) {
+    this.isLoggedIn=false;
   }
 
   menuState = 'in';
-
+  isLoggedIn: boolean;
   isMenuOpen: boolean = false;
   isSettingsOpen: boolean = false;
 
@@ -49,5 +49,9 @@ export class HeaderComponent {
 
   navigateToHome() {
     this.router.navigate(['/']);
+  }
+
+  ngOnInit(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
   }
 }

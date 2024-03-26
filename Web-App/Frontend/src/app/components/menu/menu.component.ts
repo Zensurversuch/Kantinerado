@@ -4,7 +4,6 @@ import {RouterLink} from "@angular/router";
 import {AuthService} from "../../service/authentication/auth.service";
 import {NgIf} from "@angular/common";
 import { Role } from '../../interface/role';
-import { PermissionService } from '../../service/authentication/permission.service';
 
 @Component({
   selector: 'app-menu',
@@ -25,7 +24,7 @@ export class MenuComponent implements OnInit{
   kantinenmitarbeiter: string;
 
 
-  constructor(private authService: AuthService, private permissionService: PermissionService) {
+  constructor(private authService: AuthService) {
     this.isLoggedIn=false;
     this.userRole=null;
     this.admin=Role.admin;
