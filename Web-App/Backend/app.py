@@ -273,21 +273,25 @@ def create_order():
         mealPlan_ids.append(mealPlanID)
 
     timestamp = datetime.today()
-    if (timestamp.weekday() == 3 and timestamp.hour >= 18) or (timestamp.weekday() > 3):
-        mealPlanDates = meal_plan_repo.get_mealPlan_dates_by_ids(mealPlan_ids)
-        if mealPlanDates:
-            monday = timestamp - timedelta(days=timestamp.weekday()) + timedelta(days=7)
-            sunday = monday + timedelta(days=6)
-            if any(datetime.strptime(mealPlanDate, "%Y-%m-%d") < sunday for mealPlanDate in mealPlanDates): 
-                return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es können keine Bestellungen mehr nach Donnerstag 16 Uhr aufgegeben werden"}), 500
-        else:
-            return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestelltes Gericht existiert nicht"}), 400
+    mealPlanDates = meal_plan_repo.get_mealPlan_dates_by_ids(mealPlan_ids)
+    if mealPlanDates:
+        monday = timestamp - timedelta(days=timestamp.weekday())
+        sunday = monday + timedelta(days=6) 
+        if any(datetime.strptime(mealPlanDate, "%Y-%m-%d") < sunday for mealPlanDate in mealPlanDates): 
+                return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es können keine Bestellungen mehr für die aktuelle und vergangenen Wochen aufgegeben werden"}), 400
+        if (timestamp.weekday() == 3 and timestamp.hour >= 18) or (timestamp.weekday() > 3):
+            next_monday = timestamp - timedelta(days=timestamp.weekday()) + timedelta(days=7)
+            next_sunday = next_monday + timedelta(days=6)
+            if any(datetime.strptime(mealPlanDate, "%Y-%m-%d") < next_sunday for mealPlanDate in mealPlanDates): 
+                return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es können keine Bestellungen mehr nach Donnerstag 16 Uhr für nächste Woche aufgegeben werden"}), 400
+    else:
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestelltes Gericht existiert nicht"}), 400
         
     ret_value = order_repo.create_order(jwt_userID, data_Orders)
     if ret_value=="created":
         return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCESS.value}Bestellung erfolgreich"}), 201
     else:
-        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestellung fehlgeschlagen"}), 500
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestellung fehlgeschlagen"}), 400
 
 @app.route('/orders_by_user/<string:start_date>/<string:end_date>')
 @jwt_required()
@@ -298,7 +302,7 @@ def orders_by_user(start_date, end_date):
 
     if orders:
         return jsonify(orders)
-    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Sie haben keine Bestellungen in diesem Zeitraum"}), 404
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Sie haben keine Bestellungen in diesem Zeitraum"}), 400
  
 @app.route('/orders_sorted_by_dish/<string:start_date>/<string:end_date>')
 @jwt_required()
