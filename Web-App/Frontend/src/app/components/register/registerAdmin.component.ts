@@ -7,6 +7,8 @@ import {UserService} from '../../service/user/user.service';
 import {HttpClientModule} from "@angular/common/http";
 import {PasswordValidator} from "./password-validator";
 import { PermissionService } from '../../service/authentication/permission.service';
+import { FeedbackService } from '../../service/feedback/feedback.service';
+
 
 
 @Component({
@@ -66,7 +68,7 @@ export class RegisterAdminComponent  {
       [])
   },{ validators: PasswordValidator } );
 
-  constructor(private userService: UserService, private permissionService: PermissionService) {
+  constructor(private userService: UserService, private permissionService: PermissionService, private feedbackService: FeedbackService) {
     this.registerForm.valueChanges.subscribe(console.log)
   }
 
@@ -87,9 +89,11 @@ export class RegisterAdminComponent  {
 
       this.userService.createAdmin(userData).subscribe(
         response => {
+          this.feedbackService.displayMessage(response.response);
           console.log('Benutzer wurde erfolgreich erstellt:', response);
         },
         error => {
+          this.feedbackService.displayMessage(error.error.response);
           console.error('Fehler beim Erstellen des Benutzers:', error);
 
         }

@@ -312,7 +312,7 @@ def orders_sorted_by_dish(start_date, end_date):
 
     if orders:
         return jsonify(orders)
-    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Sie haben keine Bestellungen in diesem Zeitraum"}), 404
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es gibt keine Bestellungen in diesem Zeitraum"}), 404
   
 # -------------------------- Meal plan routes ------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/create_meal_plan', methods=['POST'])
@@ -347,7 +347,7 @@ def meal_plan(start_date, end_date):
     if meal_Plan[0]:
         return jsonify(meal_Plan[1]), 201
     elif meal_Plan[0]== None:
-        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Speiseplan nicht gefunden"}), 404
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Kein Speiseplan im gewählten Zeitraum gefunden"}), 404
     else:
         return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}{str(meal_Plan[1])}"}),420
 

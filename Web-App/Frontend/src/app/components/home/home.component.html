@@ -61,10 +61,4 @@
       </div>
     </div>
   </div>
-  <div class="problem" *ngIf="!(start_date && end_date)">
-    <p>Wähle einen Zeitraum</p>
-  </div>
-  <div class="problem" *ngIf="mealPlanSumResponse.length === 0" [hidden]="!(start_date && end_date)">
-    <p>Keine Menüs im gewählten Zeitraum gefunden.</p>
-  </div>
 </body>
