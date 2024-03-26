@@ -7,6 +7,8 @@ import {FormsModule} from '@angular/forms';
 import {HeaderComponent} from '../header/header.component';
 import {CalendarService} from "../../service/calendar/calendar.service";
 import {CalendarComponent} from "../calendar/calendar.component";
+import { FeedbackService } from '../../service/feedback/feedback.service';
+
 
 interface OrderByDay {
   date: string;
@@ -33,7 +35,7 @@ export class WorkerOrderSummaryComponent {
   end_date: string;
   ordersByDay: OrderByDay[] = []
 
-  constructor(private http: HttpClient, private authService: AuthService,) {
+  constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService) {
     this.start_date = "";
     this.end_date = "";
   }
@@ -74,6 +76,7 @@ export class WorkerOrderSummaryComponent {
           },
           (error) => {
             console.error('Error occurred:', error);
+            this.feedbackService.displayMessage(error.error.response);
             this.orderSumResponse = [];
           }
         );
