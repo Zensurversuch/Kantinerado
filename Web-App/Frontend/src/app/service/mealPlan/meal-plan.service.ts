@@ -22,9 +22,9 @@ export class MealPlanService {
     this.http.post<any>(url, MealPlan, {headers})
       .subscribe({
         next: value => console.log(value.message),
-        error: err => {
-          console.error(err.message);
-          this.feedbackService.displayMessage(err.error.response);
+        error: error => {
+          console.error(error.message);
+          this.feedbackService.displayMessage(error.error.response);
         },
         complete: () => this.feedbackService.displayMessage("Erfolgreich: Der Speiseplan wurde angelegt"),
 

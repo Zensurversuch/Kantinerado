@@ -37,7 +37,7 @@ import { FeedbackService } from '../../service/feedback/feedback.service';
 })
 export class CreateMealPlanComponent implements OnInit {
 
-  constructor(protected calendarService: CalendarService, private dishService: DishService, private mealPlanService:MealPlanService, private feedbackService: FeedbackService) {
+  constructor(protected calendarService: CalendarService, private dishService: DishService, private mealPlanService: MealPlanService, private feedbackService: FeedbackService) {
   }
 
   ngOnInit(): void {

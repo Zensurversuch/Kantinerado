@@ -8,6 +8,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {PasswordValidator} from "./password-validator";
 import {Role} from "../../interface/role";
 import { FeedbackService } from '../../service/feedback/feedback.service';
+import {Router} from "@angular/router";
+
 
 
 @Component({
@@ -60,7 +62,7 @@ export class RegisterComponent {
       [])
   },{ validators: PasswordValidator } );
 
-  constructor(private userService: UserService, private feedbackService: FeedbackService) {
+  constructor(private userService: UserService, private feedbackService: FeedbackService, private router:Router) {
     this.registerForm.valueChanges.subscribe(console.log)
 
   }
@@ -79,6 +81,7 @@ export class RegisterComponent {
         response => {
           this.feedbackService.displayMessage(response.response);
           console.log('Benutzer wurde erfolgreich erstellt:', response);
+          this.router.navigate(['/login']);
         },
         error => {
           console.error('Fehler beim Erstellen des Benutzers:', error);
