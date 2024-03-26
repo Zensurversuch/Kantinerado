@@ -18,6 +18,8 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
+import { FeedbackService } from '../../service/feedback/feedback.service';
+
 
 @Component({
   selector: 'app-home',
@@ -46,7 +48,7 @@ export class HomeComponent {
   order_list: Order[];
   quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
@@ -89,10 +91,10 @@ export class HomeComponent {
           //resets chosen orders if new date is chosen
           this.order_list = [];
           this.resetAmountMenus();
-          
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
+          this.feedbackService.displayMessage(error.error.response);
           this.mealPlanSumResponse = [];
         }
       );
@@ -128,6 +130,7 @@ export class HomeComponent {
       
     } else {
       console.error("Invalid date range:", changedDate);
+      this.feedbackService.displayMessage("Error: Ungültiger Zeitraum: " + changedDate);
     }
   }
   onQuantityChange(event: MatSelectChange, dish: any, mealPlanID: any) {
@@ -156,11 +159,12 @@ export class HomeComponent {
       .subscribe(
         (response: any) => {
           console.log('POST request successful', response);
+          this.feedbackService.displayMessage("Erfolgreich: Deine Bestellung wurde angelegt");
         },
         (error) => {
           console.error('Fehler aufgetreten:', error.response);
           console.log(error);
-          alert('Fehler aufgetreten: ' + error.message);
+          this.feedbackService.displayMessage(error.error.response);
         }
       )
     }

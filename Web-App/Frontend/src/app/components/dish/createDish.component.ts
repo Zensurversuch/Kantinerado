@@ -9,6 +9,8 @@ import { DietaryCategoriesArray } from '../../interface/dietaryCategory';
 import { MealTypesArray } from '../../interface/mealType';
 import { AllergyService } from '../../service/allergy/allergy.service';
 import { DishData } from '../../interface/dishData';
+import { FeedbackService } from '../../service/feedback/feedback.service';
+
 
 
 @Component({
@@ -32,7 +34,7 @@ export class CreateDishComponent implements OnInit {
   allergies: string[] = [];
   selectedAllergies: string[] = [];
 
-  constructor(private fb: FormBuilder, private allergyService: AllergyService, private dishService: DishService) {}
+  constructor(private fb: FormBuilder, private allergyService: AllergyService, private dishService: DishService, private feedbackService: FeedbackService ) {}
 
   blurred: boolean = false;
   ToggleBlurred(isOpened: boolean) {
@@ -45,7 +47,7 @@ export class CreateDishComponent implements OnInit {
         this.allergies = response.map((allergy: any) => allergy.name);
       },
       error => {
-        console.error('Error fetching allergies:', error);
+        this.feedbackService.displayMessage(error.error.response);
         this.allergies = ["Error Loading Allergies"];
       }
     );
@@ -69,15 +71,16 @@ export class CreateDishComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       if (file.type !== 'image/png') {
-        event.target.value = '';
+        event.target.value = ''; 
         this.createDishForm.patchValue({ image: '' });
-        alert('Please select a PNG image file.');
+        this.feedbackService.displayMessage("Warnung: Bitte wähle ein PNG als Bild");
         return;
       }
       if (file.size > 10 * 1024 * 1024) {
-        event.target.value = '';
-        this.createDishForm.patchValue({ image: '' });
-        alert('File size exceeds the limit of 10MB.');
+        event.target.value = ''; 
+        this.createDishForm.patchValue({ image: '' }); 
+        this.feedbackService.displayMessage("Warnung: Das Bild ist größer als die maximale Größe von 10MB");
+
       } else {
         const reader = new FileReader();
         reader.onload = () => {
@@ -132,12 +135,12 @@ export class CreateDishComponent implements OnInit {
   this.dishService.createDish(dishData).subscribe(
     response => {
       console.log('Dish created successful:', response);
+      this.feedbackService.displayMessage(response.response);
       this.createDishForm.reset();
-      alert(response.message);
     },
     error => {
       console.error('Dish created unsuccessful:', error);
-      alert(error.message);
+      this.feedbackService.displayMessage(error.error.response);
     }
   );
 

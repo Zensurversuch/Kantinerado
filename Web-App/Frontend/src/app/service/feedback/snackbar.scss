@@ -1,0 +1,66 @@
+/* Erfolgreich Snackbar */
+.success-snackbar.mat-mdc-snack-bar-container {
+    .mdc-snackbar__surface {
+        background: green;
+        .mat-mdc-button {
+            color: white !important;
+            background-color: green;
+            border: none;
+            margin-left: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid white;
+        }
+    }
+    .mat-mdc-snack-bar-label.mdc-snackbar__label {
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+        white-space: pre-wrap;
+    }
+}
+
+/* Warnung Snackbar */
+.warning-snackbar.mat-mdc-snack-bar-container {
+    .mdc-snackbar__surface {
+        background: yellow;
+        .mat-mdc-button {
+            color: black !important;
+            background-color: yellow;
+            border: none;
+            margin-left: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+    }
+    .mat-mdc-snack-bar-label.mdc-snackbar__label {
+        color: black;
+        font-size: 15px;
+        font-weight: 500;
+        white-space: pre-wrap;
+    }
+}
+
+/* Fehler Snackbar */
+.error-snackbar.mat-mdc-snack-bar-container {
+    .mdc-snackbar__surface {
+        background: red;
+        .mat-mdc-button {
+            color: white !important;
+            background-color: red;
+            border: none;
+            margin-left: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid white;
+        }
+    }
+
+    .mat-mdc-snack-bar-label.mdc-snackbar__label {
+        color: white;
+        font-size: 15px;
+        font-weight: 500;
+        white-space: pre-wrap;
+    }
+}

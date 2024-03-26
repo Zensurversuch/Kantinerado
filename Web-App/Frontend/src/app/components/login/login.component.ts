@@ -1,49 +1,60 @@
 import { Component } from '@angular/core';
-import {Router} from "@angular/router";
-import {FormsModule} from "@angular/forms";
-import {HeaderComponent} from "../header/header.component";
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from '../header/header.component';
 import { HttpClient } from '@angular/common/http';
-import {environment} from "../../../environments/environment";
+import { environment } from '../../../environments/environment';
 import { AuthService } from '../../service/authentication/auth.service';
+import { FeedbackService } from '../../service/feedback/feedback.service';
+import { CommonModule } from '@angular/common';
+
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    FormsModule,
-    HeaderComponent
-  ],
+  imports: [FormsModule, HeaderComponent, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss']
+
 })
 export class LoginComponent {
   username: string = '';
   password: string = '';
-  constructor(private router: Router, private http: HttpClient, private authService: AuthService) {
+
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private authService: AuthService,
+    private feedbackService: FeedbackService
+  ) {}
+  blurred: boolean = false;
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
   }
+
   public submit_login() {
     const userData = {
       email: this.username,
       password: this.password
     };
 
-    this.http.post(environment.apiUrl+'/login', userData)
-    .subscribe(
+    this.http.post(environment.apiUrl + '/login', userData).subscribe(
       (response: any) => {
+        this.feedbackService.displayMessage(response.response);
         console.log('POST request successful', response);
         this.authService.setJwtToken(response.access_token);
-        console.log('POST request successful', this.authService.getJwtToken());
         this.router.navigate(['/']);
         this.authService.setUserRole(response.role);
         this.authService.setUserID(response.userID);
       },
       (error) => {
-        console.error('Error occurred:', error);
-        // Handle error as needed
+        console.error(error.error.response);
+        this.feedbackService.displayMessage(error.error.response);
       }
     );
   }
 
   navigateToRegister() {
-    this.router.navigate(['/register']); // Navigieren zur Registrierungsseite
+    this.router.navigate(['/register']);
   }
 }
