@@ -26,10 +26,25 @@ Node.js bzw. NodePackageManager (npm) installiert (https://nodejs.org/en/downloa
 # Vorgehen:
 Der Vorgang des Deployments ist durch einen Befehl vollständig:
 
-1. **Gehen Sie in den Ordner ( /Development/Local-Environment/**
+1. **Laden sie das Repository herunter**
 
-2. **Gehen Sie in die Console und führen Sie folgenden Befehl aus:**
+2. **Gehen Sie in den Ordner ( /Development/Local-Environment/**
+
+3. **Gehen Sie in die Console und führen Sie folgenden Befehl aus:**
 docker-compose up --build
+
+# Datenbank aufsetzen mit Backup
+Man muss sich mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) mit der Datenbank verbinden.
+1. DBeaver herunterladen
+2. Verbindung zur Datenbank herstellen
+![DBeaver Bild Verbindung herstellen](Web-App/Database/image.png)
+2.1 Auf das Connector Symbol klicken und PostgreSQL auswählsen  
+2.2 Verbindungsdaten eingeben  
+2.3 Verbindung testen drücken um zu schauen ob die Verbindung hergestellt werden kann  
+2.4 Fertigstellen
+   
+Das DB Backup liegt [hier](Web-App/Database/Dummy_database.sql) und kann ![alt text](Web-App/Database/image-2.png) so geladen werden.
+Das Andere DB-Backup [hier](Web-App/Database/Dummy_Database_Presentation.sql) ist zu Präsentationszwecken bereits mit Daten gefüllt. 
 
 # Datenbank aufsetzen ohne Backup
 
@@ -46,7 +61,7 @@ Windows: venv\Scripts\activate
 Windows: pip install -r "requirements.txt"
 
 5. **Initialisieren der Tabellen durch das Python Script für Lokal:**
-Windows: python intialize_db_local.py
+Windows: python [intialize_db_local.py](Web-App/Database/initialize_db_local.py)
 
 ## Funktionen
 
@@ -85,7 +100,7 @@ Windows: python intialize_db_local.py
     - Eine Übersicht aller Bestellungen für die Kantinenarbeiter steht zur Verfügung.
 
 8. **Registrierung von Mitarbeitern:**
-    - MitarbeiterInnen der Firma können sich mit Namen, E-Mail und Personalnummer registrieren.
+    - MitarbeiterInnen der Firma können sich mit Namen, E-Mail und Passwort registrieren.
 
 ### Zusätzliche Funktionen (nach Bedarf)
 
@@ -96,7 +111,7 @@ Windows: python intialize_db_local.py
     - Die Anwendung unterstützt verschiedene Sprachen, einschließlich Deutsch.
 
 3. **Menüvorschläge:**
-    - MitarbeiterInnen der Firma kön nen Vorschläge für Menüs einreichen.
+    - MitarbeiterInnen der Firma können Vorschläge für Menüs einreichen.
 
 4. **Live-Benachrichtigungen:**
     - Benachrichtigungen werden versendet, wenn ein neuer Wochenplan verfügbar ist, sofern dies gewünscht ist.
