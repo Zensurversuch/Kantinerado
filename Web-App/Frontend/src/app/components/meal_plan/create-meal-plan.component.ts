@@ -13,7 +13,6 @@ import {WeekdayArray} from "../../interface/weekday";
 import {MatButton} from "@angular/material/button";
 import {Dish} from "../../interface/dish";
 import {MealPlanService} from "../../service/mealPlan/meal-plan.service";
-import { FeedbackService } from '../../service/feedback/feedback.service';
 
 
 @Component({
@@ -86,12 +85,11 @@ export class CreateMealPlanComponent implements OnInit {
   }
 
   loadDishes() {
-    this.dishesAfterTypex = [];
+    this.dishesAfterType = [];
     if (this.selectedMealType) {
       this.dishService.getDishByMealType(this.selectedMealType)
         .subscribe((data: Dish[]) => {
           this.dishesAfterType = data;
-          //Fehlermeldung
         });
     }
   }
@@ -125,7 +123,7 @@ export class CreateMealPlanComponent implements OnInit {
         if (!(control.value.length > 0)) {
           allHaveDish = false;
           control.setErrors({'noDish': true});
-        } else if (control.value.some((dish: Dish) => dish.dietaryCategorie.toString() === 'Vegetarisch')) {
+        } else if (control.value.some((dish: Dish) => dish.dietaryCategorie.toString() === 'Vegetarisch' || dish.dietaryCategorie.toString() === 'Vegan' )) {
           control.setErrors(null);
           allVegetarian = true;
         } else {
