@@ -123,7 +123,7 @@ export class CreateMealPlanComponent implements OnInit {
         if (!(control.value.length > 0)) {
           allHaveDish = false;
           control.setErrors({'noDish': true});
-        } else if (control.value.some((dish: Dish) => dish.dietaryCategorie.toString() === 'Vegetarisch' || dish.dietaryCategorie.toString() === 'Vegan' )) {
+        } else if (control.value.some((dish: Dish) => dish.dietaryCategory.toString() === 'Vegetarisch' || dish.dietaryCategory.toString() === 'Vegan' )) {
           control.setErrors(null);
           allVegetarian = true;
         } else {

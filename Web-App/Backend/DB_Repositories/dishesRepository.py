@@ -22,7 +22,7 @@ class DishRepository:
                     "price": dish_data.price,
                     "allergies": allergies,
                     "ingredients": dish_data.ingredients,
-                    "dietaryCategorie": dish_data.dietaryCategory,
+                    "dietaryCategory": dish_data.dietaryCategory,
                     "mealType": dish_data.mealType,
                     "image": base64.b64encode(dish_data.image).decode() if dish_data.image else None
 
@@ -46,7 +46,7 @@ class DishRepository:
                     "price": dish_data.price,
                     "allergies": allergies,
                     "ingredients": dish_data.ingredients,
-                    "dietaryCategorie": dish_data.dietaryCategory,
+                    "dietaryCategory": dish_data.dietaryCategory,
                     "mealType": dish_data.mealType,
                     "image": base64.b64encode(dish_data.image).decode() if dish_data.image else None
 
@@ -73,7 +73,7 @@ class DishRepository:
                         "price": dish.price,
                         "allergies": allergies,
                         "ingredients": dish.ingredients,
-                        "dietaryCategorie": dish.dietaryCategory,
+                        "dietaryCategory": dish.dietaryCategory,
                         "mealType": dish.mealType,
                         "image": base64.b64encode(dish.image).decode() if dish.image else None
                     }

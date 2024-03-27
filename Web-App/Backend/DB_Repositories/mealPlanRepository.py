@@ -95,7 +95,7 @@ class MealPlanRepository:
                             "dishPrice": dish.price,
                             "dishallergies": allergies,
                             "dishingredients": dish.ingredients,
-                            "dishdietaryCategorie": dish.dietaryCategory,
+                            "dishdietaryCategory": dish.dietaryCategory,
                             "dishmealType": dish.mealType,
                             "dishimage": base64.b64encode(dish.image).decode() if dish.image else None,
                             "mealPlanID": meal.mealPlanID
