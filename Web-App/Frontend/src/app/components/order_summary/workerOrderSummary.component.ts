@@ -102,17 +102,21 @@ export class WorkerOrderSummaryComponent {
 
   async generatePDF(): Promise<void> {
     this.expandAllDays();
-
+  
     await new Promise(resolve => setTimeout(resolve, 1000));
   
     const style = document.createElement('style');
     style.innerHTML = `
-      @media print {
-        app-header, .calendar-container, .print-button {
-          display: none !important;
-        }
+    @page {
+      size: landscape !important;
+    }
+
+    @media print {
+      app-header, .calendar-container, .print-button {
+        display: none !important;
       }
-    `;
+    }
+  `;
     document.head.appendChild(style);
   
     window.print();
