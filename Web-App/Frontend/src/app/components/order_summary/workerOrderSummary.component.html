@@ -2,11 +2,14 @@
 
 <body [ngClass]="{ 'blurred': blurred }">
   <div class="calendar-container">
+    <button class="print-button" (click)="generatePDF()">
+      <span class="print-icon"></span> 
+      <span class="print-text">Drucken</span>
+    </button>
     <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
   </div>
-
-
-  <div class="summary" *ngIf="orderSumResponse.length > 0">
+  
+  <div class="summary" id ="printSummary" *ngIf="orderSumResponse.length > 0">
     <h2>Bestellübersicht Kantinenmitarbeiter</h2>
 
     <div class="day" *ngFor="let day of ordersByDay">
@@ -45,11 +48,5 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="problem" *ngIf="!(start_date && end_date)">
-    <p>Wähle einen Zeitraum</p>
-  </div>
-  <div class="problem" *ngIf="orderSumResponse.length === 0" [hidden]="!(start_date && end_date)">
-    <p>Keine Bestellungen im gewählten Zeitraum gefunden.</p>
   </div>
 </body>

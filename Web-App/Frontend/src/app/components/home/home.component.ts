@@ -18,6 +18,8 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
+import { FeedbackService } from '../../service/feedback/feedback.service';
+
 
 @Component({
   selector: 'app-home',
@@ -40,18 +42,19 @@ export class HomeComponent {
   mealPlanSumResponse: any[] = [];
   ordersByUser: Array<Order>;
   datesCreated: string[];
-  mealPlansByDay: OrderByDay[] = [];
   start_date: string;
   end_date: string;
   order_list: Order[];
+  orderPrice: number;
   quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
     this.order_list = [];
     this.ordersByUser = [];
+    this.orderPrice= 0;
   }
     blurred: boolean = false;
   ToggleBlurred(isOpened: boolean) {
@@ -78,7 +81,6 @@ export class HomeComponent {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
   
       this.mealPlanSumResponse = [];
-      this.mealPlansByDay = [];
       this.datesCreated = [];
   
       this.http.get<any[]>(`${environment.apiUrl}/meal_plan/${this.start_date}/${this.end_date}`, { headers })
@@ -89,10 +91,10 @@ export class HomeComponent {
           //resets chosen orders if new date is chosen
           this.order_list = [];
           this.resetAmountMenus();
-          
         },
         (error) => {
           console.error('Fehler aufgetreten:', error);
+          this.feedbackService.displayMessage(error.error.response);
           this.mealPlanSumResponse = [];
         }
       );
@@ -128,23 +130,25 @@ export class HomeComponent {
       
     } else {
       console.error("Invalid date range:", changedDate);
+      this.feedbackService.displayMessage("Error: Ungültiger Zeitraum: " + changedDate);
     }
   }
-  onQuantityChange(event: MatSelectChange, dish: any, mealPlanID: any) {
+  onQuantityChange(event: MatSelectChange, dish: any, mealPlanID: number) {
     const target = event.value;
     if (target !== undefined && target !== null) {
       const quantity = target;
       dish.quantity = quantity;
       const existingOrderIndex = this.order_list.findIndex(order => order.mealPlanID === mealPlanID);
-    if (existingOrderIndex !== -1) {
-      this.order_list[existingOrderIndex].amount = quantity;
-    } else {
-      const order = {
-        "mealPlanID": mealPlanID,
-        "amount": quantity
-      };
-      this.order_list.push(order);
-    }
+      if (existingOrderIndex !== -1) {
+        this.order_list[existingOrderIndex].amount = quantity;
+      } else {
+        const order = {
+          "mealPlanID": mealPlanID,
+          "amount": quantity
+        };
+        this.order_list.push(order);
+      }
+      this.getOrderPrice();
     }
   }
   pushOrders(orders: Array<Object>)
@@ -156,11 +160,12 @@ export class HomeComponent {
       .subscribe(
         (response: any) => {
           console.log('POST request successful', response);
+          this.feedbackService.displayMessage("Erfolgreich: Deine Bestellung wurde angelegt");
         },
         (error) => {
           console.error('Fehler aufgetreten:', error.response);
           console.log(error);
-          alert('Fehler aufgetreten: ' + error.message);
+          this.feedbackService.displayMessage(error.error.response);
         }
       )
     }
@@ -180,6 +185,7 @@ export class HomeComponent {
         });
       });
     });
+    this.getOrderPrice();
 
   }
   resetAmountMenus()
@@ -198,5 +204,39 @@ export class HomeComponent {
   isLoggedIn(): boolean
   {
     return(this.authService.isLoggedIn() && !this.authService.isTokenExpired());
+  }
+  getOrderPrice()
+  { 
+    
+    const orders: Order[] = [];
+    this.orderPrice = 0;
+
+    this.ordersByUser.forEach(order => {
+      orders.push({
+        amount: order.amount,
+        mealPlanID: order.mealPlanID
+      });
+    });
+    this.order_list.forEach(order => {
+      const index = orders.findIndex(o => o.mealPlanID === order.mealPlanID)
+      if(index !== -1)
+      {
+        orders[index] = {mealPlanID: order.mealPlanID, amount: order.amount}
+      }else{
+        orders.push({mealPlanID: order.mealPlanID, amount: order.amount})
+      }
+    })
+    orders.forEach((order: Order) => {
+      this.mealPlanSumResponse.forEach(days => {
+        days.dishes.forEach((dish: any) => {
+          if(order.mealPlanID == dish.mealPlanID)
+          {
+            this.orderPrice += dish.dishPrice*dish.amount;
+          }
+        });
+      });
+      
+    });
+
   }
 }

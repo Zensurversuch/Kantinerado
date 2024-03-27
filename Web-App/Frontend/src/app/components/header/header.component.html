@@ -6,7 +6,7 @@
         <img src="../../../assets/Logo.jpg" alt="Logo" class="header__logo" height="416" width="1280">
     </div>
     <div class="header__right">
-        <button class="header__icon header__icon--settings" (click)="toggleSettings()">Settings</button>
+        <button class="header__icon header__icon--settings" *ngIf="isLoggedIn" (click)="toggleSettings()">Settings</button>
         <span class="header__username">{{ username }}</span>
     </div>
 </header>
