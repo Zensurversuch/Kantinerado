@@ -86,10 +86,12 @@ export class CreateMealPlanComponent implements OnInit {
   }
 
   loadDishes() {
+    this.dishesAfterTypex = [];
     if (this.selectedMealType) {
       this.dishService.getDishByMealType(this.selectedMealType)
         .subscribe((data: Dish[]) => {
           this.dishesAfterType = data;
+          //Fehlermeldung
         });
     }
   }
