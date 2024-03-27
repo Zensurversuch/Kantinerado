@@ -50,6 +50,7 @@ export class HomeComponent {
   quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   blurred: boolean = false;
   userAllergies: string[] = [];
+  role: string | null = "";
 
   constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService, private allergyService: AllergyService) {
     this.start_date = "";
@@ -58,6 +59,7 @@ export class HomeComponent {
     this.order_list = [];
     this.ordersByUser = [];
     this.orderPrice= 0;
+    this.role = this.authService.getUserRole();
   }
   ToggleBlurred(isOpened: boolean) {
     this.blurred = isOpened;

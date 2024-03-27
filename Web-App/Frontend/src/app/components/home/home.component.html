@@ -8,7 +8,7 @@
   
   <div class="summary" *ngIf="mealPlanSumResponse.length > 0">
     <h2>Speiseplan Übersicht</h2>
-    <div *ngIf="isLoggedIn()" class="order-container">
+    <div *ngIf="isLoggedIn() && role != 'kantinenmitarbeiter'" class="order-container">
       <div class="order-price">
         <p>Preis: {{orderPrice}}€</p>
       </div>
@@ -37,7 +37,8 @@
               <img style="display:block; width:120px;height:120px;" src="../../../assets/no-image-icon-23494.png">
             </ng-container>
             <h3>{{ dish.dishName }}</h3>
-            <div *ngIf="isLoggedIn()">
+            <div *ngIf="isLoggedIn() && role != 'kantinenmitarbeiter'">
+
               <mat-form-field class ="amount-select">
                 <mat-label>Menge</mat-label>
                 <mat-select [(ngModel)]="dish.amount" (selectionChange)="onQuantityChange($event, dish, dish.mealPlanID)">
