@@ -35,6 +35,7 @@ export class FeedbackService {
       case 'Fehler:':
         config.panelClass = ['error-snackbar'];
         config.duration = 10000;
+        console.log("Antwort war ein Fehler")
         break;
       case 'Warnung:':
         config.panelClass = ['warning-snackbar'];

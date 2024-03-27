@@ -18,7 +18,9 @@
       padding: 20px;
       min-height: 200px;
     }
+
     button {
+      width: 100%;
       margin-top: 20px;
       margin-left: 0;
       font-size: 20px;
@@ -28,8 +30,13 @@
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: background-color 0.3s ease;
+
       &:hover {
         background-color: darken($secondary-border-color, 10%);
+      }
+
+      &:disabled {
+        background-color: $disabled-color;
       }
     }
   }
@@ -43,38 +50,64 @@
       max-height: 800px;
       overflow-y: auto;
 
+
       .dayList {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
         border: 1px dotted $primary-border-color;
         margin: 20px;
         min-height: 100px;
+
+        .ng-container {
+          width: auto;
+          height: auto;
+        }
+
+        &.ng-valid {
+          border: $secondary-border-color 2px dashed;
+          font-style: $secondary-border-color;
+        }
+
+        &.ng-invalid {
+          border: $primary-color 3px dashed;
+          font-style: $primary-color;
+        }
       }
     }
   }
 }
 
-.example-list {
-  border: 1px solid $primary-border-color;
-  padding: 20px;
-  min-height: 100px;
+.mealPlan__error-message {
+  color: $primary-color;
+  margin-left: 20px;
+}
+.message {
+  color: $secondary-border-color;
+  font-size: 3em;
+  align-self: center;
+}
 
-  .DishItem {
-    background-color: $primary-text-color;
-    border: 1px solid $secondary-border-color;
-    padding: 15px;
-    margin-bottom: 10px;
-    cursor: grab;
+.DishItem {
+  background-color: $primary-text-color;
+  border: 1px solid $secondary-border-color;
+  padding: 5px;
+  margin: 10px;
+  cursor: grab;
+  width: fit-content;
+  height: fit-content;
 
-    &:hover {
-      background-color: $primary-border-color;
-    }
+  &:hover {
+    background-color: $highlight-color;
   }
 }
+
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: $highlight-color ;
+  background: $highlight-color;
   border: 1px solid $primary-border-color;
 }
 
