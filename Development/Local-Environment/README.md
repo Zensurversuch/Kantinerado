@@ -16,6 +16,8 @@ Dieses Docker-Compose-Setup ermöglicht es, eine einfache Webanwendung mit einer
 
 ## Schritte zum Starten der Anwendung: 
 
+Sofern das Deployment Lokal sein soll, müssen Sie in der docker-compos.yml unter dem Punkt Database die Ports auskommentieren.
+
 1. **Docker Compose starten:**
     Führen Sie den folgenden Befehl in diesem Ordner ("~/Development/LocalEnvironment") aus:
     ```bash

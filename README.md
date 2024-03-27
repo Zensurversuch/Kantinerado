@@ -2,8 +2,12 @@
 
 ## Projektbeschreibung
 
-Dieses Projekt wurde im Rahmen einer Semesterprojektarbeit der [DHBW Heidenheim](https://www.heidenheim.dhbw.de/startseite) erstellt.  
-Dieses Repository enthält den Quellcode für eine Webanwendung, die die Essensbestellungsprozesse für eine Firma automatisiert. Bisherige manuelle Prozesse, wie das Ausfüllen von Excel-Tabellen, werden durch eine benutzerfreundliche Webanwendung ersetzt. Die Anwendung ermöglicht die Bestellung von Mahlzeiten für die kommende Woche und bietet verschiedene Funktionen zur Verbesserung des gesamten Bestellungsprozesses.
+Dieses Projekt wurde im Rahmen einer Semesterprojektarbeit
+der [DHBW Heidenheim](https://www.heidenheim.dhbw.de/startseite) erstellt.  
+Dieses Repository enthält den Quellcode für eine Webanwendung, die die Essensbestellungsprozesse für eine Firma
+automatisiert. Bisherige manuelle Prozesse, wie das Ausfüllen von Excel-Tabellen, werden durch eine benutzerfreundliche
+Webanwendung ersetzt. Die Anwendung ermöglicht die Bestellung von Mahlzeiten für die kommende Woche und bietet
+verschiedene Funktionen zur Verbesserung des gesamten Bestellungsprozesses.
 
 ## Projektstruktur
 
@@ -13,38 +17,69 @@ Im [Development](Development) Ordner ist alles weitere was für die Entwicklung 
 
 Die [Dokumentation](Dokumentation) kann man hier einsehen.
 
+## Deployment:
+Vorraussetzungen:
+Python installiert (https://www.python.org/downloads/)
+Docker installiert (https://docs.docker.com/get-docker/)
+Node.js bzw. NodePackageManager (npm) installiert (https://nodejs.org/en/download)
+
+# Vorgehen:
+Der Vorgang des Deployments ist durch einen Befehl vollständig:
+
+1. **Gehen Sie in den Ordner ( /Development/Local-Environment/**
+
+2. **Gehen Sie in die Console und führen Sie folgenden Befehl aus:**
+docker-compose up --build
+
+# Datenbank aufsetzen ohne Backup
+
+1. **Erstellen Sie eine virtuelle Python Umgebung**
+Windows: python –m venv .venv
+
+2. **Stellen Sie den Interpreter der virtuellen Umgebung auf Python (venv)**
+Windows: .venv\Scripts\python.exe
+
+3. **Aktivieren Sie die Virtuelle Umgebung.**
+Windows: venv\Scripts\activate
+
+4. **Installieren Sie die verschiedenen Bibliotheken über den Package Installer Python (pip):**
+Windows: pip install -r "requirements.txt"
+
+5. **Initialisieren der Tabellen durch das Python Script für Lokal:**
+Windows: python intialize_db_local.py
+
 ## Funktionen
 
 ### Grundlegende Funktionen
 
 1. **Web- und Mobile-Anwendung:**
-   - Die Anwendung ist sowohl auf Desktop- als auch auf mobilen Endgeräten nutzbar.
+    - Die Anwendung ist sowohl auf Desktop- als auch auf mobilen Endgeräten nutzbar.
 
 2. **Speiseplan in Anwendung:**
-   - MitarbeiterInnen der Firma können den wöchentlichen Speiseplan  abrufen.
-   - KantinenarbeiterInnen können den Speiseplan über Kantinerado einstellen.
-
+    - MitarbeiterInnen der Firma können den wöchentlichen Speiseplan abrufen.
+    - KantinenarbeiterInnen können den Speiseplan über Kantinerado einstellen.
 
 ### Erweiterte Funktionen
 
 1. **Bestellung direkt in der App:**
-   - MitarbeiterInnen der Firma können ihre Bestellungen direkt über die Anwendung aufgeben.
+    - MitarbeiterInnen der Firma können ihre Bestellungen direkt über die Anwendung aufgeben.
 
 2. **Preiszusammenfassung:**
-   - Die Anwendung bietet eine Preisübersicht während des Bestellvorgangs.
+    - Die Anwendung bietet eine Preisübersicht während des Bestellvorgangs.
 
 3. **Produktinformationen im Speiseplan:**
-   - Zusätzliche Informationen zu den Gerichten, wie Preis, Beschreibung und Bild, sind im Speiseplan verfügbar.
-   - Als Allergiker kann man einstellen welche Allergien man hat und bekommt bei bestimmten Gerichten den Warnungen
+    - Zusätzliche Informationen zu den Gerichten, wie Preis, Beschreibung und Bild, sind im Speiseplan verfügbar.
+    - Als Allergiker kann man einstellen welche Allergien man hat und bekommt bei bestimmten Gerichten den Warnungen
 
 4. **Bestellzeitfenster:**
-   - Bestellungen sind bis Donnerstag, 18:00 Uhr, für die kommende Woche möglich.
+    - Bestellungen sind bis Donnerstag, 18:00 Uhr, für die kommende Woche möglich.
 
 5. **Änderung der Bestellung:**
-   - Änderungen an den Bestellungen sind bis Donnerstag, 18:00 Uhr, möglich.
+    - Änderungen an den Bestellungen sind bis Donnerstag, 18:00 Uhr, möglich.
 
 6. **Zusammenfassung als PDF:**
-   - Die MitarbeiterInnen der Firma können eine Zusammenfassung ihrer Wochenbestellung als PDF erhalten oder direkt ausdrucken.
+    - Die MitarbeiterInnen der Firma können eine Zusammenfassung ihrer Wochenbestellung als PDF erhalten oder direkt
+      ausdrucken.
 
 7. **Bestellübersicht für Kantinenbetreiber:**
     - Eine Übersicht aller Bestellungen für die Kantinenarbeiter steht zur Verfügung.
