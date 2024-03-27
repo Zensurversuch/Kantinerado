@@ -44,6 +44,17 @@
                   <mat-option *ngFor="let num of quantityOptions" [value]="num">{{ num }}</mat-option>
                 </mat-select>
               </mat-form-field>
+              <div class="allergy" *ngIf="dish.dishallergies && dish.dishallergies.length > 0 && hasMatchingAllergy(dish)">
+                
+                <div class="allergies-container">
+                  <p class="warning-text">Achtung enthält:</p>
+                  <span *ngFor="let allergy of dish.dishallergies" class="allergy">
+                    <ng-container *ngIf="userAllergies.includes(allergy)">
+                      {{ allergy }}
+                    </ng-container>
+                  </span>
+                </div>
+              </div>
             </div>
             <div class="toggle-dish-container" (click)="toggleDish(dish)">
               <span class="material-icons toggle-dish" [class.expanded]="dish.expanded">chevron_right</span>

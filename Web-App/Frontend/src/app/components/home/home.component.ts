@@ -49,8 +49,9 @@ export class HomeComponent {
   orderPrice: number;
   quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   blurred: boolean = false;
+  userAllergies: string[] = [];
 
-  constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService) {
+  constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService, private allergyService: AllergyService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
@@ -61,6 +62,30 @@ export class HomeComponent {
   ToggleBlurred(isOpened: boolean) {
     this.blurred = isOpened;
   }
+  
+  ngOnInit(): void {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+    if(this.isLoggedIn()) {
+      const userID = this.authService.getUserID();
+      this.allergyService.getAllergiesByUser(userID, headers).subscribe(
+        (response: any[]) => {
+          this.userAllergies = response.map((allergy: any) => allergy);
+          console.log('Allergies:', this.userAllergies);
+        },
+        error => {
+          console.error('Error fetching allergies:', error);
+          this.userAllergies = ["Error Loading Allergies"];
+        }
+      );
+    }
+  }
+
+  hasMatchingAllergy(dish: any): boolean {
+    return dish.dishallergies.some((allergy: string) => this.userAllergies.includes(allergy));
+  }
+
+ 
+   
   
   formatDate(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
