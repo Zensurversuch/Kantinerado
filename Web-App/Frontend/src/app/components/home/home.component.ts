@@ -3,6 +3,7 @@ import { HeaderComponent } from "../header/header.component";
 import { CalendarComponent } from "../calendar/calendar.component";
 import {CalendarService} from "../../service/calendar/calendar.service";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AllergyService } from '../../service/allergy/allergy.service';
 import { AuthService } from '../../service/authentication/auth.service';
 import { environment } from '../../../environments/environment';
 import {OrderByDay}from '../../interface/order-by-day';
@@ -19,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import { FeedbackService } from '../../service/feedback/feedback.service';
+import { DishData } from '../../interface/dishData';
 
 
 @Component({
@@ -38,7 +40,6 @@ import { FeedbackService } from '../../service/feedback/feedback.service';
   ]
 })
 export class HomeComponent {
-  
   mealPlanSumResponse: any[] = [];
   ordersByUser: Array<Order>;
   datesCreated: string[];
@@ -47,8 +48,10 @@ export class HomeComponent {
   order_list: Order[];
   orderPrice: number;
   quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  blurred: boolean = false;
+  userAllergies: string[] = [];
 
-  constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService) {
+  constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService, private allergyService: AllergyService) {
     this.start_date = "";
     this.end_date = "";
     this.datesCreated = [];
@@ -56,10 +59,33 @@ export class HomeComponent {
     this.ordersByUser = [];
     this.orderPrice= 0;
   }
-    blurred: boolean = false;
   ToggleBlurred(isOpened: boolean) {
     this.blurred = isOpened;
   }
+  
+  ngOnInit(): void {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+    if(this.isLoggedIn()) {
+      const userID = this.authService.getUserID();
+      this.allergyService.getAllergiesByUser(userID, headers).subscribe(
+        (response: any[]) => {
+          this.userAllergies = response.map((allergy: any) => allergy);
+          console.log('Allergies:', this.userAllergies);
+        },
+        error => {
+          console.error('Error fetching allergies:', error);
+          this.userAllergies = ["Error Loading Allergies"];
+        }
+      );
+    }
+  }
+
+  hasMatchingAllergy(dish: any): boolean {
+    return dish.dishallergies.some((allergy: string) => this.userAllergies.includes(allergy));
+  }
+
+ 
+   
   
   formatDate(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
