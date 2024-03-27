@@ -757,7 +757,7 @@
         "tags": [
           "mealplans"
         ],
-        "summary": "returns all mealPlans in given timespan",
+        "summary": "returns a list of all mealPlans in given timespan grouped by day",
         "security": [
           {
             "BearerAuth": []
@@ -791,22 +791,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "mealPlan": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "dishID": {
-                            "type": "integer",
-                            "example": 1
-                          },
-                          "date": {
-                            "type": "string",
-                            "example": "2024-12-17"
-                          }
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "dishes": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/Dish_with_Id"
                         }
+                      },
+                      "mealPlanDate": {
+                        "type": "string",
+                        "example": "Tue, 17 Dec 2024 00:00:00 GMT"
                       }
                     }
                   }
