@@ -89,6 +89,7 @@ class MealPlanRepository:
                         if meal_plan_date not in grouped_mealPlans:
                             grouped_mealPlans[meal_plan_date] = {}
                         if dish_id not in grouped_mealPlans [meal_plan_date]:
+                            allergies = [allergy.name for allergy in dish.allergies] if dish.allergies else None
                             grouped_mealPlans[meal_plan_date][dish_id] = {
                             "dishID": meal.dishID,
                             "date": datetime.strftime(meal.date, "%Y-%m-%d"),
@@ -99,7 +100,8 @@ class MealPlanRepository:
                             "dishdietaryCategorie": dish.dietaryCategory,
                             "dishmealType": dish.mealType,
                             "dishimage": base64.b64encode(dish.image).decode() if dish.image else None,
-                            "mealPlanID": meal.mealPlanID
+                            "mealPlanID": meal.mealPlanID,
+                            "allergies": allergies,
                         }
                     final_mealPlan_list = []
                     for meal_plan_date, dish_info in grouped_mealPlans.items():
