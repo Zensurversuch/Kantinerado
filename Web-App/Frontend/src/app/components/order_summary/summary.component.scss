@@ -20,6 +20,14 @@ h2 {
   margin: 0 auto;
 }
 
+@media only screen and (max-width: 600px) {
+  .calendar-container {
+    flex-direction: column; 
+    align-items: center; 
+  }
+}
+
+
 .summary {
   width: 80%;
   margin: 0 auto;
@@ -253,5 +261,17 @@ button.print-button:hover .print-icon::after {
 @media (max-width: 768px) {
   .day {
     width: 100%; /* Bei kleinen Bildschirmen den Container auf volle Breite setzen */
+  }
+}
+
+
+@media only screen and (max-width: 600px) {
+  
+  /* Anpassungen für kleinere Bildschirme */
+  .print-button {
+    display: block; /* Auf kleinen Geräten den Button als Block anzeigen */
+    margin-top: 10px; /* Beispielhafter Abstand zum Kalender */
+    margin-left: auto; /* Button horizontal zentrieren */
+    margin-right: auto;
   }
 }
