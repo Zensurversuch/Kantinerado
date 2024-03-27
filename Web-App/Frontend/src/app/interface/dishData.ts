@@ -5,7 +5,7 @@ export interface DishData {
   name: string;
   price: number;
   ingredients: [];
-  dietaryCategorie: DietaryCategory;
+  dietaryCategory: DietaryCategory;
   mealType: MealType;
   allergies: string[];
   image: string;
