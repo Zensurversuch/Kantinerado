@@ -139,6 +139,19 @@ tbody tr:hover {
   background-color: rgb(255, 213, 213);
 }
 
+.allergy {
+  margin: 0;
+  font-size: 1em; 
+  color: orange; 
+}
+
+.warning-text {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1em;
+  color: orange;
+}
+
 /* Responsivität */
 @media (min-width: 769px) {
   /* Stile für größere Bildschirme */

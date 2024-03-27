@@ -21,21 +21,19 @@ class MealPlanRepository:
                 max_ = 1000000000
                 listOfDuplicates = []
                 rand_mealPlanID = randint(min_, max_)
-                
-                # Bestimmen des Start- und Enddatums der Woche
-                date_str = mealPlan[0].get('date')  # Annahme: Alle Einträge haben das gleiche Datumformat
+    
+                date_str = mealPlan[0].get('date')  
                 date = datetime.strptime(date_str, "%Y-%m-%d")
                 week_start = date - timedelta(days=date.weekday())
                 week_end = week_start + timedelta(days=6)
-                
-                # Löschen aller vorhandenen Einträge für die betreffende Woche
+                           
                 session.query(MealPlan).filter(
                     and_(
                         MealPlan.date >= week_start,
                         MealPlan.date <= week_end
                     )
                 ).delete()
-                #Hinzufügen aller neuen Eintäge
+                
                 for meal in mealPlan:
                     dish_id = meal.get('dishID')
                     date_str = meal.get('date')
@@ -48,7 +46,6 @@ class MealPlanRepository:
                     ).first():
                         while session.query(MealPlan).filter(MealPlan.mealPlanID == rand_mealPlanID).first() is not None:
                             rand_mealPlanID = randint(min_, max_)
-                        # Speichern der Einträge in der Datenbank
                         new_mealPlan = MealPlan(
                             mealPlanID=rand_mealPlanID,
                             dishID=dish_id,
@@ -84,6 +81,7 @@ class MealPlanRepository:
                 grouped_mealPlans = {}
                 if mealPlan:
                     for meal, dish in mealPlan:
+                        allergies = [allergy.name for allergy in dish.allergies] if dish.allergies else None
                         meal_plan_date = meal.date
                         dish_id = meal.dishID
                         if meal_plan_date not in grouped_mealPlans:
@@ -95,6 +93,7 @@ class MealPlanRepository:
                             "dishName": dish.name,
                             "dishMealType": dish.mealType,
                             "dishPrice": dish.price,
+                            "dishallergies": allergies,
                             "dishingredients": dish.ingredients,
                             "dishdietaryCategorie": dish.dietaryCategory,
                             "dishmealType": dish.mealType,

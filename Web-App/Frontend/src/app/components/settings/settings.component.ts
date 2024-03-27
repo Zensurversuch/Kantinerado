@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { AllergyService } from '../../service/allergy/allergy.service';
 import { AuthService } from '../../service/authentication/auth.service';
 import { HeaderComponent } from '../header/header.component';
+import { FeedbackService } from '../../service/feedback/feedback.service';
 
 interface Allergy {
   name: string;
@@ -26,7 +27,7 @@ export class SettingsComponent implements OnInit {
   darkMode: boolean = false;
   headers: HttpHeaders;
 
-  constructor(private allergyService: AllergyService, private http: HttpClient, private authService: AuthService, private header: HeaderComponent) {
+  constructor(private allergyService: AllergyService, private authService: AuthService, private header: HeaderComponent, private feedbackService: FeedbackService) {
     this.headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
   }
 
@@ -81,6 +82,7 @@ export class SettingsComponent implements OnInit {
       },
       error => {
         console.error('Error fetching user allergies:', error);
+        this.feedbackService.displayMessage(error.error.response);
       }
     );
   }
@@ -95,10 +97,10 @@ export class SettingsComponent implements OnInit {
   
     this.allergyService.setAllergies(chosen_allergies, this.headers).subscribe(
       response => {
-        console.log('Response from server:', response);
+        this.feedbackService.displayMessage(response.response);
       },
       error => {
-        console.error('Error while submitting allergies:', error);
+        this.feedbackService.displayMessage(error.error.response);
       }
     );
   }
