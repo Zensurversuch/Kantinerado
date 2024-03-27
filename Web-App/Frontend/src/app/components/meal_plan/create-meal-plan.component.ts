@@ -7,7 +7,7 @@ import {DishService} from "../../service/dish/dish.service";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatFormField, MatLabel, MatSelect} from "@angular/material/select";
 import {MatCard} from "@angular/material/card";
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {HeaderComponent} from "../header/header.component";
 import {WeekdayArray} from "../../interface/weekday";
 import {MatButton} from "@angular/material/button";
@@ -30,6 +30,8 @@ import {MealPlanService} from "../../service/mealPlan/meal-plan.service";
     CdkDropList,
     MatButton,
     ReactiveFormsModule,
+    NgIf,
+    NgClass,
   ],
   templateUrl: './create-meal-plan.component.html',
   styleUrl: './create-meal-plan.component.scss',
@@ -46,7 +48,6 @@ export class CreateMealPlanComponent implements OnInit {
       Friday: new FormControl(this.fridayList),
       Saturday: new FormControl(this.saturdayList)
     });
-    this.checkLists()
   }
 
   ngOnInit(): void {
@@ -129,13 +130,16 @@ export class CreateMealPlanComponent implements OnInit {
       }
     });
 
-    const control = this.MealPlanForm.get("Saturday")
-    let satudaySoup = false
+    const control = this.MealPlanForm.get("Saturday");
+    let saturdaySoup = false;
     if (control?.value.some((dish: Dish) => dish.mealType.toString() === 'Suppe')) {
-      satudaySoup = true;
+      saturdaySoup = true;
+      control?.setErrors({'soupOnSaturday': true});
+    } else if(control?.getError('saturdaySoup')){
+      control?.setErrors(null);
     }
 
-    if (allHaveDish && allVegetarian && !satudaySoup) {
+    if (allHaveDish && allVegetarian && !saturdaySoup) {
       this.MealPlanForm.setErrors(null);
     } else {
       this.MealPlanForm.setErrors({'missingDish': true});
