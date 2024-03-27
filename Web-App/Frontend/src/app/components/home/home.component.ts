@@ -3,6 +3,7 @@ import { HeaderComponent } from "../header/header.component";
 import { CalendarComponent } from "../calendar/calendar.component";
 import {CalendarService} from "../../service/calendar/calendar.service";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AllergyService } from '../../service/allergy/allergy.service';
 import { AuthService } from '../../service/authentication/auth.service';
 import { environment } from '../../../environments/environment';
 import {OrderByDay}from '../../interface/order-by-day';
@@ -19,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import { FeedbackService } from '../../service/feedback/feedback.service';
+import { DishData } from '../../interface/dishData';
 
 
 @Component({
@@ -38,7 +40,6 @@ import { FeedbackService } from '../../service/feedback/feedback.service';
   ]
 })
 export class HomeComponent {
-  
   mealPlanSumResponse: any[] = [];
   ordersByUser: Array<Order>;
   datesCreated: string[];
@@ -47,6 +48,7 @@ export class HomeComponent {
   order_list: Order[];
   orderPrice: number;
   quantityOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  blurred: boolean = false;
 
   constructor(private http: HttpClient, private authService: AuthService, private feedbackService: FeedbackService) {
     this.start_date = "";
@@ -56,7 +58,6 @@ export class HomeComponent {
     this.ordersByUser = [];
     this.orderPrice= 0;
   }
-    blurred: boolean = false;
   ToggleBlurred(isOpened: boolean) {
     this.blurred = isOpened;
   }
