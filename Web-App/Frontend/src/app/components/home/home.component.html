@@ -1,0 +1,86 @@
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
+
+<body [ngClass]="{ 'blurred': blurred }">
+
+ <div class="calendar-container">
+    <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
+  </div>
+  
+  <div class="summary" *ngIf="mealPlanSumResponse.length > 0">
+    <h2>Speiseplan Übersicht</h2>
+    <div *ngIf="isLoggedIn() && role != 'kantinenmitarbeiter'" class="order-container">
+      <div class="order-price">
+        <p>Preis: {{orderPrice}}€</p>
+      </div>
+      <button mat-icon-button matTooltip="Bestellung abschicken" (click)="onPushOrdersButtonClick()" class="order-buttons">
+        <mat-icon>send</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Änderungen verwerfen" (click)="resetAmountMenus()" class="order-buttons">
+        <mat-icon>delete</mat-icon>
+      </button>
+      
+    </div>
+    <div class="day" *ngFor="let days of mealPlanSumResponse">
+      <div>
+        <div class="day-header" (click)="toggleDay(days)">
+          <h3>
+            <span class="toggle-icon">{{ days.expanded ? '▼' : '►' }}</span>
+            {{ formatDate(days.mealPlanDate) }}
+          </h3>
+        </div>
+        <div class="day-content"  [ngStyle]="{ 'height': days.expanded ? 'auto' : '0' }" [@expandCollapse]="days.expanded ? 'expanded' : 'collapsed'">
+          <div class="dish" *ngFor="let dish of days.dishes">
+            <ng-container *ngIf="dish.dishimage">
+              <img style="display:block; width:120px;height:120px;" id="base64image" [src]="'data:image/jpeg;base64,' + dish.dishimage">
+            </ng-container>
+            <ng-container *ngIf="!dish.dishimage">
+              <img style="display:block; width:120px;height:120px;" src="../../../assets/no-image-icon-23494.png">
+            </ng-container>
+            <h3>{{ dish.dishName }}</h3>
+            <div *ngIf="isLoggedIn() && role != 'kantinenmitarbeiter'">
+
+              <mat-form-field class ="amount-select">
+                <mat-label>Menge</mat-label>
+                <mat-select [(ngModel)]="dish.amount" (selectionChange)="onQuantityChange($event, dish, dish.mealPlanID)">
+                  <mat-option *ngFor="let num of quantityOptions" [value]="num">{{ num }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="allergy" *ngIf="dish.dishallergies && dish.dishallergies.length > 0 && hasMatchingAllergy(dish)">
+                
+                <div class="allergies-container">
+                  <p class="warning-text">Achtung enthält:</p>
+                  <span *ngFor="let allergy of dish.dishallergies" class="allergy">
+                    <ng-container *ngIf="userAllergies.includes(allergy)">
+                      {{ allergy }}
+                    </ng-container>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="toggle-dish-container" (click)="toggleDish(dish)">
+              <span class="material-icons toggle-dish" [class.expanded]="dish.expanded">chevron_right</span>
+            </div>
+            <div [ngStyle]="{ 'height': dish.expanded ? 'auto' : '0' }" class="dish-details" [@expandCollapse]="dish.expanded ? 'expanded' : 'collapsed'">
+              <p>Gerichtsart: <br>{{ dish.dishmealType }}</p>
+              <p>Preis: <br>{{ dish.dishPrice }}€</p>
+              <p>Kategorie: <br>{{ dish.dishdietaryCategory }}</p>
+              <div>
+                <p>Zutaten</p>
+                <ul>
+                  <li *ngFor="let ingredient of dish.dishingredients">{{ ingredient }}</li>
+                </ul>
+              </div>
+              <div>
+                <p>Allergien</p>
+                <ul>
+                  <li *ngFor="let allergy of dish.dishallergies">{{ allergy }}</li>
+                </ul>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,52 @@
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
+
+<body [ngClass]="{ 'blurred': blurred }">
+  <div class="calendar-container">
+    <button class="print-button" (click)="generatePDF()">
+      <span class="print-icon"></span> 
+      <span class="print-text">Drucken</span>
+    </button>
+    <app-calendar (changedDate)="changedDateHandler($event)"></app-calendar>
+  </div>
+
+  <div class="summary" *ngIf="orderSumResponse.length > 0">
+    <h2>Bestellübersicht</h2>
+
+    <div class="day" *ngFor="let days of ordersByDay">
+      <div>
+        <div class="day-header" (click)="toggleDay(days)">
+          <h3>
+            <span class="toggle-icon">{{ days.expanded ? '▼' : '►' }}</span>
+            {{ formatDate(days.date) }}
+          </h3>
+        </div>
+        <div class="day-content" *ngIf="days.expanded">
+          <table>
+            <thead>
+              <tr>
+                <th>Gericht</th>
+                <th>Bestellt am</th>
+                <th>BestellungsID</th>
+                <th>Gerichtsart</th>
+                <th>Gerichtspreis</th>
+                <th>Anzahl</th>
+                <th>Ergibt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of days.orders">
+                <td><b> {{ order.dishName }} </b> </td>
+                <td>{{ formatDate(order.orderDate) }}</td>
+                <td>{{ order.orderID }}</td>
+                <td>{{ order.dishMealType }}</td>
+                <td>{{ order.dishPrice }}€</td>
+                <td>{{ order.amount }}</td>
+                <td>{{ order.orderPrice }}€</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

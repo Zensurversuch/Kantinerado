@@ -11,16 +11,17 @@ Dieses Docker-Compose-Setup ermöglicht es, eine einfache Webanwendung mit einer
 
    POSTGRES_PW=test      # Setzen Sie hier das Passwort für Ihre PostgreSQL-Datenbank fest
    JWT_SECRET_KEY=test   # Setzen Sie hier das Secret für den JWT Token
+   ANGULAR_ENVIRONMENT=development || production    # Zum lokalen test development, auf dem server production
    ```
 
 ## Schritte zum Starten der Anwendung: 
 
 1. **Docker Compose starten:**
-    Führen Sie den folgenden Befehl in diesem Ordner aus:
+    Führen Sie den folgenden Befehl in diesem Ordner ("~/Development/LocalEnvironment") aus:
     ```bash
     docker-compose up --build
     ```
-    Dieser Befehl baut die Docker-Images und startet die Container gemäß der Konfiguration in der `docker-compose.yml`-Datei. Die Option `--build` wird verwendet, um sicherzustellen, dass das Backend Image vor dem Start der Container neu erstellt wird, wodurch Änderungen am Code automatisch mit deployed werden.
+    Dieser Befehl baut die Docker-Images und startet die Container gemäß der Konfiguration in der `docker-compose.yml`-Datei. Die Option `--build` wird verwendet, um sicherzustellen, dass das Backend und Frontend Image vor dem Start der Container neu erstellt wird, wodurch Änderungen am Code automatisch mit deployed werden.
 
 2. **Aufräumen:**
     Um die Docker-Container zu stoppen und aufzuräumen, verwenden Sie den folgenden Befehl:

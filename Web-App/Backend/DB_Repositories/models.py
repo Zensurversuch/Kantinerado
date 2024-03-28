@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData, Column, Integer, String, Date, Table, ForeignKey, ARRAY, LargeBinary
+from sqlalchemy import create_engine, MetaData, Column, Integer, String, Date, Table, ForeignKey, ARRAY, LargeBinary, Float
 from sqlalchemy.orm import relationship, declarative_base
 
 
@@ -29,6 +29,7 @@ class Dish(Base):
 
     dishID = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
+    price = Column(Float, nullable=False)
     ingredients = Column(ARRAY(String))
     dietaryCategory = Column(String(50), nullable=False)
     mealType = Column(String(50), nullable=False)
@@ -55,7 +56,7 @@ class Order(Base):
 
     orderID = Column(Integer, primary_key=True, autoincrement=True)
     userID = Column(Integer, ForeignKey('users.userID'), nullable=False)
-    dishID = Column(Integer, ForeignKey('dishes.dishID'), nullable=False)
+    mealPlanID = Column(Integer, ForeignKey('mealPlan.mealPlanID'), nullable=False)
     amount = Column(Integer, nullable=False)
     orderDate = Column(Date)
 
@@ -66,8 +67,8 @@ class MealPlan(Base):
     dishID = Column(Integer, ForeignKey('dishes.dishID'), nullable=False)
     date = Column(Date, nullable=False)
 
-def initialize_database(postgres_pw):    
-    POSTGRES_URL = f"postgresql://postgres:{postgres_pw}@localhost:5432/postgres"
+def initialize_database(postgres_pw, ip):    
+    POSTGRES_URL = f"postgresql://postgres:{postgres_pw}@{ip}:5432/postgres"
     engine = create_engine(POSTGRES_URL)
     
     Base.metadata.create_all(engine)

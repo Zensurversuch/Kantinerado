@@ -13,7 +13,7 @@ Voraussetzung dafür ist Python installiert zu haben.
         - Unter Windows:
             python -m venv .venv
 
-2. **Interpreter der virtuellen Umgeung auswählen**
+2. **Interpreter der virtuellen Umgebung auswählen**
    - Die Taste "F1" drücken und "Python: Select Interpreter" auswählen
    - Interpreter mit Endung venv verwenden 
      wird der Interpreter der Umgebung nicht angezeigt Pfad des Interpreters angeben (Windows: ".venv\Scripts\python.exe")

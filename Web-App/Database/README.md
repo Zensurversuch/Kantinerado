@@ -1,12 +1,18 @@
 # Datenbank
-## Tabellen initialisieren
-Wenn die Datenbank erstellt wurde müssen die Tabellen initialisiert werden. Dies wird mit dem Skript [initialize_db.py](initialize_db.py) gemacht. Wichtig ist das man dieses in diesem Ordner ausführt sodass das Passwort der Datenbank richtig gezogen wird.  
-Wenn man dieses Skript ausführt wenn die Tabellen schon initialisiert sind führt dies zu keinem Fehler und auch die Daten die in der DB waren bleiben bestehen. Des Weiteren müssen die Python-Module "python-dotenv", "sqlalchemy" und "sqlalchemy" auf dem System installiert sein.
 
-## Tabellen mit DummyDaten befüllen
+## Zu Testzwecken Datenbank Backup laden
+Das DB Backup liegt [hier](Dummy_database.sql) und kann ![alt text](image-2.png) so geladen werden.
+Das Andere DB-Backup [hier](Dummy_Database_Presentation.sql) ist zu Präsentationszwecken bereits mit Daten gefüllt. 
 
-Im Ordner [Dummy_SQL_Scripts](./Test_Database/Dummy_SQL_Scripts/) befinden sich SQL Skripte um die Datenbank zu Testzwecken mit Dummy Daten zu befüllen.
 
+## Initialisieren der Tabellen
+Wenn die Datenbank erstellt wurde müssen die Tabellen initialisiert werden. Wenn die Datenbank auf dem selben Rechner (local) läuft nimmnt man dieses [hier](initialize_db_local.py).
+Wenn man eine Datenbank auf einem Server Remote ändern möchte nimmt man dieses [hier](initialize_db_server.py). Hier muss jedoch noch die IP des Serves eingefügt werden.
+!Wichtig die Ausführung der Scripte zur Initialisierung müssen in diesem Ordner ausgeführt werden!
+
+Die nötigen Bibliotheken werden bereits bei der Initialisierung des Backends [hier](/Web-App/Backend/README.md) installiert.
+
+## Tabellen mit DBeaver einsehen befüllen
 ### Ausführen der SQL Skripte
 Mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) kann man SQL Skripte einfach in der Datenbank ausführen.
 1. DBeaver herunterladen
@@ -16,20 +22,3 @@ Mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) kann man SQL Skripte einfa
 2.2 Verbindungsdaten eingeben  
 2.3 Verbindung testen drücken um zu schauen ob die Verbindung hergestellt werden kann  
 2.4 Fertigstellen
-3. Skripte erstellen (Voraussetzung Tabellen wurden schon initialiesiert)
-![alt text](image-1.png)
-4. In den script Tab die folgenden Skripte einzeln einfügen und mit Strg+Enter ausführen. **Wichtig**: Diese müssen in folgender Reihenfolge ausgeführt werden:  <br><br>
-4.1 **Allergien einfügen:**
-   Füge die Allergien in die Tabelle "allergies" ein.  
-4.2 **Gerichte einfügen:**
-   Füge die Gerichte in die Tabelle "dishes" ein.  
-4.3 **Benutzer einfügen:**
-   Füge die Benutzer in die Tabelle "users" ein.  
-4.4 **Allergien für Benutzer einfügen:**
-   Füge die Zuordnung von Benutzern zu ihren Allergien in die Tabelle "user_allergy_association" ein.  
-4.5 **Allergien für Gerichte einfügen:**
-   Füge die Zuordnung von Gerichten zu ihren Allergien in die Tabelle "dish_allergy_association" ein.  
-4.6 **Einträge für das Meal Plan einfügen:**
-   Füge die Einträge für den Meal Plan in die Tabelle "mealPlan" ein.  
-4.7 **Einträge für Bestellungen einfügen:**
-   Füge die Einträge für Bestellungen in die Tabelle "orders" ein.  

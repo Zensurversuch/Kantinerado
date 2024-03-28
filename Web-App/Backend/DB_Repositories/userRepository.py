@@ -9,7 +9,7 @@ class UserRepository:
         self.engine = engine
         self.session_factory = sessionmaker(bind=self.engine)
 
-    def create_user(self, email, password, lastName, firstName, role, allergies=None):
+    def create_user(self, param_email, param_password, param_lastName, param_firstName, param_role, param_allergies=None):
         session = scoped_session(self.session_factory)
         try:
             min_ = 1
@@ -18,17 +18,17 @@ class UserRepository:
             while session.query(User).filter(User.userID == rand_userid).first() is not None:
                 rand_userid = randint(min_, max_)
 
-            # hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            hashed_pw = hashlib.sha256(param_password.encode('utf-8')).hexdigest()
             new_user = User(userID=rand_userid,
-                            email=email,
-                            password=password,
-                            lastName=lastName,
-                            firstName=firstName,
-                            role=role)
+                            email=param_email,
+                            password=hashed_pw,
+                            lastName=param_lastName,
+                            firstName=param_firstName,
+                            role=param_role)
 
             missing_allergies = []
-            if allergies:
-                for allergy_name in allergies:
+            if param_allergies:
+                for allergy_name in param_allergies:
                     allergy = session.query(Allergy).filter(Allergy.name == allergy_name).first()
                     if allergy:
                         new_user.allergies.append(allergy)
@@ -71,10 +71,10 @@ class UserRepository:
         finally:
             session.close()
 
-    def get_user_by_id(self, user_id):
+    def get_user_by_id(self, param_userID):
         try:
             session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.userID == user_id).first()
+            user_data = session.query(User).filter(User.userID == param_userID).first()
             if user_data:
                 allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
 
@@ -94,10 +94,10 @@ class UserRepository:
         finally:
             session.close()
 
-    def get_user_by_email(self, email):
+    def get_user_by_email(self, param_email):
         try:
             session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.email == email).first()
+            user_data = session.query(User).filter(User.email == param_email).first()
             if user_data:
                 allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
 
@@ -117,29 +117,31 @@ class UserRepository:
         finally:
             session.close()
 
-
-    def get_password_for_user(self, user_id):
+    
+    def set_user_allergies_by_id(self, param_id, param_allergies):
+        session = scoped_session(self.session_factory)
         try:
-            session = scoped_session(self.session_factory)
-            user_pw = session.query(User.password).filter(User.userID == user_id).scalar()
-            return user_pw
+            user = session.query(User).filter(User.userID == param_id).first()
+            if user: 
+                user.allergies = []
+                session.commit()
+
+                missing_allergies = []
+                if param_allergies:
+                    for allergy_name in param_allergies:
+                        allergy = session.query(Allergy).filter(Allergy.name == allergy_name).first()
+                        if allergy:
+                            user.allergies.append(allergy)
+                        else:
+                            missing_allergies.append(allergy_name)
+
+                session.commit()
+            else:
+                return "User not found!"
+        
+            return missing_allergies
         except SQLAlchemyError as e:
-            return None
-        finally:
-            session.close()
-
-    def get_allergies_for_user(self, user_id):
-        try:
-            session = scoped_session(self.session_factory)
-
-            user = session.query(User).filter(User.userID == user_id).first()
-
-            if user:
-                allergies = [allergy.name for allergy in user.allergies]
-                return allergies
-
-            return None
-        except SQLAlchemyError as e:
-            return None
+            session.rollback()
+            return False
         finally:
             session.close()

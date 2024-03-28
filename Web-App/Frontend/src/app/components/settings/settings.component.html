@@ -1,0 +1,27 @@
+<div class="settings">
+  <div (click)="closeSettings()" class="close-container">
+    <div class="leftright"></div>
+    <div class="rightleft"></div>
+    <label class="close">close</label>
+  </div>
+
+  <h2>Einstellungen</h2>
+  <br>
+  <div class="toggle-wrapper">
+    <span>{{ darkMode ? 'Darkmode' : 'Whitemode' }}</span>
+    <label class="switch">
+      <input type="checkbox" id="mode-toggle" (click)="toggleDarkMode()" [(ngModel)]="darkMode">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <br>
+
+  <h3>Wähle deine Allergien:</h3>
+  <div class="allergies">
+    <label *ngFor="let allergy of allergies" class="allergy-label">
+      <input type="checkbox" [ngModel]="allergy.selected" (change)="toggleAllergy(allergy)">
+      {{allergy.name}}
+    </label>
+  </div>
+  <button (click)="submitAllergies()">Allergien abschicken</button>
+</div>

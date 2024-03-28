@@ -1,262 +1,372 @@
 from flask import Flask, jsonify, request, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
-from flasgger import Swagger
-from role_permissions import get_permissions_for_role
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 from sqlalchemy import create_engine, MetaData
-from DB_Repositories import userRepository, dishesRepository, orderRepository, mealPlanRepository
+from DB_Repositories import userRepository, dishesRepository, orderRepository, mealPlanRepository, allergyRepository
+from api_messages import get_api_messages
 import os
 import base64
-import hashlib
 from flask_cors import CORS
+from decorators import permission_check
+import hashlib
+from datetime import datetime, timedelta
+
 
 app = Flask(__name__)
 
-# -------------------- Environment Variables -------------------------------
-SWAGGER_URL = '/swagger'  # URL for exposing Swagger UI (without trailing '/')
-API_URL = '/swagger/swagger.json'  # Our API url (can of course be a local resource)
-postgres_pw = os.getenv("POSTGRES_PW")
-POSTGRES_URL = f"postgresql://postgres:{postgres_pw}@database/postgres"
-jwt_secret_key = os.getenv("JWT_SECRET_KEY")
-app.config["JWT_SECRET_KEY"] = f"{jwt_secret_key}"
+# -------------------------- Environment Variables ------------------------------------------------------------------------------------------------------------------------------------------
+SWAGGER_URL = "/swagger"
+API_URL = "/swagger/swagger.json"
+POSTGRES_URL = f"postgresql://postgres:{os.getenv('POSTGRES_PW')}@database/postgres"
+app.config["JWT_SECRET_KEY"] = f"{os.getenv('JWT_SECRET_KEY')}"
 
-testing = False
-# --------------------------------------------------------------------------
+api_message_descriptor = "response"
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 engine = create_engine(POSTGRES_URL)
 metadata = MetaData()
 
 jwt = JWTManager(app)
-Swagger(app)
-CORS(app) 
+CORS(app)
 
 user_repo = userRepository.UserRepository(engine)
 dish_repo = dishesRepository.DishRepository(engine)
 meal_plan_repo = mealPlanRepository.MealPlanRepository(engine)
 order_repo = orderRepository.OrderRepository(engine)
+allergy_repo = allergyRepository.AllergyRepository(engine)
 
-# Call factory function to create our blueprint
 swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    SWAGGER_URL,
     API_URL,
-    config={  # Swagger UI config overrides
+    config={
         'app_name': "Kantinerado"
     },
-    # oauth_config={  # OAuth config. See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
-    #    'clientId': "your-client-id",
-    #    'clientSecret': "your-client-secret-if-required",
-    #    'realm': "your-realms",
-    #    'appName': "your-app-name",
-    #    'scopeSeparator': " ",
-    #    'additionalQueryStringParams': {'test': "hello"}
-    # }
 )
 
 app.register_blueprint(swaggerui_blueprint)
-
-######################### Just for testing #######################################
-if testing:
-    @app.route('/test_login/<string:email>/<string:password>')
-    def test_login(email, password):
-        if not email or not password:
-            return jsonify({"msg": "Fehlender Benutzername oder Passwort"}), 400
-
-        user_data = user_repo.get_user_by_email(email)
-
-        if user_data and password == user_data["password"]:
-            role = user_data["role"]
-            return jsonify({"msg": f"User existiert mit der Rolle {role}"}), 200
-        else:
-            return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
-
-    @app.route("/test_hello/<int:user_id>")
-    def test_hello(user_id):
-        current_user = user_id
-        user_data = user_repo.get_user_by_id(current_user)
-        if(user_data):
-            current_role = user_data["role"]
-        else:
-            return jsonify({"msg": "Benutzer existiert nicht"}), 401
-
-        current_permissions = set(get_permissions_for_role(current_role))
-        if 'hello' in current_permissions:
-            return jsonify(logged_in_as=current_user, message='Zugriff auf Hello gestattet! Hallo, Welt!')
-        else:
-            return jsonify(message='Zugriff nicht gestattet! Hello Berechtigung erforderlich'), 403
-################### END TESTING ROUTES #####################################################################
 
 @app.route('/swagger/swagger.json')
 def send_swagger_json():
     return send_from_directory('swagger', 'swagger.json')
 
 
-@app.route("/hello")
-@jwt_required()
-def hello():
-    """
-    Hello-Endpunkt
-    ---
-    responses:
-      200:
-        description: Nachricht, wenn die Berechtigung gewährt ist
-      403:
-        description: Nachricht, wenn die Berechtigung erforderlich ist
-    """
-    if not testing:
-        current_user = get_jwt_identity()  # get_jwt_identity() returns userId
-        user_data = user_repo.get_user_by_id(current_user)
-        if(user_data):
-            current_role = user_data["role"]
-    else:
-        current_user = "user1"
-        current_role = "admin"
-
-    current_permissions = set(get_permissions_for_role(current_role))
-    if 'hello' in current_permissions:
-        return jsonify(logged_in_as=current_user, message='Zugriff auf Hello gestattet! Hallo, Welt!')
-    else:
-        return jsonify(message='Zugriff nicht gestattet! Hello Berechtigung erforderlich'), 403
-
-
-#################################### USER ROUTES ##################################
+# -------------------------- User Routes ------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/login', methods=['POST'])
 def login():
-    """
-    Benutzeranmelde-Endpunkt
-    ---
-    parameters:
-      - name: username
-        in: body
-        type: string
-        required: true
-      - name: password
-        in: body
-        type: string
-        required: true
-    responses:
-      200:
-        description: Ein JWT-Token zur Authentifizierung
-      400:
-        description: Fehlende JSON-Anfrage oder fehlender Benutzername oder Passwort
-      401:
-        description: Falscher Benutzername oder Passwort
-    """
     if not request.is_json:
-        return jsonify({"msg": "Fehlendes JSON in der Anfrage"}), 400
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fehlendes JSON in der Anfrage"}), 400
 
-    email = request.json.get('email', None)
-    password = request.json.get('password', None)
-    #hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    data_email = request.json.get('email', None)
+    data_password = request.json.get('password', None)
+    hashed_pw = hashlib.sha256(data_password.encode('utf-8')).hexdigest()
 
+    if not data_email or not data_password:
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fehlender Benutzername oder Passwort"}), 400
 
-    if not email or not password:
-        return jsonify({"msg": "Fehlender Benutzername oder Passwort"}), 400
+    user_data = user_repo.get_user_by_email(data_email)
 
-    user_data = user_repo.get_user_by_email(email)
-
-    if user_data and (password == user_data["password"]):
-        access_token = create_access_token(identity=user_data["userID"])
-        return jsonify(access_token=access_token), 200
+    if user_data and (hashed_pw == user_data["password"]):
+        access_token = create_access_token(identity=user_data["userID"], expires_delta=timedelta(hours=1))
+        return jsonify(access_token=access_token, userID = user_data["userID"], role = user_data["role"]), 200
     else:
-        return jsonify({"msg": "Falscher Benutzername oder Passwort"}), 401
-
-
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Falscher Benutzername oder Passwort"}), 401
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
-    if request.method == 'POST':
-        data = request.json
-        email = data.get('email')
-        password = data.get('password')
-        lastName = data.get('lastName')
-        firstName = data.get('firstName')
-        role = data.get('role')
-        allergies = data.get('allergies')       # Needs to be done: 
-                                                # if allergies are given you have to map the allergies to the created_user in the user_allergy_association table
+    data = request.json
+    data_email = data.get('email')
+    data_password = data.get('password')
+    data_lastName = data.get('lastName')
+    data_firstName = data.get('firstName')
+    data_allergies = data.get('allergies')
+    if not (data_email and data_password and data_lastName and data_firstName):
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
 
-        if not (email and password and lastName and firstName and role):
-            return jsonify({"message": "Missing required fields"}), 400
+    if user_repo.get_user_by_email(data_email):
+        return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Benutzer mit der E-Mail {data_email} exisitiert bereits"}), 500
 
-        if user_repo.get_user_by_email(email):
-            return jsonify({"message": f"User with the email {email} already exists"}), 500
+    ret_value = user_repo.create_user(data_email, data_password, data_lastName, data_firstName, "hungernde", data_allergies)
+    if ret_value == []:   # If ret_value is empty no allergies were missing
+        return jsonify({api_message_descriptor: f"{get_api_messages.SUCCESS.value}Benutzer erfolgreich erstellt"}), 201
+    elif ret_value:     # If ret_value contains values allergies were missing
+        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Benutzer erfolgreich erstellt, aber die folgenden Allergien {ret_value} sind nicht in der Datenbank vorhanden"}), 201
+    elif ret_value == False:
+        return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Benutzer konnte nicht erstellt werden"}), 500
 
-        ret_value = user_repo.create_user(email, password, lastName, firstName, role, allergies)
-        if not ret_value:   # If ret_value is empty no allergies were missing
-            return jsonify({"message": "User created successful"}), 201
-        elif ret_value:     # If ret_value contains values allergies were missing
-            return jsonify({"message": f"User created successful, but the allergies {ret_value} aren't present in the database"}), 201
-        elif ret_value == False:
-            return jsonify({"message": "Failed to create user"}), 500
+@app.route('/create_user_as_admin', methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
+def create_user_as_admin():
+    data = request.json
+    data_email = data.get('email')
+    data_password = data.get('password')
+    data_lastName = data.get('lastName')
+    data_firstName = data.get('firstName')
+    data_role = data.get('role')
+    data_allergies = data.get('allergies')
+    if not (data_email and data_password and data_lastName and data_firstName and data_role):
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
+
+    if data_role not in ["hungernde", "admin", "kantinenmitarbeiter"]:
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value} Die Rolle {data_role} , existiert nicht"}), 400
+
+    if user_repo.get_user_by_email(data_email):
+        return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Benutzer mit der E-Mail {data_email} exisitiert bereits"}), 500
+
+    ret_value = user_repo.create_user(data_email, data_password, data_lastName, data_firstName, data_role, data_allergies)
+    if ret_value == []:   # If ret_value is empty no allergies were missing
+        return jsonify({api_message_descriptor: f"{get_api_messages.SUCCESS.value}Benutzer erfolgreich erstellt"}), 201
+    elif ret_value:     # If ret_value contains values allergies were missing
+        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Benutzer erfolgreich erstellt, aber die folgenden Allergien {ret_value} sind nicht in der Datenbank vorhanden"}), 201
+    elif ret_value == False:
+        return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Benutzer konnte nicht erstellt werden"}), 500
 
 @app.route('/all_users')
+@jwt_required()
+@permission_check(user_repo)
 def all_users():
     data = user_repo.get_all_users()
     if data:
         return jsonify(data)
-    return jsonify({"message": "No users found"}), 404
-
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
 
 @app.route('/user_by_id/<int:user_id>')
-def get_user_by_id(user_id):
+@jwt_required()
+@permission_check(user_repo)
+def user_by_id(user_id):
     user = user_repo.get_user_by_id(user_id)
     if user:
         return user
-    return jsonify({"message": "User not found"}), 404
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
 
 @app.route('/user_by_email/<string:email>')
-def get_user_by_mail(email):
+@jwt_required()
+@permission_check(user_repo)
+def user_by_email(email):
     user = user_repo.get_user_by_email(email)
     if user:
         return user
-    return jsonify({"message": "User not found"}), 404
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
 
-@app.route('/user_allergy/<int:user_id>')
-def get_allergies_for_user(user_id):
-    allergy = user_repo.get_allergies_for_user(user_id)
+@app.route('/allergy_by_userid/<int:user_id>')
+@jwt_required()
+@permission_check(user_repo)
+def allergy_by_userid(user_id):
+    user_data = user_repo.get_user_by_id(user_id)
+    if user_data:
+        if user_data["allergies"] != None:
+            return user_data["allergies"]  
+        else:
+            return jsonify({api_message_descriptor:  f"{get_api_messages.WARNING.value}Keine Allergien für diesen Benutzer hinterlegt"}), 404
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
+
+
+@app.route('/set_user_allergies',  methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
+def set_user_allergies():
+    data = request.json
+    jwt_userID = get_jwt_identity()
+    data_allergies = data.get('allergies')
+    ret_value = user_repo.set_user_allergies_by_id(jwt_userID, data_allergies)
+    if ret_value == []:   # If ret_value is empty no allergies were missing
+        return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCESS.value}Allergien erfolgreich angepasst"}), 201
+    elif ret_value:     # If ret_value contains values allergies were missing or the user wasn't found
+        if ret_value == "User not found!":
+            return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
+        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Allergien erfolgreich angepasst, aber die folgenden Allergien {ret_value} sind nicht in der Datenbank vorhanden"}), 201
+    elif ret_value == False:
+        return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Allergien konnten nicht angepasst werden"}), 500
+
+# -------------------------- Allergy Routes ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/allergy_by_id/<int:allergy_id>')
+def allergy_by_id(allergy_id):
+    allergy = allergy_repo.get_allergie_by_id(allergy_id)
     if allergy:
         return allergy
-    return jsonify({"message": "User not found"}), 404
+    return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Allergie nicht gefunden"}), 404
 
-@app.route('/user_password/<int:user_id>')
-def get_user_password(user_id):
-    user_pw = user_repo.get_password_for_user(user_id)
-    if user_pw:
-        return jsonify({"password": user_pw})
-    return jsonify({"message": "User not found"}), 404
+@app.route('/all_allergies')
+def all_allergies():
+    data = allergy_repo.get_all_allergies()
+    if data:
+        return jsonify(data)
+    return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Keine Allergien gefunden"}), 404
 
 
-######################################## DISH ROUTES #############################
-@app.route('/dish/<int:dish_id>')
-def get_dish_by_id(dish_id):
+# -------------------------- Dish Routes ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/dish_by_id/<int:dish_id>')
+@jwt_required()
+@permission_check(user_repo)
+def dish_by_id(dish_id):
     dish = dish_repo.get_dish_by_id(dish_id)
     if dish:
         return dish
-    return jsonify({"message": "Dish not found"}), 404
+    return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Gericht nicht gefunden"}), 404
+
+@app.route('/dish_by_name/<string:dish_name>')
+@jwt_required()
+@permission_check(user_repo)
+def dish_by_name(dish_name):
+    dish = dish_repo.get_dish_by_name(dish_name)
+    if dish:
+        return dish
+    return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Gericht nicht gefunden"}), 404
+
+@app.route('/dish_by_mealType/<string:dish_mealType>')
+def dish_by_mealType(dish_mealType):
+    dishes = dish_repo.get_dishes_by_mealType(dish_mealType)
+    if dishes:
+        return dishes
+    return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Keine Gerichte gefunden"}), 404
+
 
 @app.route('/create_dish', methods=['POST'])
-def create_dishes():
-    if request.method == 'POST':
-        data = request.json
-        name = data.get('name')
-        ingredients = data.get('ingredients')
-        dietary_category = data.get('dietary_category')
-        meal_type = data.get('meal_type')
-        image = data.get('image')
-        allergies = data.get('allergies')       # Needs to be done: 
-                                                # if allergies are given you have to map the allergies to the created_dish in the dish_allergy_association table
+@jwt_required()
+@permission_check(user_repo)
+def create_dish():
+    data = request.json
+    data_name = data.get('name')
+    data_price = data.get('price')
+    data_ingredients = data.get('ingredients')
+    data_dietaryCategory = data.get('dietaryCategory')
+    data_mealType = data.get('mealType')
+    data_image = data.get('image')
+    data_allergies = data.get('allergies')
 
-        if not (name and ingredients and dietary_category and meal_type):
-            return jsonify({"message": "Missing required fields"}), 400
+    if not (data_name and data_price and data_dietaryCategory and data_mealType):
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
 
-        image = base64.b64decode(image) if image else None
+    if dish_repo.get_dish_by_name(data_name):
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Gericht existiert bereits"}), 400
 
-        ret_value = dish_repo.create_dish(name, ingredients, dietary_category, meal_type, image, allergies)
-        if not ret_value:   # If ret_value is empty no allergies were missing
-            return jsonify({"message": "Dish created successful"}), 201
-        elif ret_value:     # If ret_value contains values allergies were missing
-            return jsonify({"message": f"Dish created successful, but the allergies {ret_value} aren't present in the database"}), 201
-        elif ret_value == False:
-            return jsonify({"message": "Failed to create Dish"}), 500
+    decoded_image = base64.b64decode(data_image) if data_image else None
+
+    ret_value = dish_repo.create_dish(data_name, data_price, data_dietaryCategory, data_mealType, data_ingredients, decoded_image, data_allergies)
+    if ret_value == []:   # If ret_value is empty no allergies were missing
+        return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCESS.value}Gericht erfolgreich erstellt"}), 201
+    elif ret_value:     # If ret_value contains values allergies were missing
+        return jsonify({api_message_descriptor: f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allerigie {ret_value} sind nicht in der Datenbank vorhanden"}), 201
+    elif ret_value == False:
+        return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Gericht konnte nicht erstellt werden"}), 500
+
+
+# -------------------------- Order Routes ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/create_order', methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
+def create_order():
+    data = request.json
+    jwt_userID = get_jwt_identity()
+    data_Orders = data.get('orders')
+    mealPlan_ids = []
+
+    if not data_Orders:
+        return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Keine Bestellungen im JSON gefunden"}), 400
+
+    for order in data_Orders:
+        mealPlanID = order.get('mealPlanID')
+        amount = order.get('amount')
+        if (mealPlanID == None and amount == None):
+            return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
+        mealPlan_ids.append(mealPlanID)
+
+    timestamp = datetime.today()
+    mealPlanDates = meal_plan_repo.get_mealPlan_dates_by_ids(mealPlan_ids)
+    if mealPlanDates:
+        monday = timestamp - timedelta(days=timestamp.weekday())
+        sunday = monday + timedelta(days=6) 
+        if any(datetime.strptime(mealPlanDate, "%Y-%m-%d") < sunday for mealPlanDate in mealPlanDates): 
+                return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es können keine Bestellungen mehr für die aktuelle und vergangenen Wochen aufgegeben werden"}), 400
+        if (timestamp.weekday() == 3 and timestamp.hour >= 18) or (timestamp.weekday() > 3):
+            next_monday = timestamp - timedelta(days=timestamp.weekday()) + timedelta(days=7)
+            next_sunday = next_monday + timedelta(days=6)
+            if any(datetime.strptime(mealPlanDate, "%Y-%m-%d") < next_sunday for mealPlanDate in mealPlanDates): 
+                return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es können keine Bestellungen mehr nach Donnerstag 16 Uhr für nächste Woche aufgegeben werden"}), 400
+    else:
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestelltes Gericht existiert nicht"}), 400
+        
+    ret_value = order_repo.create_order(jwt_userID, data_Orders)
+    if ret_value=="created":
+        return jsonify({api_message_descriptor:  f"{get_api_messages.SUCCESS.value}Bestellung erfolgreich"}), 201
+    else:
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Bestellung fehlgeschlagen"}), 400
+
+@app.route('/orders_by_user/<string:start_date>/<string:end_date>')
+@jwt_required()
+@permission_check(user_repo)
+def orders_by_user(start_date, end_date):
+    jwt_userID = get_jwt_identity()
+    orders = order_repo.get_orders_by_userid(jwt_userID, start_date, end_date)
+
+    if orders:
+        return jsonify(orders)
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Sie haben keine Bestellungen in diesem Zeitraum"}), 400
+ 
+@app.route('/orders_sorted_by_dish/<string:start_date>/<string:end_date>')
+@jwt_required()
+@permission_check(user_repo)
+def orders_sorted_by_dish(start_date, end_date):
+    orders = order_repo.get_orders_sorted_by_dish(start_date, end_date)
+
+    if orders:
+        return jsonify(orders)
+    return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Es gibt keine Bestellungen in diesem Zeitraum"}), 404
+  
+# -------------------------- Meal plan routes ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/create_meal_plan', methods=['POST'])
+@jwt_required()
+@permission_check(user_repo)
+def create_meal_plan():
+    data = request.json
+    meal_plan = data.get('mealPlan') 
+    if not meal_plan:
+        return jsonify({api_message_descriptor: f"{get_api_messages.ERROR.value}Keine Speisepläne im JSON gefunden"}), 400
+
+    for meal in meal_plan:
+        dishID = meal.get('dishID')
+        date = meal.get('date')
+        if not (dishID and date):
+            return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
+    
+    ret_value = meal_plan_repo.create_mealPlan(meal_plan)
+    if ret_value[0]:
+        if ret_value[1] == '':
+            return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Speiseplan erfolgreich erstellt"}), 201
+        else:
+            return jsonify({api_message_descriptor:  f"{get_api_messages.WARNING.value}Speiseplan erfolgreich erstellt, {ret_value[1]} sind bereits vorhanden"}), 201
+    else:
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}{str(ret_value[1])}"}),420 
+
+@app.route('/meal_plan/<string:start_date>/<string:end_date>')
+def meal_plan(start_date, end_date):
+    if not (start_date and end_date):
+            return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
+    meal_Plan = meal_plan_repo.get_mealPlan(start_date, end_date)
+    if meal_Plan[0]:
+        return jsonify(meal_Plan[1]), 201
+    elif meal_Plan[0]== None:
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}Kein Speiseplan im gewählten Zeitraum gefunden"}), 404
+    else:
+        return jsonify({api_message_descriptor:  f"{get_api_messages.ERROR.value}{str(meal_Plan[1])}"}),420
+
+# -------------------------- Other Routes  ------------------------------------------------------------------------------------------------------------------------------------------
+@app.route('/get_this_week')
+def get_this_week():
+    today = datetime.today()
+    monday = today - timedelta(days=today.weekday())
+    sunday = monday + timedelta(days=6)
+    return  jsonify({"monday": monday.strftime("%Y-%m-%d"), "sunday": sunday.strftime("%Y-%m-%d")}), 201
+
+@app.route('/get_next_week')
+def get_next_week():
+    today = datetime.today()
+    monday = today - timedelta(days=today.weekday()) + timedelta(days=7)
+    sunday = monday + timedelta(days=6)
+    return  jsonify({"monday": monday.strftime("%Y-%m-%d"), "sunday": sunday.strftime("%Y-%m-%d")}), 201
+
+
 
 
 if __name__ == "__main__":

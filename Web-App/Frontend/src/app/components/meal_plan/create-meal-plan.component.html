@@ -1,0 +1,175 @@
+<app-header xmlns="http://www.w3.org/1999/html"></app-header>
+<div class="container">
+  <div class="left-pane">
+    <mat-card class="Dropdown MealType">
+      <h3>Gerichtsart auswählen</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Gerichtsart auswählen</mat-label>
+        <mat-select [(ngModel)]="selectedMealType" (ngModelChange)="loadDishes()">
+          <mat-option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="Dropdown Dish">
+      <h3>Gericht auswählen</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Gericht auswählen</mat-label>
+        <mat-select [(ngModel)]="selectedDish" (ngModelChange)="createNewDishCard()">
+          <mat-option *ngFor="let dish of dishesAfterType" [value]="dish">{{ dish.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+    <mat-card class="dishArea">
+      <div
+        cdkDropList
+        #DishList="cdkDropList"
+        [cdkDropListData]="dishList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        (cdkDropListDropped)="drop($event)">
+        <div class="DishItem" *ngFor="let item of dishList" cdkDrag>{{ item.name }}</div>
+      </div>
+    </mat-card>
+
+    <form [formGroup]="MealPlanForm" (submit)="createDishPlan()">
+      <button mat-raised-button [disabled]="!MealPlanForm.valid" class="register__submit-btn" type="submit">Wochenplan
+        Bestätigen
+      </button>
+      <div *ngIf="!MealPlanForm.valid" class="mealPlan__error-message">
+        <br>Jeder Tag muss mindestens ein Gericht beinhalten.
+        <br>Jeder Tag muss mindestens ein vegetarisches Gericht beinhalten.
+        <br>Samstags dürfen keine Suppen eingetragen sein.
+      </div>
+    </form>
+  </div>
+
+  <div class="right-pane">
+
+    <div class="scrollable">
+      <h3>{{ weekday[0] }}: {{ dates[0] }}</h3>
+      <div
+        [ngClass]="{'ng-invalid': MealPlanForm.get('Monday')?.invalid,
+         'ng-valid': MealPlanForm.get('Monday')?.valid}"
+        cdkDropList
+        #Monday="cdkDropList"
+        [cdkDropListData]="mondayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <ng-container *ngFor="let item of mondayList">
+          <div class="DishItem" cdkDrag>{{ item.name }}</div>
+        </ng-container>
+      </div>
+      <div *ngIf="MealPlanForm.get('Monday')?.hasError('noDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein Gericht enthalten.</span>
+      </div>
+      <div *ngIf="MealPlanForm.get('Monday')?.hasError('noVegetarianDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein vegetarisches oder veganes Gericht enthalten.</span>
+      </div>
+      <h3>{{ weekday[1] }}: {{ dates[1] }}</h3>
+      <div
+        [ngClass]="{'ng-invalid': MealPlanForm.get('Tuesday')?.invalid,
+         'ng-valid': MealPlanForm.get('Tuesday')?.valid}"
+        cdkDropList
+        #Tuesday="cdkDropList"
+        [cdkDropListData]="tuesdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <ng-container *ngFor="let item of tuesdayList">
+          <div class="DishItem" cdkDrag>{{ item.name }}</div>
+        </ng-container>
+      </div>
+      <div *ngIf="MealPlanForm.get('Tuesday')?.hasError('noDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein Gericht enthalten.</span>
+      </div>
+      <div *ngIf="MealPlanForm.get('Tuesday')?.hasError('noVegetarianDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein vegetarisches oder veganes Gericht enthalten.</span>
+      </div>
+      <h3>{{ weekday[2] }}: {{ dates[2] }}</h3>
+      <div
+        [ngClass]="{'ng-invalid': MealPlanForm.get('Wednesday')?.invalid,
+         'ng-valid': MealPlanForm.get('Wednesday')?.valid,}"
+        cdkDropList
+        #Wednesday="cdkDropList"
+        [cdkDropListData]="wednesdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <ng-container *ngFor="let item of wednesdayList">
+          <div class="DishItem" cdkDrag>{{ item.name }}</div>
+        </ng-container>
+      </div>
+      <div *ngIf="MealPlanForm.get('Wednesday')?.hasError('noDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein Gericht enthalten.</span>
+      </div>
+      <div *ngIf="MealPlanForm.get('Wednesday')?.hasError('noVegetarianDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein vegetarisches oder veganes Gericht enthalten.</span>
+      </div>
+      <h3>{{ weekday[3] }}: {{ dates[3] }}</h3>
+      <div
+        [ngClass]="{'ng-invalid': MealPlanForm.get('Thursday')?.invalid,
+         'ng-valid': MealPlanForm.get('Thursday')?.valid}"
+        cdkDropList
+        #Thursday="cdkDropList"
+        [cdkDropListData]="thursdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <ng-container *ngFor="let item of thursdayList">
+          <div class="DishItem" cdkDrag>{{ item.name }}</div>
+        </ng-container>
+      </div>
+      <div *ngIf="MealPlanForm.get('Thursday')?.hasError('noDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein Gericht enthalten.</span>
+      </div>
+      <div *ngIf="MealPlanForm.get('Thursday')?.hasError('noVegetarianDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein vegetarisches oder veganes Gericht enthalten.</span>
+      </div>
+      <h3>{{ weekday[4] }}: {{ dates[4] }}</h3>
+      <div
+        [ngClass]="{'ng-invalid': MealPlanForm.get('Friday')?.invalid,
+         'ng-valid': MealPlanForm.get('Friday')?.valid}"
+        cdkDropList
+        #Friday="cdkDropList"
+        [cdkDropListData]="fridayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <ng-container *ngFor="let item of fridayList">
+          <div class="DishItem" cdkDrag>{{ item.name }}</div>
+        </ng-container>
+      </div>
+      <div *ngIf="MealPlanForm.get('Friday')?.hasError('noDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein Gericht enthalten.</span>
+      </div>
+      <div *ngIf="MealPlanForm.get('Friday')?.hasError('noVegetarianDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein vegetarisches oder veganes Gericht enthalten.</span>
+      </div>
+      <h3>{{ weekday[5] }}: {{ dates[5] }}</h3>
+      <div
+        [ngClass]="{'ng-invalid': MealPlanForm.get('Saturday')?.invalid,
+         'ng-valid': MealPlanForm.get('Saturday')?.valid}"
+        cdkDropList
+        #Saturday="cdkDropList"
+        [cdkDropListData]="saturdayList"
+        [cdkDropListConnectedTo]="[DishList,Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]"
+        class="dayList"
+        (cdkDropListDropped)="drop($event)">
+        <ng-container *ngFor="let item of saturdayList">
+          <div class="DishItem" cdkDrag>{{ item.name }}</div>
+        </ng-container>
+      </div>
+      <div *ngIf="MealPlanForm.get('Saturday')?.hasError('noDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein Gericht enthalten.</span>
+      </div>
+      <div *ngIf="MealPlanForm.get('Saturday')?.hasError('noVegetarianDish')">
+        <span class="mealPlan__error-message">Muss mindestens ein vegetarisches oder veganes Gericht enthalten.</span>
+      </div>
+      <div *ngIf="MealPlanForm.get('Saturday')?.hasError('soupOnSaturday')">
+        <span class="mealPlan__error-message">Keine Suppe an Samstagen.</span>
+      </div>
+    </div>
+  </div>
+</div>
+

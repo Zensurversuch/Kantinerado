@@ -1,0 +1,23 @@
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
+
+<body [ngClass]="{ 'blurred': blurred }">
+  
+  <div class="login">
+    <h2 class="login__title">Login</h2>
+    <form class="login__form" (submit)="submit_login()">
+      <div class="login__form-group">
+        <label class="login__label" for="username">Username:</label>
+        <input class="login__input" type="text" id="username" name="username" [(ngModel)]="username" required>
+      </div>
+      <div class="login__form-group">
+        <label class="login__label" for="password">Password:</label>
+        <input class="login__input" type="password" id="password" name="password" [(ngModel)]="password" required>
+      </div>
+      <button class="login__submit-btn" type="submit">Login</button>
+      <div class="register">
+        <span>Neu bei Kantinerado?</span>
+        <button class="login__register-btn" (click)="navigateToRegister()">Erstellen Sie einen Account</button>
+      </div>
+    </form>
+  </div>
+</body>

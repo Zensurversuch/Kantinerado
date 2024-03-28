@@ -1,0 +1,177 @@
+/* Standardstile für Header und Container */
+@import "../../color.scss";
+
+.blurred {
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
+h2 {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.calendar-container {
+  width: 100%; 
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-top: 20px;
+}
+
+.calendar-container button {
+  width: 20%; 
+  height: auto; 
+}
+
+.summary {
+  width: 100%; 
+  margin: 0 auto;
+}
+.order-container{
+  display: flex;
+  align-items: center;
+}
+.order-buttons{
+  color: black;
+  background-color: #f5f5f5;
+  border-radius: 5px; 
+  border: 1px solid #ddd;
+  padding: 12px; 
+  cursor: pointer;
+  margin-right: 5px;
+  margin-bottom: 5px;
+
+}
+.order-price{
+  margin-right: 5px;
+  background-color: #f5f5f5;
+  border-radius: 5px; 
+  border: 1px solid #ddd;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 5px;
+}
+
+/* Stile für die Tagesdarstellung */
+.day {
+  width: 100%;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.day-header {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.day-content {
+  padding-left: 5px;
+  border: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.day-content > div {
+  flex: 1 1 auto;
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-bottom: 20px;
+}
+/* Stile für das Toggle-Icon */
+.toggle-icon {
+  font-size: 1.2em;
+  transition: transform 0.3s ease-in-out;
+}
+
+.toggle-dish-container {
+  cursor: pointer; 
+}
+
+.toggle-dish {
+  font-size: 1.2em;
+  transition: transform 0.3s ease-in-out;
+  font-family: 'Material Icons'; 
+}
+.toggle-dish.expanded {
+  transform: rotate(90deg); 
+}
+.day.expanded .toggle-icon {
+  transform: rotate(90deg);
+}
+.amount-select{
+  width: 120px;
+}
+/* Tabellenstile */
+table {
+  min-width: 100%;
+  width: auto;
+  border-collapse: collapse;
+  border: 2px solid #ddd;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+thead {
+  background-color: $disabled-color;
+  color: white;
+}
+
+tbody {
+  background-color: white;
+}
+
+tbody tr:hover {
+  background-color: rgb(255, 213, 213);
+}
+
+.allergy {
+  margin: 0;
+  font-size: 1em; 
+  color: orange; 
+}
+
+.warning-text {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1em;
+  color: orange;
+}
+
+/* Responsivität */
+@media (min-width: 769px) {
+  /* Stile für größere Bildschirme */
+  .calendar-container {
+    width: 80%;
+    justify-content: right;
+    align-items: right;
+  }
+
+  .calendar-container button {
+    width: 10%;
+  }
+
+  .summary,
+  .problem {
+    width: 80%;
+  }
+
+  .day-content > div {
+    flex: 1 1 auto;
+    margin: 20px;
+  }
+}

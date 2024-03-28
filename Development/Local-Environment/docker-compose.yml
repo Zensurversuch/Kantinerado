@@ -4,6 +4,8 @@ services:
   frontend:
     build:
       context: ../../Web-App/Frontend/
+      args:
+        - ANGULAR_ENVIRONMENT=${ANGULAR_ENVIRONMENT:-production}
     ports:
       - "80:80"
 
@@ -23,6 +25,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PW}
       POSTGRES_DB: postgres
-    # Uncomment the following lines to prevent the database from being accessible from the outside
+    # Comment the following lines to prevent the database from being accessible from the outside
     ports:
-     - "5432:5432"
+      - "5432:5432"

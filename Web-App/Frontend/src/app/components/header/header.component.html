@@ -1,0 +1,17 @@
+<header class="header">
+    <div class="header__left">
+        <button class="header__icon header__icon--menu" (click)="toggleMenu()">Menu</button>
+    </div>
+    <div class="header__center" (click)="navigateToHome()">
+        <img src="../../../assets/Logo.jpg" alt="Logo" class="header__logo" height="416" width="1280">
+    </div>
+    <div class="header__right">
+        <button class="header__icon header__icon--settings" *ngIf="isLoggedIn" (click)="toggleSettings()">Settings</button>
+        <span class="header__username">{{ username }}</span>
+    </div>
+</header>
+
+<app-menu *ngIf="isMenuOpen"></app-menu>
+<app-settings *ngIf="isSettingsOpen"> </app-settings>
+
+

@@ -1,0 +1,117 @@
+@import "../../color.scss";
+
+.blurred {
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
+.createDish {
+  padding: 2em;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+  h2 {
+    margin-top: 0;
+    width: 100%;
+  }
+
+  form {
+    .createDish__form-group {
+      margin-bottom: 20px;
+    }
+
+    .createDish__label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .createDish__input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid $primary-border-color;
+      border-radius: 5px;
+      box-sizing: border-box;
+
+      &.ng-touched, &.ng-dirty {
+        &.ng-valid {
+          border: $secondary-border-color 2px solid;
+          font-style: $secondary-border-color;
+        }
+
+        &.ng-invalid {
+          border: $primary-color 3px solid;
+          font-style: $primary-color;
+        }
+      }
+    }
+
+    .createDish__input__ingredients {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid $primary-border-color;
+      border-radius: 5px;
+      box-sizing: border-box;
+    
+      &.ng-touched.ng-dirty {
+        &.ng-valid:not(.empty) {
+          border: $secondary-border-color 2px solid;
+          font-style: $secondary-border-color;
+        }
+    
+        &.ng-invalid {
+          border: $primary-color 3px solid;
+          font-style: $primary-color;
+        }
+      }
+    }
+
+    .createDish__submit-btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      color: $primary-text-color;
+      background-color: $secondary-border-color;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: $primary-color;
+      }
+
+      &:disabled {
+        background-color: $disabled-color;
+        cursor: default;
+      }
+    }
+
+    .createDish__error-message{
+      color:$primary-color ;
+    }
+  }
+}
+
+@media (min-width: 400px) {
+  .createDish {
+    display: block;
+    width: 300px;
+    margin: 50px auto;
+    border: 2px solid $primary-border-color;
+    border-radius: 10px;
+    background-color: $highlight-color;
+  }
+  h2{
+    width: auto;
+  }
+  .createDish__input {
+    width: calc(100% - 12px);
+    border: 1px solid $primary-border-color;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  .createDish__submit-btn{
+  width: calc(100% - 12px);
+  }
+}

@@ -1,0 +1,511 @@
+{
+	"info": {
+		"_postman_id": "9d2c3f90-9d4e-4784-8b0b-ef1120687ed5",
+		"name": "Kantinerado_Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29678106"
+	},
+	"item": [
+		{
+			"name": "GET /dish/<id>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/dish_by_id/275046400",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"dish_by_id",
+						"275046400"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /all_users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/all_users",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"all_users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user_by_id/<id>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/user_by_id/593530207",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"user_by_id",
+						"593530207"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user_by_email/<email>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/user_by_email/mail@example.com",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"user_by_email",
+						"mail@example.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /create_user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"admin@example.com\",\r\n  \"password\": \"!Kantinerado2024!\",\r\n  \"firstName\": \"Admin\",\r\n  \"lastName\": \"Admin\",\r\n  \"role\": \"hungernde\",\r\n  \"allergies\": [\"Gluten\", \"Lactose\", \"Nuts\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.233.106.149:5000/create_user",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"create_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /create_user_as_admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"hungernder@example.com\",\r\n  \"password\": \"password\",\r\n  \"firstName\": \"Max\",\r\n  \"lastName\": \"Mustermann\",\r\n  \"role\": \"kantinenmitarbeiter\",\r\n  \"allergies\": [\"Ei\", \"Fisch\", \"Laktose\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.233.106.149:5000/create_user_as_admin",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"create_user_as_admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /create_dish",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Burger\",\r\n    \"price\": \"3\",\r\n    \"ingredients\": [\"dough\", \"cheese\", \"tomato sauce\", \"toppings\"],\r\n    \"dietaryCategory\": \"Italian\",\r\n    \"mealType\": \"Main\",\r\n    \"allergies\": [\"Gluten\", \"Lactose\"]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.233.106.149:5000/create_dish",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"create_dish"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"pw\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.233.106.149:5000/login",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /hello",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/hello",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /allergy_by_userid/<id>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/allergy_by_userid/698804265",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"allergy_by_userid",
+						"698804265"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /create_order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mealPlanID\": \"838992961\",\r\n    \"amount\": \"4000000\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.233.106.149:5000/create_order",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"create_order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /orders_by_user/<string:start_date>/<string:end_date>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/orders_by_user/2024-03-01/2024-03-31",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"orders_by_user",
+						"2024-03-01",
+						"2024-03-31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /orders_sorted_by_dish/<start_date>/<end_date>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/orders_sorted_by_dish/2024-03-01/2024-03-31",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"orders_sorted_by_dish",
+						"2024-03-01",
+						"2024-03-31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /meal_plan/<start_date>/<end_date>",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://185.233.106.149:5000/meal_plan/2024-03-01/2024-03-31",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"meal_plan",
+						"2024-03-01",
+						"2024-03-31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /create_meal_plan",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{JWT_Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mealPlan\" :\r\n    [\r\n        {\r\n            \"dishID\": \"171069410\",\r\n            \"date\": \"2024-12-18\"\r\n        },\r\n        {\r\n            \"dishID\": \"847520853\",\r\n            \"date\": \"2024-12-18\"\r\n        },{\r\n            \"dishID\": \"751618127\",\r\n            \"date\": \"2024-12-20\"\r\n        },\r\n        {\r\n            \"dishID\": \"275046400\",\r\n            \"date\": \"2024-12-21\"\r\n        }\r\n    ]\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://185.233.106.149:5000/create_meal_plan",
+					"protocol": "http",
+					"host": [
+						"185",
+						"233",
+						"106",
+						"149"
+					],
+					"port": "5000",
+					"path": [
+						"create_meal_plan"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JWT_Token",
+			"value": "token",
+			"type": "string"
+		}
+	]
+}
