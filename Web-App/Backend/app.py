@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 from sqlalchemy import create_engine, MetaData
+from sqlalchemy.orm import sessionmaker
+from DB_Repositories.models import Base, User, Allergy 
 from DB_Repositories import userRepository, dishesRepository, orderRepository, mealPlanRepository, allergyRepository
 from api_messages import get_api_messages
 import os
@@ -9,6 +11,7 @@ import base64
 from flask_cors import CORS
 from decorators import permission_check
 import hashlib
+import time
 from datetime import datetime, timedelta
 
 
@@ -17,7 +20,7 @@ app = Flask(__name__)
 # -------------------------- Environment Variables ------------------------------------------------------------------------------------------------------------------------------------------
 SWAGGER_URL = "/swagger"
 API_URL = "/swagger/swagger.json"
-POSTGRES_URL = f"postgresql://postgres:{os.getenv('POSTGRES_PW')}@database/postgres"
+POSTGRES_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@database/{os.getenv('POSTGRES_DB')}"
 app.config["JWT_SECRET_KEY"] = f"{os.getenv('JWT_SECRET_KEY')}"
 
 api_message_descriptor = "response"
@@ -25,7 +28,6 @@ api_message_descriptor = "response"
 
 
 engine = create_engine(POSTGRES_URL)
-metadata = MetaData()
 
 jwt = JWTManager(app)
 CORS(app)
@@ -366,8 +368,74 @@ def get_next_week():
     sunday = monday + timedelta(days=6)
     return  jsonify({"monday": monday.strftime("%Y-%m-%d"), "sunday": sunday.strftime("%Y-%m-%d")}), 201
 
+def initializeDatabase():
+    isDatabaseReady = False
+    while not isDatabaseReady:
+        try:
+            Base.metadata.create_all(engine)
+
+            Session = sessionmaker(bind=engine)
+            session = Session()
+            isDatabaseReady = True
+        except Exception as e:
+            print(f"PostgreSQL ist nicht erreichbar - versuche erneunt in einer Sekunde: {e}")
+            time.sleep(1)
+
+    #add admin user during initial setup
+    if session.query(User).count() == 0:
+        data_email = os.getenv('USER_EMAIL')
+        data_password = os.getenv('USER_PASSWORD')
+        data_last_name = os.getenv('USER_LAST_NAME')
+        data_first_name = os.getenv('USER_FIRST_NAME')
+        if (data_email and data_password and data_first_name and data_last_name):
+        # Create the admin user
+            user = User(
+            email = data_email,
+            password = hashlib.sha256(data_password.encode('utf-8')).hexdigest(),
+            lastName = data_last_name,
+            firstName = data_last_name,
+            role = "admin"
+            )
+
+            allergies = [
+                Allergy (
+                    name = "Gluten"
+                ),
+                Allergy (
+                    name = "Laktose"
+                ),
+                Allergy (
+                    name = "Ei"
+                ),
+                Allergy (
+                    name = "Fisch"
+                ),
+                Allergy (
+                    name = "Schalenfrüchte"
+                ),
+                Allergy (
+                    name = "Nüsse"
+                ),
+                Allergy (
+                    name = "Sulfite"
+                ),
+                Allergy (
+                    name = "Krustentiere"
+                ),  
+            ]
+
+            session.add(user)
+            session.add_all(allergies)
+            session.commit()
+            print("Admin Benutzer erfolgreich erstellt.")
+        else:
+            print("Umgebungsvariablen USER_EMAIL, USER_PASSWORD, USER_FIRST_NAME or USER_LAST_NAME wurden nicht angegeben.")
+
+    print("Datenbank initzialisiert.")
+    session.close()
 
 
 
 if __name__ == "__main__":
+    initializeDatabase()
     app.run(host='0.0.0.0', port=5000)

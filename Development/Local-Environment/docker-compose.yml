@@ -17,13 +17,19 @@ services:
     depends_on:
       - database
     environment:
-    - POSTGRES_PW=${POSTGRES_PW}
-
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: postgres
+      USER_EMAIL: ${USER_EMAIL}
+      USER_PASSWORD: ${USER_PASSWORD}
+      USER_LAST_NAME: ${USER_LAST_NAME}
+      USER_FIRST_NAME: ${USER_FIRST_NAME}
+     
   database:
     image: postgres:15
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PW}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: postgres
     # Comment the following lines to prevent the database from being accessible from the outside
     ports:
