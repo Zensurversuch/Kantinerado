@@ -33,7 +33,11 @@ def initialize_Postgres(engine):
                 firstName = data_first_name,
                 role = "admin"
                 )
-
+                session.add(user)
+                print("Admin Benutzer erfolgreich erstellt.")
+            else:
+                print("Umgebungsvariablen USER_EMAIL, USER_PASSWORD, USER_FIRST_NAME or USER_LAST_NAME wurden nicht angegeben.")
+        if session.query(Allergy).count() == 0:
                 allergies = [
                     Allergy (
                         name = "Gluten"
@@ -60,14 +64,9 @@ def initialize_Postgres(engine):
                         name = "Krustentiere"
                     ),  
                 ]
-
-                session.add(user)
                 session.add_all(allergies)
-                session.commit()
-                print("Admin Benutzer erfolgreich erstellt.")
-            else:
-                print("Umgebungsvariablen USER_EMAIL, USER_PASSWORD, USER_FIRST_NAME or USER_LAST_NAME wurden nicht angegeben.")
-                print("Datenbank initzialisiert.")
+        session.commit()   
+        print("Datenbank initzialisiert.")
     except Exception as e:
         session.rollback()
         print(f"Admin Benutzer und Allergien konnten nicht angelegt werden: {e}")
