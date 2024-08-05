@@ -80,7 +80,6 @@ class UserRepository:
 
                 user_dict = {
                     "userID": user_data.userID,
-                    "password": user_data.password,
                     "email": user_data.email,
                     "lastName": user_data.lastName,
                     "firstName": user_data.firstName,
