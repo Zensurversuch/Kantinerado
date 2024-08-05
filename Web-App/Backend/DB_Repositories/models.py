@@ -66,10 +66,3 @@ class MealPlan(Base):
     mealPlanID = Column(Integer, primary_key=True, autoincrement=True)
     dishID = Column(Integer, ForeignKey('dishes.dishID'), nullable=False)
     date = Column(Date, nullable=False)
-
-def initialize_database(postgres_pw, ip):    
-    POSTGRES_URL = f"postgresql://postgres:{postgres_pw}@{ip}:5432/postgres"
-    engine = create_engine(POSTGRES_URL)
-    
-    Base.metadata.create_all(engine)
-    print("Datenbanktabellen wurden erfolgreich initialisiert.")
