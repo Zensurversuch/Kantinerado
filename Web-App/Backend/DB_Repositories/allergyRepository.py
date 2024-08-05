@@ -1,7 +1,6 @@
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from DB_Repositories.models import Allergy
-from random import randint 
 
 
 class AllergyRepository:
