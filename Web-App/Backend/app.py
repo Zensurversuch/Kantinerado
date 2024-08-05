@@ -3,7 +3,6 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from routes_blueprints import register_blueprints
 import os
-from config import engine
 
 app = Flask(__name__)
 
