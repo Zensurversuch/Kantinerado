@@ -7,11 +7,16 @@ Dieses Docker-Compose-Setup ermöglicht es, eine einfache Webanwendung mit einer
 - Stellen Sie sicher, dass Docker und Docker Compose auf Ihrem System installiert sind.  
 - !!!Erstellen Sie eine `.env`-Datei in diesem Ordner mit dem folgenden Inhalt:
    ```text
-   # Diese Datei kann Variablen für Docker speichern
-
-   POSTGRES_PW=test      # Setzen Sie hier das Passwort für Ihre PostgreSQL-Datenbank fest
-   JWT_SECRET_KEY=test   # Setzen Sie hier das Secret für den JWT Token
-   ANGULAR_ENVIRONMENT=development || production    # Zum lokalen test development, auf dem server production
+   # Diese Datei kann Variablen für Docker speichern  
+    JWT_SECRET_KEY=<key>  # Setzen Sie hier das Secret für den JWT Token
+    ANGULAR_ENVIRONMENT=<development || production>         # Zum lokalen test development, auf dem server production
+    #PostgreSQL variablen
+    POSTGRES_PASSWORD=<Passwort>                            # Setzen Sie hier das Passwort 
+    USER_EMAIL= <E-mail>                                    # Setze die E-mail für den erstern Kantinerado Admin Benutzer (optional)
+    USER_PASSWORD = <Passwort>                              # Setze das Password für den erstern Kantinerado Admin Benutzer (optional)
+    USER_LAST_NAME=<Nachnamen>                              # Setze das Nachnamen für den erstern Kantinerado Admin Benutzer (optional)
+    USER_FIRST_NAME=<Vornamen>                              # Setze das Vornamen für den erstern Kantinerado Admin Benutzer (optional)
+   
    ```
 
 ## Schritte zum Starten der Anwendung: 
