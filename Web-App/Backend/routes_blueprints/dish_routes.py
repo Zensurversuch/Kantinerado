@@ -27,6 +27,8 @@ def dish_by_name(dish_name):
     return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gericht nicht gefunden"}), 404
 
 @dish_blueprint.route('/dish_by_mealType/<string:dish_mealType>')
+@jwt_required()
+@permission_check(user_repo)
 def dish_by_mealType(dish_mealType):
     dishes = dish_repo.get_dishes_by_mealType(dish_mealType)
     if dishes:

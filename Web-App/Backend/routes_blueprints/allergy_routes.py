@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
 from config import allergy_repo
 
