@@ -284,12 +284,8 @@ node_modules/
 /Frontend/*.sublime-workspace
 
 # Visual Studio Code
-/Frontend/.vscode/*
-/Frontend/!.vscode/settings.json
-/Frontend/!.vscode/tasks.json
-/Frontend/!.vscode/launch.json
-/Frontend/!.vscode/extensions.json
-/Frontend/.history/*
+/Frontend/.vscode/
+/Frontend/.history/
 
 # Miscellaneous
 .angular/cache/

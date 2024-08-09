@@ -22,7 +22,7 @@ Dieses Docker-Compose-Setup ermöglicht es, eine einfache Webanwendung mit einer
 ## Schritte zum Starten der Anwendung: 
 
 1. **Docker Compose starten:**
-    Führen Sie den folgenden Befehl in diesem Ordner ("~/Development/LocalEnvironment") aus:
+    Führen Sie den folgenden Befehl in diesem Ordner ("~/Web-App") aus:
     ```bash
     docker-compose up --build
     ```

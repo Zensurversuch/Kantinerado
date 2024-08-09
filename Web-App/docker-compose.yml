@@ -1,7 +1,7 @@
 services:
   frontend:
     build:
-      context: ../../Web-App/Frontend/
+      context: ./Frontend/
       args:
         - ANGULAR_ENVIRONMENT=${ANGULAR_ENVIRONMENT:-production}
     ports:
@@ -9,7 +9,7 @@ services:
 
   backend:
     build:
-      context: ../../Web-App/Backend/
+      context: ./Backend/
     ports:
       - "5000:5000"
     depends_on:
