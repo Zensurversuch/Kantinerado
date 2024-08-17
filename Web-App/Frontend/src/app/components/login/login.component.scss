@@ -29,7 +29,7 @@
     }
 
     .login__input {
-      width: calc(100% - 12px);
+      width: calc(100%);
       padding: 8px;
       border: 1px solid $primary-border-color;
       border-radius: 5px;
@@ -48,7 +48,12 @@
       &:hover {
         background-color: $primary-color;
       }
+      &:disabled {
+        background-color: $disabled-color;
+        cursor: default;
+      }
     }
+
 
     .register {
       margin-top: 20px;
