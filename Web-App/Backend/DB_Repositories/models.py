@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData, Column, Integer, String, Date, Table, ForeignKey, ARRAY, LargeBinary, Float
+from sqlalchemy import create_engine, MetaData, Column, Integer, String, Date, Table, ForeignKey, ARRAY, LargeBinary, Float, Boolean
 from sqlalchemy.orm import relationship, declarative_base
 
 
@@ -66,3 +66,14 @@ class MealPlan(Base):
     mealPlanID = Column(Integer, primary_key=True, autoincrement=True)
     dishID = Column(Integer, ForeignKey('dishes.dishID'), nullable=False)
     date = Column(Date, nullable=False)
+    
+class DishSuggestion(Base):
+    __tablename__ = 'dishSuggestion'
+    
+    dishSuggestionId = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(50), nullable=False)
+    ingredients = Column(ARRAY(String))
+    image = Column(LargeBinary)
+    date = Column(Date, nullable=False)
+    accepted = Column(Boolean, nullable=False)
+    
