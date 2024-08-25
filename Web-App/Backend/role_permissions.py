@@ -23,7 +23,9 @@ def get_permissions_for_role(role):
             Permissions.ORDERS_SORTED_BY_DISH.value, 
             # Meal Plan Permissions  
             Permissions.MEAL_PLAN.value,  
-            Permissions.CREATE_MEAL_PLAN.value,   
+            Permissions.CREATE_MEAL_PLAN.value,
+            # Dish Suggestion Permissions
+            Permissions.CREATE_DISH_SUGGESTION.value   
         ]
     elif role == UserRole.HUNGERNDE.value:
         permissions = [
@@ -39,7 +41,9 @@ def get_permissions_for_role(role):
             Permissions.CREATE_ORDER.value, 
             Permissions.ORDERS_BY_USER.value,  
             # Meal Plan Permissions 
-            Permissions.MEAL_PLAN.value  
+            Permissions.MEAL_PLAN.value,
+            # Dish Suggestion Permissions
+            Permissions.CREATE_DISH_SUGGESTION.value  
         ]
     elif role == UserRole.KANTINENMITARBEITER.value:
         permissions = [
@@ -89,6 +93,9 @@ class Permissions(Enum):
     # Meal Plan Permissions
     MEAL_PLAN = "meal_plan"
     CREATE_MEAL_PLAN = "create_meal_plan"
+    
+    # Dish Suggestion Permissions
+    CREATE_DISH_SUGGESTION = "create_dish_suggestion"
     
     def __str__(self):
         return self.value
