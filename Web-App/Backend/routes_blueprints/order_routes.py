@@ -1,7 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
-from config import user_repo, order_repo, meal_plan_repo
 from decorators import permission_check
 from datetime import datetime, timedelta
 
@@ -10,7 +9,7 @@ order_blueprint = Blueprint('order_blueprint', __name__)
 
 @order_blueprint.route('/create_order', methods=['POST'])
 @jwt_required()
-@permission_check(user_repo)
+@permission_check()
 def create_order():
     data = request.json
     jwt_userID = get_jwt_identity()
@@ -28,7 +27,7 @@ def create_order():
         mealPlan_ids.append(mealPlanID)
 
     timestamp = datetime.today()
-    mealPlanDates = meal_plan_repo.get_mealPlan_dates_by_ids(mealPlan_ids)
+    mealPlanDates = current_app.meal_plan_repo.get_mealPlan_dates_by_ids(mealPlan_ids)
     if mealPlanDates:
         monday = timestamp - timedelta(days=timestamp.weekday())
         sunday = monday + timedelta(days=6) 
@@ -42,7 +41,7 @@ def create_order():
     else:
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Bestelltes Gericht existiert nicht"}), 400
 
-    ret_value = order_repo.create_order(jwt_userID, data_Orders)
+    ret_value = current_app.order_repo.create_order(jwt_userID, data_Orders)
     if ret_value=="created":
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.SUCCESS.value}Bestellung erfolgreich"}), 201
     else:
@@ -50,10 +49,10 @@ def create_order():
 
 @order_blueprint.route('/orders_by_user/<string:start_date>/<string:end_date>')
 @jwt_required()
-@permission_check(user_repo)
+@permission_check()
 def orders_by_user(start_date, end_date):
     jwt_userID = get_jwt_identity()
-    orders = order_repo.get_orders_by_userid(jwt_userID, start_date, end_date)
+    orders = current_app.order_repo.get_orders_by_userid(jwt_userID, start_date, end_date)
 
     if orders:
         return jsonify(orders)
@@ -61,9 +60,9 @@ def orders_by_user(start_date, end_date):
  
 @order_blueprint.route('/orders_sorted_by_dish/<string:start_date>/<string:end_date>')
 @jwt_required()
-@permission_check(user_repo)
+@permission_check()
 def orders_sorted_by_dish(start_date, end_date):
-    orders = order_repo.get_orders_sorted_by_dish(start_date, end_date)
+    orders = current_app.order_repo.get_orders_sorted_by_dish(start_date, end_date)
 
     if orders:
         return jsonify(orders)

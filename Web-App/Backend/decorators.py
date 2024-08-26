@@ -1,14 +1,15 @@
 from functools import wraps
 from flask_jwt_extended import get_jwt_identity
 from role_permissions import get_permissions_for_role
-from flask import jsonify
+from flask import jsonify, current_app
 
-def permission_check(user_repo):
+def permission_check():
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             function_name = func.__name__
             current_user = get_jwt_identity()
+            user_repo = current_app.user_repo
             user_data = user_repo.get_user_by_id(current_user)
 
             if(user_data):
