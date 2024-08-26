@@ -70,10 +70,9 @@ class MealPlan(Base):
 class DishSuggestion(Base):
     __tablename__ = 'dishSuggestion'
     
-    dishSuggestionId = Column(Integer, primary_key=True, autoincrement=True)
+    dishSuggestionID = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     ingredients = Column(ARRAY(String))
     image = Column(LargeBinary)
     date = Column(Date, nullable=False)
-    accepted = Column(Boolean, nullable=False)
     

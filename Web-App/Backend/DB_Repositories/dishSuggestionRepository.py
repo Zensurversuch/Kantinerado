@@ -6,6 +6,10 @@ from datetime import date
 from random import randint
 
 class DishSuggestionRepository:
+    def __init__(self, engine):
+        self.engine = engine
+        self.session_factory = sessionmaker(bind=self.engine)
+        
     def create_dishSuggestion(self, param_name, param_ingredients=None, param_image=None):
         try:
             session = scoped_session(self.session_factory)
@@ -13,7 +17,7 @@ class DishSuggestionRepository:
             max_ = 1000000000
             rand_dishSuggestionID = randint(min_, max_)
 
-            while session.query(DishSuggestion).filter(DishSuggestion.dishSuggestionId == rand_dishSuggestionID).first() is not None:
+            while session.query(DishSuggestion).filter(DishSuggestion.dishSuggestionID == rand_dishSuggestionID).first() is not None:
                 rand_dishSuggestionID = randint(min_, max_)
 
             new_dishSuggestion = DishSuggestion(
@@ -21,7 +25,6 @@ class DishSuggestionRepository:
                 name=param_name,
                 ingredients=param_ingredients,
                 image=param_image,
-                accepted = False,
                 date = date.today()
             )
 
