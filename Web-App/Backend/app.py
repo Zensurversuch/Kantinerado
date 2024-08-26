@@ -1,17 +1,7 @@
-from flask import Flask
-from flask_jwt_extended import JWTManager
-from flask_cors import CORS
-from routes_blueprints import register_blueprints
+from __init__ import create_app
 import os
 
-app = Flask(__name__)
-
-app.config["JWT_SECRET_KEY"] = f"{os.getenv('JWT_SECRET_KEY')}"
-
-jwt = JWTManager(app)
-CORS(app)
-
-register_blueprints(app)
+app = create_app(config_name=os.getenv('FLASK_CONFIG', 'ProductionConfig'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

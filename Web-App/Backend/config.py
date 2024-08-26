@@ -1,19 +1,20 @@
-from sqlalchemy import create_engine
-from DB_Repositories import userRepository, dishesRepository, orderRepository, mealPlanRepository, allergyRepository, dishSuggestionRepository
-from initialize_database import initialize_Postgres
 import os
 
-POSTGRES_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@database/{os.getenv('POSTGRES_DB')}"
+class Config:
+    """Basis-Konfigurationsklasse."""
+    SECRET_KEY = os.getenv('SECRET_KEY', 'your_secret_key')
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@database/{os.getenv('POSTGRES_DB')}"
 
-engine = create_engine(POSTGRES_URL)
 
-# Repositories
-user_repo = userRepository.UserRepository(engine)
-dish_repo = dishesRepository.DishRepository(engine)
-meal_plan_repo = mealPlanRepository.MealPlanRepository(engine)
-order_repo = orderRepository.OrderRepository(engine)
-allergy_repo = allergyRepository.AllergyRepository(engine)
-dish_suggestion_repo = dishSuggestionRepository.DishSuggestionRepository(engine)
+class DevelopmentConfig(Config):
+    """Entwicklungsumgebungskonfiguration."""
+    DEBUG = True
 
-# Postgres Database
-initialize_Postgres(engine)
+class TestingConfig(Config):
+    """Testumgebungskonfiguration."""
+    TESTING = True
+
+class ProductionConfig(Config):
+    """Produktionsumgebungskonfiguration."""
