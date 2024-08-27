@@ -15,6 +15,9 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """Testumgebungskonfiguration."""
     TESTING = True
+    JWT_SECRET_KEY = 'your_test_secret_key'  
+    JWT_ACCESS_TOKEN_EXPIRES = False  
+    SERVER_NAME = 'localhost'  
 
 class ProductionConfig(Config):
     """Produktionsumgebungskonfiguration."""
