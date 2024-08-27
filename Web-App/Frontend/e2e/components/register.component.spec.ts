@@ -3,44 +3,6 @@ import {test, expect} from '@playwright/test';
 test.beforeEach(async ({page}) => {
   await page.goto('http://localhost:4200/#/register');
 })
-/*
-test('test', async ({page}) => {
-  await page.goto('http://localhost:4200/');
-  await page.goto('http://localhost:4200/#/');
-  await page.getByRole('button', {name: 'Menu'}).click();
-  await page.locator('li').filter({hasText: 'Login'}).click();
-  await page.getByRole('button', {name: 'Erstellen Sie einen Account'}).click();
-  await page.getByLabel('Nachname*').click();
-  await page.getByLabel('Vorname*').click();
-  await page.getByText('Nachname ist erforderlich.').click();
-  await page.getByText('Vorname ist erforderlich.').click();
-  await page.getByLabel('E-Mail*').click();
-  await page.getByText('Bitte geben Sie eine gültige').click();
-  await page.getByLabel('Passwort*', {exact: true}).click();
-  await page.getByText('Passwort*', {exact: true}).click();
-  await page.getByText('Mindestens 8 Zeichen, eine').click();
-  await page.getByLabel('Passwort*', {exact: true}).click();
-  await page.getByLabel('Passwort*', {exact: true}).fill('Schmidt1234');
-  await page.getByLabel('Passwort*', {exact: true}).click();
-  await page.getByLabel('Passwort*', {exact: true}).fill('gutes_Passwort_1');
-  await page.getByLabel('Bestätige Passwort*').click();
-  await page.getByLabel('Bestätige Passwort*').fill('h');
-  await page.getByText('Passwortbestätigung ist').click();
-  await page.getByText('Die Passwörter stimmen nicht').click();
-  await page.getByLabel('Bestätige Passwort*').click();
-  await page.getByLabel('Bestätige Passwort*').fill('gutes_Passwort_1');
-  await page.getByLabel('E-Mail*').click();
-  await page.getByLabel('E-Mail*').fill('TestUser@tes');
-  await page.getByLabel('E-Mail*').click();
-  await page.getByLabel('E-Mail*').fill('TestUser@testEmail.com');
-  await page.locator('body').click();
-  await page.getByLabel('Nachname*').click();
-  await page.getByLabel('Nachname*').fill('User');
-  await page.getByLabel('Vorname*').click();
-  await page.getByLabel('Vorname*').fill('Test');
-  await page.locator('body').click();
-});
-*/
 
 test.describe('Testing failure in the registration Form', () => {
   test('should be true if the failure for "Nachname" ist shown.', async ({page}) => {
