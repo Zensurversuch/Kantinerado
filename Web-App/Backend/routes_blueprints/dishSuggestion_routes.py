@@ -9,7 +9,7 @@ dishSuggestion_blueprint = Blueprint('dishSuggestion_blueprint', __name__)
 @dishSuggestion_blueprint.route('/create_dish_suggestion', methods=['POST'])
 @jwt_required()
 @permission_check()
-def create_dishSuggestion():
+def create_dish_suggestion():
     data = request.json
     data_name = data.get('name')
     data_ingredients = data.get('ingredients')
