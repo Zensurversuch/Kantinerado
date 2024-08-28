@@ -1,43 +1,49 @@
 import pytest
-from unittest.mock import patch
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import create_access_token
 from __init__ import create_app
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from initialize_database import initialize_test_database
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def app():
-    # Setze die Testkonfiguration für die Flask-Anwendung
-    app = create_app('testing')
+    """Erstelle und konfiguriere die Flask-Anwendung für die Tests."""
+    app = create_app(config_name='testing')
     with app.app_context():
-        yield app
+        # Initialize the database schema
+        engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+        print(app.config['SQLALCHEMY_DATABASE_URI'])
+        initialize_test_database(engine)
+    yield app
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def client(app):
-    # Verwende den Test-Client der Flask-Anwendung
+    """Erstelle und konfiguriere einen Test-Client für die Anwendung."""
     return app.test_client()
 
-@pytest.fixture(scope='module')
-def jwt(app):
-    # Initialisiere JWT Manager
-    return JWTManager(app)
+@pytest.fixture(scope='session')
+def session(app):
+    """Erstelle eine SQLAlchemy-Session für Tests."""
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    yield session
+    session.close()
+    
+@pytest.fixture(scope='function')
+def auth_token_admin(app):
+    """Erstelle einen admin JWT-Token für Tests."""
+    with app.app_context():
+        return create_access_token(identity=1, expires_delta=False)
 
-@pytest.fixture
-def mock_dish_suggestion_repo(app):
-    with patch('routes_blueprints.dishSuggestion_routes.current_app.dish_suggestion_repo') as mock_repo:
-        yield mock_repo
-
-@pytest.fixture
-def mock_jwt_required(app):
-    with patch('flask_jwt_extended.jwt_required') as mock_jwt:
-        mock_jwt.return_value = lambda x: x
-        yield mock_jwt
-        
-@pytest.fixture
-def mock_user_repo():
-    with patch('routes_blueprints.user_blueprint') as mock_repo:
-        yield mock_repo
-
-@pytest.fixture
-def mock_get_permissions_for_role():
-    with patch('role_permissions.get_permissions_for_role') as mock_permissions:
-        mock_permissions.return_value = ['create_dish_suggestion']
-        yield mock_permissions
+@pytest.fixture(scope='function')
+def auth_token_kantinenmitarbeiter(app):
+    """Erstelle einen kantinenmitarbeiter JWT-Token für Tests."""
+    with app.app_context():
+        return create_access_token(identity=2, expires_delta=False)
+    
+@pytest.fixture(scope='function')
+def auth_token_hungernde(app):
+    """Erstelle einen hungernde JWT-Token für Tests."""
+    with app.app_context():
+        return create_access_token(identity=3, expires_delta=False)
