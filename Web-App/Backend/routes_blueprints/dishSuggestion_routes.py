@@ -14,13 +14,13 @@ def create_dish_suggestion():
     data_name = data.get('name')
     data_ingredients = data.get('ingredients')
     data_image = data.get('image')
-
+    data_description = data.get('description')
     if not (data_name):
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
 
     decoded_image = base64.b64decode(data_image) if data_image else None
 
-    ret_value = current_app.dish_suggestion_repo.create_dishSuggestion(data_name, data_ingredients, decoded_image,)
+    ret_value = current_app.dish_suggestion_repo.create_dishSuggestion(data_name, data_ingredients, decoded_image, data_description)
     if ret_value:  
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.SUCCESS.value}Gerichtsvorschlag erfolgreich erstellt"}), 201
     elif ret_value == False:

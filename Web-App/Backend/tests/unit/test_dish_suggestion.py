@@ -10,7 +10,8 @@ def test_create_dish_suggestion_succes_admin(client, auth_token_admin, session):
     data = {
         'name': 'Test Dish',
         'ingredients': ['ingredient1', 'ingredient2'],
-        'image': base64.b64encode(b'test image data').decode('utf-8')
+        'image': base64.b64encode(b'test image data').decode('utf-8'),
+        'description': 'Das ist eine Testbeschreibung'
     }
     response = client.post('/create_dish_suggestion',
                            json=data,
@@ -34,7 +35,8 @@ def test_create_dish_suggestion_kantinenmitarbeiter(client, auth_token_kantinenm
     data = {
         'name': 'Test Dish',
         'ingredients': ['ingredient1', 'ingredient2'],
-        'image': base64.b64encode(b'test image data').decode('utf-8')
+        'image': base64.b64encode(b'test image data').decode('utf-8'),
+        'description': 'Das ist eine Testbeschreibung'
     }
     response = client.post('/create_dish_suggestion',
                            json=data,
@@ -59,7 +61,8 @@ def test_create_dish_suggestion_succes_hungernde(client, auth_token_hungernde, s
     data = {
         'name': 'Test Dish',
         'ingredients': ['ingredient1', 'ingredient2'],
-        'image': base64.b64encode(b'test image data').decode('utf-8')
+        'image': base64.b64encode(b'test image data').decode('utf-8'),
+        'description': 'Das ist eine Testbeschreibung'
     }
     response = client.post('/create_dish_suggestion',
                            json=data,
@@ -82,7 +85,8 @@ def test_create_dish_suggestion_missing_name(client, auth_token_hungernde, sessi
     # Testdaten ohne Namen
     data = {
         'ingredients': ['ingredient1', 'ingredient2'],
-        'image': base64.b64encode(b'test image data').decode('utf-8')
+        'image': base64.b64encode(b'test image data').decode('utf-8'),
+        'description': 'Das ist eine Testbeschreibung'
     }
 
     response = client.post('/create_dish_suggestion',

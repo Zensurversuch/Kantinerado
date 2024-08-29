@@ -75,4 +75,4 @@ class DishSuggestion(Base):
     ingredients = Column(ARRAY(String))
     image = Column(LargeBinary)
     date = Column(Date, nullable=False)
-    
+    description = Column(String(150))
