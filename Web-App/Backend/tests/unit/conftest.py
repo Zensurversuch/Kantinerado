@@ -4,6 +4,7 @@ from __init__ import create_app
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from initialize_database import initialize_test_database
+from DB_Repositories.models import DishSuggestion
 
 @pytest.fixture(scope='session')
 def app():
@@ -29,7 +30,13 @@ def session(app):
     session = Session()
     yield session
     session.close()
-    
+
+@pytest.fixture(scope='function')
+def delete_all_dish_suggestions(session):
+    """Fixture, um alle Gerichtsvorschläge in der Datenbank vor jedem Test zu löschen."""
+    session.query(DishSuggestion).delete()
+    session.commit()
+        
 @pytest.fixture(scope='function')
 def auth_token_admin(app):
     """Erstelle einen admin JWT-Token für Tests."""
