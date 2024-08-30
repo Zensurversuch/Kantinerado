@@ -25,3 +25,12 @@ def create_dish_suggestion():
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.SUCCESS.value}Gerichtsvorschlag erfolgreich erstellt"}), 201
     elif ret_value == False:
         return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gerichtsvorschlag konnte nicht erstellt werden"}), 500
+
+dishSuggestion_blueprint.route('get_all_dish_suggestions', methods=['GET'])
+@jwt_required()
+@permission_check()
+def get_all_dish_suggestions():
+    data = current_app.current_app.dish_suggestion_repo.get_allDishSuggestions()
+    if data:
+        return jsonify(data)
+    return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Keinen Gerichtsvorschlag gefunden"}), 404

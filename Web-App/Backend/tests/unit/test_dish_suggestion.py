@@ -98,3 +98,32 @@ def test_create_dish_suggestion_missing_name(client, auth_token_hungernde, sessi
     assert response.status_code == 400
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"
 
+
+def test_get_all_dish_suggestions_succes_kantinenarbeiter(client, auth_token_kantinenmitarbeiter):
+    dataOne = {
+        'name': 'Test Dish One',
+        'ingredients': ['ingredient1', 'ingredient2'],
+        'image': base64.b64encode(b'test image data').decode('utf-8'),
+        'description': 'Das ist eine Testbeschreibung'
+    }
+    
+    dataTwo = {
+        'name': 'Test Dish Two',
+        'ingredients': ['ingredient1', 'ingredient2'],
+        'image': base64.b64encode(b'test image data').decode('utf-8'),
+        'description': 'Das ist eine Testbeschreibung'
+    }
+
+    client.post('/create_dish_suggestion',
+                           json=dataOne,
+                           headers={'Authorization': f'Bearer {auth_token_kantinenmitarbeiter}'}
+                           )
+    
+    client.post('/create_dish_suggestion',
+                           json=dataTwo,
+                           headers={'Authorization': f'Bearer {auth_token_kantinenmitarbeiter}'}
+                           )
+    
+    response = client.get('/get_all_dish_suggestions')
+    
+    assert response.json

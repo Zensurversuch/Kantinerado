@@ -35,3 +35,25 @@ class DishSuggestionRepository:
             return False
         finally:
             session.close()
+            
+    def get_all_users(self):
+        try:
+            session = scoped_session(self.session_factory)
+            all_dishSuggestions = session.query(DishSuggestion).all()
+            dishSuggestion_list = []
+
+            if all_dishSuggestions:
+                for dishSuggestion in all_dishSuggestions:
+                    dishSuggestion_dict = {
+                        "dishSuggestionID": dishSuggestion.dishSuggestionID,
+                        "name": dishSuggestion.name,
+                        "date": dishSuggestion.date
+                    }
+                    dishSuggestion_list.append(dishSuggestion_dict)
+
+                return dishSuggestion_list
+            return None
+        except SQLAlchemyError as e:
+            return None
+        finally:
+            session.close()
