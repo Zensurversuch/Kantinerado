@@ -326,3 +326,62 @@ def test_dish_suggestion_by_ID_no_suggestion(client, auth_token_kantinenmitarbei
     # Überprüfen der JSON-Antwort
     assert response.status_code == 404
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"Fehler: Gerichtsvorschlag nicht gefunden"
+    
+def test_delete_dish_suggestion_succes_kantinenmitarbeiter(session, client, auth_token_kantinenmitarbeiter, auth_token_hungernde, delete_all_dish_suggestions):
+    
+    new_dish_suggestion = {
+        'name': 'Test Dish',
+        'ingredients': ['ingredient1', 'ingredient2'],
+        'image': base64.b64encode(b'test image data').decode('utf-8'),
+        'description': 'Das ist eine Testbeschreibung'
+    }
+
+    response_post = client.post('/create_dish_suggestion',
+                                json=new_dish_suggestion,
+                                headers={'Authorization': f'Bearer {auth_token_hungernde}'})
+
+    assert response_post.status_code == 201
+
+    dish_suggestion = session.query(DishSuggestion).filter_by(name='Test Dish').first()
+    
+    assert dish_suggestion is not None
+
+    response_get = client.get(f'/delete_dish_suggestion/{dish_suggestion.dishSuggestionID}',
+                              headers={'Authorization': f'Bearer {auth_token_kantinenmitarbeiter}'})
+
+    assert response_get.status_code == 201 
+    assert response_get.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Gerichtsvorschlag erfolgreich gelöscht"
+
+def test_delete_dish_suggestion_succes_admin(session, client, auth_token_admin, auth_token_hungernde, delete_all_dish_suggestions):
+    
+    new_dish_suggestion = {
+        'name': 'Test Dish',
+        'ingredients': ['ingredient1', 'ingredient2'],
+        'image': base64.b64encode(b'test image data').decode('utf-8'),
+        'description': 'Das ist eine Testbeschreibung'
+    }
+
+    response_post = client.post('/create_dish_suggestion',
+                                json=new_dish_suggestion,
+                                headers={'Authorization': f'Bearer {auth_token_hungernde}'})
+
+    assert response_post.status_code == 201
+
+    dish_suggestion = session.query(DishSuggestion).filter_by(name='Test Dish').first()
+    
+    assert dish_suggestion is not None
+
+    response_get = client.get(f'/delete_dish_suggestion/{dish_suggestion.dishSuggestionID}',
+                              headers={'Authorization': f'Bearer {auth_token_admin}'})
+
+    assert response_get.status_code == 201 
+    assert response_get.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Gerichtsvorschlag erfolgreich gelöscht"
+    
+def test_delete_dish_suggestion_no_suggestion(client, auth_token_kantinenmitarbeiter):
+    response = client.get(f'/dish_suggestion_by_id/1',
+                          headers={'Authorization': f'Bearer {auth_token_kantinenmitarbeiter}'})
+    
+    # Überprüfen der JSON-Antwort
+    assert response.status_code == 404
+    assert response.json[API_MESSAGE_DESCRIPTOR] == f"Fehler: Gerichtsvorschlag nicht gefunden"
+    

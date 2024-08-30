@@ -79,3 +79,17 @@ class DishSuggestionRepository:
             return None
         finally:
             session.close()
+    
+    def delete_dish_suggestion(self, param_dishSuggestionID):
+        try:
+            session = scoped_session(self.session_factory)
+            dishSuggestion_data = session.query(DishSuggestion).filter(DishSuggestion.dishSuggestionID == param_dishSuggestionID).first()
+            if dishSuggestion_data:
+                session.delete(dishSuggestion_data)
+                session.commit
+                return True
+            return None
+        except SQLAlchemyError as e:
+            return None
+        finally:
+            session.close()
