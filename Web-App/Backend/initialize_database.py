@@ -126,8 +126,8 @@ def initialize_test_database(engine):
         # Beispiel: Füge Allergien hinzu, falls keine vorhanden sind
         if session.query(Allergy).count() == 0:
             allergies = [
-                Allergy(name='Gluten'),
-                Allergy(name='Lactose'),
+                Allergy(name='TestAllergyOne'),
+                Allergy(name='TestAllergyTwo'),
                 # Weitere Allergien hinzufügen...
             ]
             session.add_all(allergies)
