@@ -13,6 +13,9 @@
       src="../../../assets/Menu_Icons/reshot-icon-list-UQ7FKRE2YS.svg"> <a routerLink="/userOrderSummary"
                                                                            class="menu__link">Bestellübersicht
       Benutzer</a></li>
+    <li class="menu__item" *ngIf="(userRole === 'admin' || userRole === 'hungernde') && isLoggedIn"><img
+      src="../../../assets/Menu_Icons/icon-suggestion.svg"> <a routerLink="/dishSuggestion"
+                                                                           class="menu__link">Menüvorschlag</a></li>
     <li class="menu__item" *ngIf="(userRole === 'admin' || userRole === 'kantinenmitarbeiter') && isLoggedIn"><img
       src="../../../assets/Menu_Icons/reshot-icon-add-8TPKZ5UW7V.svg"> <a routerLink="/createDish" class="menu__link">Gerichte
       hinzufügen</a></li>

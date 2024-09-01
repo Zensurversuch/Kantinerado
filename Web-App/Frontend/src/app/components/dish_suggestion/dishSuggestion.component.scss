@@ -5,7 +5,7 @@
   opacity: 0.5;
 }
 
-.createDish {
+.createSuggestion {
   padding: 2em;
   display: flex;
   justify-content: space-around;
@@ -17,17 +17,17 @@
   }
 
   form {
-    .createDish__form-group {
+    .createSuggestion__form-group {
       margin-bottom: 20px;
     }
 
-    .createDish__label {
+    .createSuggestion__label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
 
-    .createDish__input {
+    .createSuggestion__input {
       width: 100%;
       padding: 8px;
       border: 1px solid $primary-border-color;
@@ -47,7 +47,7 @@
       }
     }
 
-    .createDish__input__ingredients {
+    .createSuggestion__input__ingredients {
       width: 100%;
       padding: 8px;
       border: 1px solid $primary-border-color;
@@ -67,7 +67,7 @@
       }
     }
 
-    .createDish__submit-btn {
+    .createSuggestion__submit-btn {
       width: 100%;
       padding: 10px;
       border: none;
@@ -87,14 +87,14 @@
       }
     }
 
-    .createDish__error-message{
+    .createSuggestion__error-message{
       color:$primary-color ;
     }
   }
 }
 
 @media (min-width: 400px) {
-  .createDish {
+  .createSuggestion {
     display: block;
     width: 300px;
     margin: 50px auto;
@@ -105,13 +105,13 @@
   h2{
     width: auto;
   }
-  .createDish__input {
+  .createSuggestion__input {
     width: calc(100% - 12px);
     border: 1px solid $primary-border-color;
     border-radius: 5px;
     box-sizing: border-box;
   }
-  .createDish__submit-btn{
-  width: calc(100% - 12px);
+  .createSuggestion__submit-btn{
+    width: calc(100% - 12px);
   }
 }
