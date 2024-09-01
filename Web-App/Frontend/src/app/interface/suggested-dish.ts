@@ -1,5 +1,5 @@
 export interface SuggestedDish {
-  title: string;
+  name: string;
   description: string;
   ingredients: [];
   image: string;

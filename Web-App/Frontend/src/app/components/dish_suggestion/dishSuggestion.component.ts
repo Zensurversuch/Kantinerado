@@ -78,7 +78,7 @@ export class DishSuggestionComponent {
       .map((item: string) => item.trim());
 
     const suggestedDish: SuggestedDish = {
-      title: this.createDishSuggestionForm.value.title,
+      name: this.createDishSuggestionForm.value.title,
       description: this.createDishSuggestionForm.value.description,
       ingredients: allIngredients,
       image: this.createDishSuggestionForm.get('image')?.value || ''
