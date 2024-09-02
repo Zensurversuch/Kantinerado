@@ -4,6 +4,9 @@ from DB_Repositories.models import DishSuggestion
 from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
 
 @pytest.mark.usefixtures("session")
+
+########################################################## create_dish_suggestions test ##########################################################
+
 def test_create_dish_suggestion_succes_admin(client, auth_token_admin, session, delete_all_dish_suggestions):
     """Test creating a dish suggestionas admin."""
     # Post-Daten
@@ -97,6 +100,8 @@ def test_create_dish_suggestion_missing_name(client, auth_token_hungernde, delet
     # Überprüfe die Antwort
     assert response.status_code == 400
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"
+    
+########################################################## all_dish_suggestions test ##########################################################
 
 def test_all_dish_suggestions_succes_kantinenarbeiter(client, auth_token_kantinenmitarbeiter, auth_token_hungernde, session, delete_all_dish_suggestions):
     dataOne = {
@@ -254,6 +259,8 @@ def test_all_dish_suggestions_no_suggestions(client, auth_token_kantinenmitarbei
     # Überprüfen der JSON-Antwort
     assert response.status_code == 404
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"Fehler: Keinen Gerichtsvorschlag gefunden"
+       
+########################################################## dish_suggestion_by_ID test ##########################################################
 
 def test_dish_suggestion_by_ID_succes_kantinenarbeiter(session, client, auth_token_kantinenmitarbeiter, auth_token_hungernde, delete_all_dish_suggestions):
     
@@ -327,6 +334,8 @@ def test_dish_suggestion_by_ID_no_suggestion(client, auth_token_kantinenmitarbei
     assert response.status_code == 404
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"Fehler: Gerichtsvorschlag nicht gefunden"
     
+########################################################## delete_dish_suggestion test ##########################################################
+    
 def test_delete_dish_suggestion_succes_kantinenmitarbeiter(session, client, auth_token_kantinenmitarbeiter, auth_token_hungernde, delete_all_dish_suggestions):
     
     new_dish_suggestion = {
@@ -384,6 +393,8 @@ def test_delete_dish_suggestion_no_suggestion(client, auth_token_kantinenmitarbe
     # Überprüfen der JSON-Antwort
     assert response.status_code == 404
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"Fehler: Gerichtsvorschlag nicht gefunden"
+    
+########################################################## accept_dish_suggestion test ##########################################################
 
 def test_accept_dish_suggestion_succes_admin(session, client, auth_token_admin, delete_all_dish_suggestions, delete_all_dishes):
     new_dish_suggestion = {
