@@ -1,7 +1,7 @@
 # Stage 1: Build Stage
 FROM node:latest as build
 
-ARG ANGULAR_ENVIRONMENT=development
+ARG ANGULAR_ENVIRONMENT=production
 
 WORKDIR /usr/local/app
 

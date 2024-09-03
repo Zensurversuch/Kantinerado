@@ -3,7 +3,7 @@ services:
     build:
       context: ./Frontend/
       args:
-        - ANGULAR_ENVIRONMENT=${ANGULAR_ENVIRONMENT:-production}
+        - ANGULAR_ENVIRONMENT=${ANGULAR_ENVIRONMENT}
     ports:
       - "80:80"
 
