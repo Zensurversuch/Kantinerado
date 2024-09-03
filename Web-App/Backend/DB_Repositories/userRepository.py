@@ -2,6 +2,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from DB_Repositories.models import User, Allergy
 from random import randint 
+import secrets
 import hashlib
 
 class UserRepository:
@@ -18,13 +19,15 @@ class UserRepository:
             while session.query(User).filter(User.userID == rand_userid).first() is not None:
                 rand_userid = randint(min_, max_)
 
-            hashed_pw = hashlib.sha256(param_password.encode('utf-8')).hexdigest()
+            salt = secrets.token_hex()
+            hashed_pw = hashlib.sha256((param_password + salt).encode('utf-8')).hexdigest()
             new_user = User(userID=rand_userid,
                             email=param_email,
                             password=hashed_pw,
                             lastName=param_lastName,
                             firstName=param_firstName,
-                            role=param_role)
+                            role=param_role,
+                            salt = salt)
 
             missing_allergies = []
             if param_allergies:
@@ -107,6 +110,7 @@ class UserRepository:
                     "lastName": user_data.lastName,
                     "firstName": user_data.firstName,
                     "role": user_data.role,
+                    "salt": user_data.salt,
                     "allergies": allergies
                 }
                 return user_dict

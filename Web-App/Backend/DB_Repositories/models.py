@@ -47,6 +47,7 @@ class User(Base):
     lastName = Column(String(50), nullable=False)
     firstName = Column(String(50), nullable=False)
     role = Column(String(50), nullable=False)
+    salt = Column(String(64), nullable=False)
     
     # n-m to allergy
     allergies = relationship("Allergy", secondary=user_allergy_association)

@@ -15,18 +15,21 @@ def login():
 
     data_email = request.json.get('email', None)
     data_password = request.json.get('password', None)
-    hashed_pw = hashlib.sha256(data_password.encode('utf-8')).hexdigest()
+   
 
     if not data_email or not data_password:
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fehlender Benutzername oder Passwort"}), 400
 
+    
     user_data = user_repo.get_user_by_email(data_email)
 
-    if user_data and (hashed_pw == user_data["password"]):
-        access_token = create_access_token(identity=user_data["userID"], expires_delta=timedelta(hours=1))
-        return jsonify(access_token=access_token, userID = user_data["userID"], role = user_data["role"]), 200
-    else:
-        return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Falscher Benutzername oder Passwort"}), 401
+    if user_data:
+        hashed_pw = hashlib.sha256((data_password + user_data["salt"]).encode('utf-8')).hexdigest()
+        if (hashed_pw == user_data["password"]):
+            access_token = create_access_token(identity=user_data["userID"], expires_delta=timedelta(hours=1))
+            return jsonify(access_token=access_token, userID = user_data["userID"], role = user_data["role"]), 200
+        
+    return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Falscher Benutzername oder Passwort"}), 401
 
 @user_blueprint.route('/create_user', methods=['POST'])
 def create_user():
