@@ -1,0 +1,37 @@
+<div class="suggestions-container">
+  <h2>Gerichtsvorschläge</h2>
+  <div *ngFor="let suggestion of suggestions" class="suggestion-card">
+    <div class="suggestion-header" (click)="toggleDetails(suggestion)">
+      <h3>{{ suggestion.name }}</h3>
+      <button class="toggle-button">{{ suggestion.isOpen ? 'Weniger anzeigen' : 'Mehr anzeigen' }}</button>
+    </div>
+    <div *ngIf="suggestion.isOpen" class="suggestion-details">
+      <p>{{ suggestion.description }}</p>
+      <ul>
+        <li *ngFor="let ingredient of suggestion.ingredients">{{ ingredient }}</li>
+      </ul>
+      <form [formGroup]="dishForm" (ngSubmit)="onSubmit(suggestion)">
+        <div class="form-group">
+          <label for="price-{{ suggestion.name }}">Preis:</label>
+          <input id="price-{{ suggestion.name }}" formControlName="price" type="number">
+        </div>
+        <div class="form-group">
+          <label for="dietaryCategory-{{ suggestion.name }}">Ernährungsweise:</label>
+          <input id="dietaryCategory-{{ suggestion.name }}" formControlName="dietaryCategory" type="text">
+        </div>
+        <div class="form-group">
+          <label for="mealType-{{ suggestion.name }}">Mahlzeittyp:</label>
+          <input id="mealType-{{ suggestion.name }}" formControlName="mealType" type="text">
+        </div>
+        <div class="form-group">
+          <label for="allergies-{{ suggestion.name }}">Allergien:</label>
+          <input id="allergies-{{ suggestion.name }}" formControlName="allergies" type="text">
+        </div>
+        <div class="button-group">
+          <button class="submit-button" type="submit">Gericht speichern</button>
+          <button class="reject-button" type="button" (click)="onReject(suggestion)">Vorschlag ablehnen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

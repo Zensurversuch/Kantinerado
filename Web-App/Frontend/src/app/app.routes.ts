@@ -11,6 +11,7 @@ import { RegisterAdminComponent } from './components/register/registerAdmin.comp
 import {LogoutComponent} from "./components/logout/logout.component";
 import {CreateMealPlanComponent} from "./components/meal_plan/create-meal-plan.component";
 import {DishSuggestionComponent} from "./components/dish_suggestion/dishSuggestion.component";
+import {SuggestionReviewComponent} from "./components/dish_suggestion/suggestion-review.component";
 
 
 
@@ -20,10 +21,12 @@ export const routes: Routes = [
   { path: 'logout', component: LogoutComponent},
   { path: 'createDish', component: CreateDishComponent, canActivate: [AuthGuard]},
   { path: 'dishSuggestion', component: DishSuggestionComponent, canActivate: [AuthGuard]},
+  { path: 'suggestionReview: SuggestionReview', component: SuggestionReviewComponent, canActivate: [AuthGuard] },
   { path: 'createMealPlan', component: CreateMealPlanComponent, canActivate: [AuthGuard]},
   { path: 'hello', component: HelloComponent, canActivate: [AuthGuard]},
   { path: 'userOrderSummary', component: UserOrderSummaryComponent, canActivate: [AuthGuard]},
   { path: 'workerOrderSummary', component: WorkerOrderSummaryComponent, canActivate: [AuthGuard]},
   { path: 'registerAdmin', component: RegisterAdminComponent, canActivate: [AuthGuard]},
-  { path: '', component: HomeComponent}
+  { path: '', component: HomeComponent},
+
 ];

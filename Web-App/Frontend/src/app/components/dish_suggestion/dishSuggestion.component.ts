@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../header/header.component";
 import {FeedbackService} from "../../service/feedback/feedback.service";
-import {SuggestedDish} from "../../interface/suggested-dish"
+import {suggestionData} from "../../interface/suggestion-data"
 import {SuggestionService} from "../../service/suggestion/suggestion.service";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {
@@ -26,10 +26,10 @@ import {HttpClient} from "@angular/common/http";
     ReactiveFormsModule,
     NgForOf
   ],
-  templateUrl: './userDishSuggestion.html',
-  styleUrl: './dishSuggestion.component.scss'
+  templateUrl: './dishSuggestion.html',
+  styleUrl: '../suggestion.component.scss'
 })
-export class DishSuggestionComponent {
+export class DishSuggestionComponent implements OnInit{
   blurred: boolean = false;
   createDishSuggestionForm!: FormGroup;
 
@@ -77,7 +77,7 @@ export class DishSuggestionComponent {
       .filter((item: string | null) => item !== null)
       .map((item: string) => item.trim());
 
-    const suggestedDish: SuggestedDish = {
+    const suggestedDish: suggestionData = {
       name: this.createDishSuggestionForm.value.title,
       description: this.createDishSuggestionForm.value.description,
       ingredients: allIngredients,

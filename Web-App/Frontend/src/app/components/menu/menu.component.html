@@ -19,6 +19,9 @@
       src="../../../assets/Menu_Icons/icon-suggestion.svg" alt="Schaltfläche für Menüvorschläge"> <a routerLink="/dishSuggestion" class="menu__link">Menüvorschlag</a>
     </li>
     <li class="menu__item" *ngIf="(userRole === 'admin' || userRole === 'kantinenmitarbeiter') && isLoggedIn"><img
+      src="../../../assets/Menu_Icons/icon-suggestion.svg" alt="Schaltfläche zum Bearbeiten der Menüvorschläge"> <a routerLink="/suggestionReview" class="menu__link">Vorschläge Bearbeiten</a>
+    </li>
+    <li class="menu__item" *ngIf="(userRole === 'admin' || userRole === 'kantinenmitarbeiter') && isLoggedIn"><img
       src="../../../assets/Menu_Icons/reshot-icon-add-8TPKZ5UW7V.svg" alt="Schaltfläche für das Formular zum Hinzufügen von Gerichten"> <a routerLink="/createDish" class="menu__link">Gerichte
       hinzufügen</a></li>
     <li class="menu__item" *ngIf="(userRole === 'admin' || userRole === 'kantinenmitarbeiter') && isLoggedIn"><img
