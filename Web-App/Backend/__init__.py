@@ -19,7 +19,7 @@ def create_app(config_name: str = 'default') -> Flask:
 
         
     # Datenbankverbindung initialisieren
-    POSTGRES_URL = app.config['SQLALCHEMY_DATABASE_URI']
+    POSTGRES_URL = app.config['POSTGRES_DATABASE_URI']
     engine = create_engine(POSTGRES_URL)
               
     # Repositories bereitstellen

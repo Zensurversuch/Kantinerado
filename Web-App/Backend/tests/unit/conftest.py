@@ -12,8 +12,8 @@ def app():
     app = create_app(config_name='testing')
     with app.app_context():
         # Initialize the database schema
-        engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-        print(app.config['SQLALCHEMY_DATABASE_URI'])
+        engine = create_engine(app.config['POSTGRES_DATABASE_URI'])
+        print(app.config['POSTGRES_DATABASE_URI'])
         initialize_test_database(engine)
     yield app
 
@@ -25,7 +25,7 @@ def client(app):
 @pytest.fixture(scope='session')
 def session(app):
     """Create a SQLAlchemy-Session for tests."""
-    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    engine = create_engine(app.config['POSTGRES_DATABASE_URI'])
     Session = sessionmaker(bind=engine)
     session = Session()
     yield session
