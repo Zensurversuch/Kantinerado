@@ -75,7 +75,7 @@ def initialize_Postgres(engine):
     else:
         print("Umgebungsvariablen USER_EMAIL, USER_PASSWORD, USER_FIRST_NAME or USER_LAST_NAME wurden nicht angegeben. Datenbank Schema wird nicht automatisch aufgesetzt.")
 
-#test Datenbank
+#test Database
 def initialize_test_database(engine):
     isDatabaseReady = False
     while not isDatabaseReady:
@@ -123,12 +123,11 @@ def initialize_test_database(engine):
                 session.commit()
                 print("Test Benutzer erfolgreich erstellt.")
         
-        # Beispiel: Füge Allergien hinzu, falls keine vorhanden sind
+        #Adding example allergies
         if session.query(Allergy).count() == 0:
             allergies = [
                 Allergy(name='TestAllergyOne'),
                 Allergy(name='TestAllergyTwo'),
-                # Weitere Allergien hinzufügen...
             ]
             session.add_all(allergies)
             session.commit()

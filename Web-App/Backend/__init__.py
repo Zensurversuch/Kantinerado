@@ -32,8 +32,7 @@ def create_app(config_name: str = 'default') -> Flask:
     
     if config_name != 'testing':
         initialize_Postgres(engine)
-    
-    # Initialisiere JWT, CORS und registriere Blueprints
+    # Initialise JWT, CORS and register blueprints
     from flask_jwt_extended import JWTManager
     from flask_cors import CORS
     from routes_blueprints import register_blueprints

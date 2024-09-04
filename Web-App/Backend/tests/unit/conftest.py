@@ -8,7 +8,7 @@ from DB_Repositories.models import DishSuggestion, Dish, dish_allergy_associatio
 
 @pytest.fixture(scope='session')
 def app():
-    """Erstelle und konfiguriere die Flask-Anwendung für die Tests."""
+    """Create and configure the Flask-App for the tests."""
     app = create_app(config_name='testing')
     with app.app_context():
         # Initialize the database schema
@@ -19,12 +19,12 @@ def app():
 
 @pytest.fixture(scope='session')
 def client(app):
-    """Erstelle und konfiguriere einen Test-Client für die Anwendung."""
+    """Create and configure a test-client for the App."""
     return app.test_client()
 
 @pytest.fixture(scope='session')
 def session(app):
-    """Erstelle eine SQLAlchemy-Session für Tests."""
+    """Create a SQLAlchemy-Session for tests."""
     engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -33,31 +33,31 @@ def session(app):
 
 @pytest.fixture(scope='function')
 def delete_all_dish_suggestions(session):
-    """Fixture, um alle Gerichtsvorschläge in der Datenbank vor jedem Test zu löschen."""
+    """Fixture, to delete all dish suggestions from database."""
     session.query(DishSuggestion).delete()
     session.commit()
     
 @pytest.fixture(scope='function')
 def delete_all_dishes(session):
-    """Fixture, um alle Gerichte in der Datenbank vor jedem Test zu löschen."""
+    """Fixture, to delete all dishes from database."""
     session.query(dish_allergy_association).delete()
     session.query(Dish).delete()
     session.commit()
         
 @pytest.fixture(scope='function')
 def auth_token_admin(app):
-    """Erstelle einen admin JWT-Token für Tests."""
+    """create an admin jwt-token."""
     with app.app_context():
         return create_access_token(identity=1, expires_delta=False)
 
 @pytest.fixture(scope='function')
 def auth_token_kantinenmitarbeiter(app):
-    """Erstelle einen kantinenmitarbeiter JWT-Token für Tests."""
+    """create a kantinenmitarbeiter jwt-Token."""
     with app.app_context():
         return create_access_token(identity=2, expires_delta=False)
     
 @pytest.fixture(scope='function')
 def auth_token_hungernde(app):
-    """Erstelle einen hungernde JWT-Token für Tests."""
+    """Create an hungernde jwt-Token."""
     with app.app_context():
         return create_access_token(identity=3, expires_delta=False)
