@@ -59,13 +59,15 @@ def delete_dish_suggestion(dishSuggestion_ID):
 def accept_dish_suggestion():
     data = request.json
     data_dishSuggestionID = data.get('dishSuggestionID')
-    data_name = data.get('name')
-    data_price = data.get('price')
-    data_ingredients = data.get('ingredients')
-    data_dietaryCategory = data.get('dietaryCategory')
-    data_mealType = data.get('mealType')
-    data_image = data.get('image')
-    data_allergies = data.get('allergies')
+
+    dish_data = data.get('dishData', {})
+    data_name = dish_data.get('name')
+    data_price = dish_data.get('price')
+    data_ingredients = dish_data.get('ingredients')
+    data_dietaryCategory = dish_data.get('dietaryCategory')
+    data_mealType = dish_data.get('mealType')
+    data_image = dish_data.get('image')
+    data_allergies = dish_data.get('allergies')
 
     if not (data_name and data_price and data_dietaryCategory and data_mealType and data_dishSuggestionID):
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderlichen Felder aus"}), 400

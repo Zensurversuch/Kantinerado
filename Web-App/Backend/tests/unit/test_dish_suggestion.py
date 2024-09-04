@@ -414,13 +414,15 @@ def test_accept_dish_suggestion_success_admin(session, client, auth_token_admin,
     
     accepted_dish_suggestion = {
         'dishSuggestionID': dishSuggestionID,
-        'name': 'Test Dish',
-        'price': 17.23,
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'dietaryCategory': 'Test category',
-        'mealType': 'Test type',
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        'dishData': {
+            'name': 'Test Dish',
+            'price': 17.23,
+            'ingredients': ['ingredient1', 'ingredient2'],
+            'dietaryCategory': 'Test category',
+            'mealType': 'Test type',
+            'image': base64.b64encode(b'test image data').decode('utf-8'),
+            'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        }
     }
     
     response_acceptSuggestion = client.post('/accept_dish_suggestion',
@@ -452,13 +454,15 @@ def test_accept_dish_suggestion_success_kantinenmitarbeiter(session, client, aut
     
     accepted_dish_suggestion = {
         'dishSuggestionID': dishSuggestionID,
-        'name': 'Test Dish',
-        'price': 17.23,
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'dietaryCategory': 'Test category',
-        'mealType': 'Test type',
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        'dishData': {
+            'name': 'Test Dish',
+            'price': 17.23,
+            'ingredients': ['ingredient1', 'ingredient2'],
+            'dietaryCategory': 'Test category',
+            'mealType': 'Test type',
+            'image': base64.b64encode(b'test image data').decode('utf-8'),
+            'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        }
     }
     
     response_acceptSuggestion = client.post('/accept_dish_suggestion',
@@ -489,11 +493,13 @@ def test_accept_dish_suggestion_missing_fields(session, client, auth_token_admin
     dishSuggestionID = dish_suggestion.dishSuggestionID
     
     accepted_dish_suggestion = {
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'dietaryCategory': 'Test category',
-        'mealType': 'Test type',
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        'dishData': {
+            'ingredients': ['ingredient1', 'ingredient2'],
+            'dietaryCategory': 'Test category',
+            'mealType': 'Test type',
+            'image': base64.b64encode(b'test image data').decode('utf-8'),
+            'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        }
     }
     
     response_acceptSuggestion = client.post('/accept_dish_suggestion',
@@ -540,13 +546,15 @@ def test_accept_dish_suggestion_dish_already_created(session, client, auth_token
     
     accepted_dish_suggestion = {
         'dishSuggestionID': dishSuggestionID,
-        'name': 'Test Dish',
-        'price': 17.23,
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'dietaryCategory': 'Test category',
-        'mealType': 'Test type',
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        'dishData': {
+            'name': 'Test Dish',
+            'price': 17.23,
+            'ingredients': ['ingredient1', 'ingredient2'],
+            'dietaryCategory': 'Test category',
+            'mealType': 'Test type',
+            'image': base64.b64encode(b'test image data').decode('utf-8'),
+            'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        }
     }
     
     response_acceptSuggestion = client.post('/accept_dish_suggestion',
@@ -560,13 +568,15 @@ def test_accept_dish_suggestion_suggestion_not_deleted(session, client, auth_tok
     
     accepted_dish_suggestion = {
         'dishSuggestionID': 1,
-        'name': 'Test Dish',
-        'price': 17.23,
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'dietaryCategory': 'Test category',
-        'mealType': 'Test type',
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        'dishData': {
+            'name': 'Test Dish',
+            'price': 17.23,
+            'ingredients': ['ingredient1', 'ingredient2'],
+            'dietaryCategory': 'Test category',
+            'mealType': 'Test type',
+            'image': base64.b64encode(b'test image data').decode('utf-8'),
+            'allergies': ['TestAllergyOne', 'TestAllergyTwo']
+        }
     }
     
     response_acceptSuggestion = client.post('/accept_dish_suggestion',
@@ -598,13 +608,15 @@ def test_accept_dish_suggestion_missing_allergies(session, client, auth_token_ad
     
     accepted_dish_suggestion = {
         'dishSuggestionID': dishSuggestionID,
-        'name': 'Test Dish',
-        'price': 17.23,
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'dietaryCategory': 'Test category',
-        'mealType': 'Test type',
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'allergies': ['TestAllergyOne', 'TestAllergyTwo', 'TestAllergyThree']
+        'dishData': {
+            'name': 'Test Dish',
+            'price': 17.23,
+            'ingredients': ['ingredient1', 'ingredient2'],
+            'dietaryCategory': 'Test category',
+            'mealType': 'Test type',
+            'image': base64.b64encode(b'test image data').decode('utf-8'),
+            'allergies': ['TestAllergyOne', 'TestAllergyTwo', 'TestAllergyThree']
+        }
     }
     
     response_acceptSuggestion = client.post('/accept_dish_suggestion',
@@ -618,13 +630,15 @@ def test_accept_dish_suggestion_missing_allergies_not_deleted(session, client, a
     
     accepted_dish_suggestion = {
         'dishSuggestionID': 1,
-        'name': 'Test Dish',
-        'price': 17.23,
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'dietaryCategory': 'Test category',
-        'mealType': 'Test type',
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'allergies': ['TestAllergyOne', 'TestAllergyTwo', 'TestAllergyThree']
+        'dishData': {
+            'name': 'Test Dish',
+            'price': 17.23,
+            'ingredients': ['ingredient1', 'ingredient2'],
+            'dietaryCategory': 'Test category',
+            'mealType': 'Test type',
+            'image': base64.b64encode(b'test image data').decode('utf-8'),
+            'allergies': ['TestAllergyOne', 'TestAllergyTwo', 'TestAllergyThree']
+        }
     }
     
     response_acceptSuggestion = client.post('/accept_dish_suggestion',
