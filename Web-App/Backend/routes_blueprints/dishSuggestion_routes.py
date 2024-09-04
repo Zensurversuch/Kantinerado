@@ -4,9 +4,9 @@ from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
 from decorators import permission_check
 import base64
 
-dishSuggestion_blueprint = Blueprint('dishSuggestion_blueprint', __name__)
+dish_suggestion_blueprint = Blueprint('dishSuggestion_blueprint', __name__)
 
-@dishSuggestion_blueprint.route('/create_dish_suggestion', methods=['POST'])
+@dish_suggestion_blueprint.route('/create_dish_suggestion', methods=['POST'])
 @jwt_required()
 @permission_check()
 def create_dish_suggestion():
@@ -26,7 +26,7 @@ def create_dish_suggestion():
     elif ret_value == False:
         return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gerichtsvorschlag konnte nicht erstellt werden"}), 500
 
-@dishSuggestion_blueprint.route('/all_dish_suggestions', methods=['GET'])
+@dish_suggestion_blueprint.route('/all_dish_suggestions', methods=['GET'])
 @jwt_required()
 @permission_check()
 def all_dish_suggestions():
@@ -35,7 +35,7 @@ def all_dish_suggestions():
         return jsonify(data)
     return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Keinen Gerichtsvorschlag gefunden"}), 404
 
-@dishSuggestion_blueprint.route('/dish_suggestion_by_id/<int:dishSuggestion_ID>')
+@dish_suggestion_blueprint.route('/dish_suggestion_by_id/<int:dishSuggestion_ID>')
 @jwt_required()
 @permission_check()
 def dish_suggestion_by_id(dishSuggestion_ID):
@@ -44,7 +44,7 @@ def dish_suggestion_by_id(dishSuggestion_ID):
         return dishSuggestion
     return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gerichtsvorschlag nicht gefunden"}), 404
 
-@dishSuggestion_blueprint.route('/delete_dish_suggestion/<int:dishSuggestion_ID>')
+@dish_suggestion_blueprint.route('/delete_dish_suggestion/<int:dishSuggestion_ID>')
 @jwt_required()
 @permission_check()
 def delete_dish_suggestion(dishSuggestion_ID):
@@ -53,7 +53,7 @@ def delete_dish_suggestion(dishSuggestion_ID):
         return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.SUCCESS.value}Gerichtsvorschlag erfolgreich gelöscht"}), 201
     return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gerichtsvorschlag nicht gefunden"}), 404
 
-@dishSuggestion_blueprint.route('/accept_dish_suggestion', methods=['POST'])
+@dish_suggestion_blueprint.route('/accept_dish_suggestion', methods=['POST'])
 @jwt_required()
 @permission_check()
 def accept_dish_suggestion():

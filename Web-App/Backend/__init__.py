@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
 from initialize_database import initialize_Postgres, initialize_test_database
 from DB_Repositories import userRepository, dishesRepository, mealPlanRepository, orderRepository, allergyRepository, dishSuggestionRepository
-from routes_blueprints import dishSuggestion_blueprint
+from routes_blueprints import dish_suggestion_blueprint
 
 def create_app(config_name: str = 'default') -> Flask:
     app = Flask(__name__)
