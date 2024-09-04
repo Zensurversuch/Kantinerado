@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HeaderComponent} from "../header/header.component";
 import {FeedbackService} from "../../service/feedback/feedback.service";
-import {suggestionData} from "../../interface/suggestion-data"
+import {SuggestionData} from "../../interface/suggestion-data"
 import {SuggestionService} from "../../service/suggestion/suggestion.service";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {
@@ -77,7 +77,7 @@ export class DishSuggestionComponent implements OnInit{
       .filter((item: string | null) => item !== null)
       .map((item: string) => item.trim());
 
-    const suggestedDish: suggestionData = {
+    const suggestedDish: SuggestionData = {
       name: this.createDishSuggestionForm.value.title,
       description: this.createDishSuggestionForm.value.description,
       ingredients: allIngredients,

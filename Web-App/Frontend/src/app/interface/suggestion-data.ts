@@ -1,4 +1,4 @@
-export interface suggestionData {
+export interface SuggestionData {
   name: string;
   description: string;
   ingredients: [];

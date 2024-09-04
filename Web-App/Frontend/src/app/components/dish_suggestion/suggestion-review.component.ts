@@ -51,7 +51,7 @@ export class SuggestionReviewComponent implements OnInit{
   onSubmit(): void {
     if (this.dishForm.valid && this.selectedSuggestion) {
       const suggestionData = {
-        //dishSuggestionID: this.selectedSuggestion.id,
+        dishSuggestionID: this.selectedSuggestion.suggestion_id,
         ...this.dishForm.value,
         name: this.selectedSuggestion.name,
         ingredients: this.selectedSuggestion.ingredients,
