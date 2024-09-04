@@ -8,7 +8,7 @@ from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
 ########################################################## create_dish_suggestions test ##########################################################
 
 def test_create_dish_suggestion_success_admin(client, auth_token_admin, session, delete_all_dish_suggestions):
-    """Test creating a dish suggestionas admin."""
+    """Test creating a dish suggestion as admin."""
     # Post-Data
     data = {
         'name': 'Test Dish',
