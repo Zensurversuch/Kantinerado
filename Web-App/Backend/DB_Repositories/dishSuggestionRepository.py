@@ -10,7 +10,7 @@ class DishSuggestionRepository:
         self.engine = engine
         self.session_factory = sessionmaker(bind=self.engine)
         
-    def create_dishSuggestion(self, param_name, param_ingredients=None, param_image=None, param_description=None):
+    def create_dish_suggestion(self, param_name, param_ingredients=None, param_image=None, param_description=None):
         try:
             session = scoped_session(self.session_factory)
             min_ = 1
@@ -36,7 +36,7 @@ class DishSuggestionRepository:
         finally:
             session.close()
             
-    def all_dishSuggestions(self):
+    def all_dish_suggestions(self):
         try:
             session = scoped_session(self.session_factory)
             all_dishSuggestions = session.query(DishSuggestion).all()

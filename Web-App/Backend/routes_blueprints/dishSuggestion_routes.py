@@ -20,7 +20,7 @@ def create_dish_suggestion():
 
     decoded_image = base64.b64decode(data_image) if data_image else None
 
-    ret_value = current_app.dish_suggestion_repo.create_dishSuggestion(data_name, data_ingredients, decoded_image, data_description)
+    ret_value = current_app.dish_suggestion_repo.create_dish_suggestion(data_name, data_ingredients, decoded_image, data_description)
     if ret_value:  
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.SUCCESS.value}Gerichtsvorschlag erfolgreich erstellt"}), 201
     elif ret_value == False:
@@ -30,7 +30,7 @@ def create_dish_suggestion():
 @jwt_required()
 @permission_check()
 def all_dish_suggestions():
-    data = current_app.dish_suggestion_repo.all_dishSuggestions()
+    data = current_app.dish_suggestion_repo.all_dish_suggestions()
     if data:
         return jsonify(data)
     return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Keinen Gerichtsvorschlag gefunden"}), 404
