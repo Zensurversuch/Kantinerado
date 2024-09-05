@@ -9,7 +9,8 @@ services:
 
   backend:
     build:
-      context: ./Backend/
+      context: ./Backend
+      dockerfile: Dockerfile.${ANGULAR_ENVIRONMENT}
     ports:
       - "5000:5000"
     depends_on:
@@ -22,7 +23,7 @@ services:
       USER_PASSWORD: ${USER_PASSWORD}
       USER_LAST_NAME: ${USER_LAST_NAME}
       USER_FIRST_NAME: ${USER_FIRST_NAME}
-     
+
   database:
     image: postgres:15
     environment:
@@ -32,3 +33,9 @@ services:
     # Comment the following lines to prevent the database from being accessible from the outside
     ports:
       - "5432:5432"
+    volumes:
+      - postgresData:/var/lib/postgresql/data
+
+volumes:
+  postgresData:
+    name: "postgresDataVolume"
