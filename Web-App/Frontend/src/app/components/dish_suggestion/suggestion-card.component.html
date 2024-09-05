@@ -1,0 +1,37 @@
+<form [formGroup]="suggestionsForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" formControlName="name" type="text">
+    <div *ngIf="suggestionsForm.get('name').invalid && suggestionsForm.get('name').touched">
+      <small class="error">Name is required.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="price">Price</label>
+    <input id="price" formControlName="price" type="number">
+    <div *ngIf="suggestionsForm.get('price').invalid && suggestionsForm.get('price').touched">
+      <small class="error">Price is required and must be a positive number.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="dietaryCategory">Dietary Category</label>
+    <input id="dietaryCategory" formControlName="dietaryCategory" type="text">
+    <div *ngIf="suggestionsForm.get('dietaryCategory').invalid && suggestionsForm.get('dietaryCategory').touched">
+      <small class="error">Dietary Category is required.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="mealType">Meal Type</label>
+    <input id="mealType" formControlName="mealType" type="text">
+    <div *ngIf="suggestionsForm.get('mealType').invalid && suggestionsForm.get('mealType').touched">
+      <small class="error">Meal Type is required.</small>
+    </div>
+  </div>
+
+  <!-- Weitere Felder für Allergies, Description, Ingredients, etc. -->
+
+  <button type="submit" [disabled]="suggestionsForm.invalid">Submit</button>
+</form>

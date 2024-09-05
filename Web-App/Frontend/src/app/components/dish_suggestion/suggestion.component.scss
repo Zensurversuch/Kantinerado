@@ -16,6 +16,15 @@
     width: 100%;
   }
 
+  .card{
+    padding: 2em;
+    margin: 1em;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
   form {
     .form-group {
       margin-bottom: 20px;
