@@ -1,7 +1,13 @@
 import {test, expect} from '@playwright/test';
 
 test.beforeEach(async ({page}) => {
-  await page.goto('http://localhost:4200/#/register');
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await page.getByRole('button', { name: 'Menu' }).click();
+  await page.waitForLoadState('networkidle');
+  await page.locator('li').filter({ hasText: 'Login' }).click();
+  await page.getByRole('button', { name: 'Erstellen Sie einen Account' }).click();
+  await page.waitForLoadState('networkidle');
 })
 
 test.describe('Testing failure in the registration Form', () => {
@@ -64,5 +70,4 @@ test.describe('Testing failure in the registration Form', () => {
     await labelLocator.click();
     expect(informationLocator.isHidden())
   })
-
 })
