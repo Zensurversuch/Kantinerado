@@ -32,8 +32,21 @@ export class SuggestionService {
   }
 
 
-  acceptSuggestion(suggestionData: DishData, id:number): Observable<any> {
+  acceptSuggestion(suggestionData: DishData, id?:number): Observable<any> {
     const url = environment.apiUrl+'/create_dish_suggestion';
-    return this.http.post(url, suggestionData);
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+    const payload = {
+      dishSuggestionID: id,
+      dishData: {
+        name: suggestionData.name,
+        price: suggestionData.price,
+        ingredients: suggestionData.ingredients,
+        dietaryCategory: suggestionData.dietaryCategory,
+        mealType: suggestionData.mealType,
+        image: btoa('test image data'), // Beispiel: hier könntest du das richtige Bild verwenden
+        allergies: suggestionData.allergies
+      }
+    };
+    return this.http.post(url, payload, {headers});
   }
 }
