@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: ./Backend/
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: postgres_test
+      FLASK_CONFIG: testing
+     
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: postgres_test
+    ports:
+      - "5433:5432"
+

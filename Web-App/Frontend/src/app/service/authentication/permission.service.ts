@@ -7,8 +7,8 @@ import { Role } from '../../interface/role';
 
 export class PermissionService {
   private permissionsData: { [key: string]: string[] } = {
-    [Role.admin]: ['createDish', 'hello', 'registerAdmin', 'userOrderSummary', 'workerOrderSummary', 'createMealPlan'],
-    [Role.hungernde]: ['hello', 'userOrderSummary'],
+    [Role.admin]: ['createDish', 'hello', 'registerAdmin', 'userOrderSummary', 'workerOrderSummary', 'createMealPlan', 'dishSuggestion'],
+    [Role.hungernde]: ['hello', 'userOrderSummary', 'dishSuggestion'],
     [Role.kantinenmitarbeiter]: ['createDish', 'hello', 'workerOrderSummary', 'createMealPlan']
   };
 
