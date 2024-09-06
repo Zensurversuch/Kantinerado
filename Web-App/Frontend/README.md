@@ -33,7 +33,7 @@ Der Server wird bei jeder Änderung des Codes automatisch neu geladen.
 
 In diesem Abschnitt erfahren Sie, wie Sie End-to-End-Tests (e2e) mit Playwright und den Angular-Testserver ausführen.
 
-### End-to-End (e2e) Tests mit Playwright startenCode erstellen:
+### End-to-End (e2e) Tests mit Playwright starten:
 
 Um die e2e-Tests auszuführen, verwenden Sie den folgenden Befehl:
 ```bash
