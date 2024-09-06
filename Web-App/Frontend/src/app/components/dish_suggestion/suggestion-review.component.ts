@@ -3,7 +3,8 @@ import {Suggestion} from "../../interface/suggestion";
 import {SuggestionService} from "../../service/suggestion/suggestion.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SuggestionCard} from "./suggestion-card.component";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
+import {HeaderComponent} from "../header/header.component";
 
 @Component({
   selector: 'app-suggestion-review',
@@ -11,13 +12,18 @@ import {NgForOf} from "@angular/common";
   imports: [
     ReactiveFormsModule,
     SuggestionCard,
-    NgForOf
+    NgForOf,
+    HeaderComponent,
+    SuggestionCard,
+    NgIf
   ],
   templateUrl: './suggestion-review.component.html',
   styleUrl: './suggestion.component.scss'
 })
 export class SuggestionReviewComponent implements OnInit{
+  blurred: boolean = false;
   suggestions: Suggestion[] = [];
+  loading: boolean = true;
 
   constructor(private suggestionService: SuggestionService){}
 
@@ -27,8 +33,18 @@ export class SuggestionReviewComponent implements OnInit{
 
   loadSuggestions(): void {
     this.suggestionService.getAllSuggestions().subscribe(
-      data => this.suggestions = data,
-      error => console.error('Fehler beim Laden der Gerichtsvorschläge', error)
+      data => {
+        this.suggestions = data;
+        this.loading = false;
+        console.log(this.suggestions);
+      },
+      error => {
+        console.error('Fehler beim Laden der Gerichtsvorschläge', error);
+        this.loading = false;
+      }
     );
+  }
+  ToggleBlurred(isOpened: boolean) {
+    this.blurred = isOpened;
   }
 }

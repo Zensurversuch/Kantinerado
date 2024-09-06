@@ -1,37 +1,74 @@
-<form [formGroup]="suggestionsForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="dishForm" (ngSubmit)="onSubmit()" class="card">
   <div class="form-group">
     <label for="name">Name</label>
-    <input id="name" formControlName="name" type="text">
-    <div *ngIf="suggestionsForm.get('name').invalid && suggestionsForm.get('name').touched">
+    <input id="name" formControlName="name" type="text"/>
+    <div *ngIf="dishForm.get('name')?.invalid && dishForm.get('name')?.touched">
       <small class="error">Name is required.</small>
     </div>
   </div>
 
+  <div *ngIf="suggestion?.description" class="form-group">
+    <label for="description">Description</label>
+    <p id="description">{{ suggestion?.description }}</p> <!-- Read-only text -->
+  </div>
+
   <div class="form-group">
     <label for="price">Price</label>
-    <input id="price" formControlName="price" type="number">
-    <div *ngIf="suggestionsForm.get('price').invalid && suggestionsForm.get('price').touched">
+    <input id="price" formControlName="price" type="number"/>
+    <div *ngIf="dishForm.get('price')?.invalid && dishForm.get('price')?.touched">
       <small class="error">Price is required and must be a positive number.</small>
     </div>
   </div>
 
+  <div class="createDish__form-group">
+    <label for="dietaryCategory" class="createDish__label">Ernährungsklasse*</label>
+    <select id="dietaryCategory" formControlName="dietaryCategory" class="createDish__input">
+      <option *ngFor="let category of dietaryCategories" [value]="category">{{ category }}</option>
+    </select>
+    <div *ngIf="dishForm.get('dietaryCategory')?.invalid && (dishForm.get('dietaryCategory')?.dirty || dishForm.get('dietaryCategory')?.touched)">
+      <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
+    </div>
+  </div>
+
+  <div class="form-group" formArrayName="ingredients">
+    <label class="label">Inhaltsstoffe</label>
+    <div *ngFor="let ingredient of ingredients.controls; let i=index" [formGroupName]="i">
+      <input formControlName="ingredientName" type="text" class="createDish__input__ingredients" placeholder="Inhaltsstoff {{ i + 1 }}">
+    </div>
+    <button (click)="addIngredient()" type="button">Inhaltsstoff hinzufügen</button>
+  </div>
+
   <div class="form-group">
-    <label for="dietaryCategory">Dietary Category</label>
-    <input id="dietaryCategory" formControlName="dietaryCategory" type="text">
-    <div *ngIf="suggestionsForm.get('dietaryCategory').invalid && suggestionsForm.get('dietaryCategory').touched">
-      <small class="error">Dietary Category is required.</small>
+    <label for="mealType" class="createDish__label">Mahlzeitentyp*</label>
+    <select id="mealType" formControlName="mealType" class="createDish__input">
+      <option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</option>
+    </select>
+    <div *ngIf="dishForm.get('mealType')?.invalid && (dishForm.get('mealType')?.dirty || dishForm.get('mealType')?.touched)">
+      <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="mealType">Meal Type</label>
-    <input id="mealType" formControlName="mealType" type="text">
-    <div *ngIf="suggestionsForm.get('mealType').invalid && suggestionsForm.get('mealType').touched">
-      <small class="error">Meal Type is required.</small>
+    <label for="allergy" class="createDish__label">Allergien
+    </label>
+    <div *ngFor="let allergy of allergies">
+      <input id="allergy" type="checkbox" [value]="allergy" (change)="updateAllergies($event)">
+      {{ allergy }}
+    </div>
+    <div *ngIf="dishForm.get('allergy')?.invalid && (dishForm.get('allergy')?.dirty || dishForm.get('allergy')?.touched)">
+      <span class="createDish__error-message">Bitte wählen Sie eine gültige Option aus.</span>
     </div>
   </div>
 
-  <!-- Weitere Felder für Allergies, Description, Ingredients, etc. -->
-
-  <button type="submit" [disabled]="suggestionsForm.invalid">Submit</button>
+  <div class="form-group">
+    <label for="image">Image URL</label>
+    <input id="image" formControlName="image" type="text"/>
+    <div *ngIf="dishForm.get('image')?.invalid && dishForm.get('image')?.touched">
+      <small class="error">Image URL is required.</small>
+    </div>
+  </div>
+  <div class="button">
+  <button type="submit" [disabled]="dishForm.invalid">Submit</button>
+  <button >Reject</button>
+  </div>
 </form>

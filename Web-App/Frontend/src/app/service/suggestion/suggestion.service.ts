@@ -5,6 +5,7 @@ import {SuggestionData} from "../../interface/suggestion-data";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {Suggestion} from "../../interface/suggestion";
+import {DishData} from "../../interface/dishData";
 
 @Injectable({
   providedIn: 'root'
@@ -30,9 +31,9 @@ export class SuggestionService {
     return this.http.delete(url+`/${id}`);
   }
 
-  // Methode zum Akzeptieren und Erweitern eines Vorschlags
-  acceptSuggestion(suggestionData: any): Observable<any> {
-    const url = environment.apiUrl+'/delete_dish_suggestion';
+
+  acceptSuggestion(suggestionData: DishData, id:number): Observable<any> {
+    const url = environment.apiUrl+'/create_dish_suggestion';
     return this.http.post(url, suggestionData);
   }
 }
