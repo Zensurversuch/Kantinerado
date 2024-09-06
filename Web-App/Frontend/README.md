@@ -1,27 +1,60 @@
 # Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.0.
+Dieses Projekt wurde mit der [Angular CLI](https://github.com/angular/angular-cli) Version 17.2.0 erstellt.
 
-## Development server
+## Voraussetzungen
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Stellen Sie sicher, dass die folgenden Tools installiert sind, bevor Sie fortfahren:
 
-## Code scaffolding
+1. [Node.js](https://nodejs.org/) (mindestens Version 22.5.1 oder höher)
+2. [Angular CLI](https://angular.io/cli) (mindestens Version 17.2 oder höher)
+<ul>
+<li> <a href="https://playwright.dev/">Playwright</a> (wird über <code>npx</code> ausgeführt)</li>
+<li> <a href="https://angular.io/cli">Angular</a> (wird über <code>ng</code> ausgeführt)</li>
+</ul>
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Falls diese Tools nicht installiert sind, können Sie sie wie folgt installieren:
+```bash
+npm install
+```
 
-## Build
+## Angular Entwicklungsserver starten
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Angular bietet die Möglichkeit, einen Entwicklungsserver zu starten. Dies ist besonders nützlich, um Änderungen in der Anwendung sofort zu sehen. Es wird empfohlen, das Backend bzw. die Datenbank parallel zu starten, da einige Funktionen sonst möglicherweise nicht verfügbar sind.
+Um den Entwicklungsserver zu starten, verwenden Sie den folgenden Befehl:
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+ng serve
+```
 
-## Running end-to-end tests
+Der Server wird bei jeder Änderung des Codes automatisch neu geladen.
+# Anleitung: Tests in einem Angular-Projekt ausführen
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+In diesem Abschnitt erfahren Sie, wie Sie End-to-End-Tests (e2e) mit Playwright und den Angular-Testserver ausführen.
 
-## Further help
+### End-to-End (e2e) Tests mit Playwright startenCode erstellen:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Um die e2e-Tests auszuführen, verwenden Sie den folgenden Befehl:
+```bash
+npx playwright test
+```
+
+Playwright ermöglicht das Testen von Benutzerinteraktionen in verschiedenen Browsern. Dieser Befehl führt alle im Projekt definierten Playwright-Tests aus.
+### Code erstellen:
+```bash
+npx playwright codegen
+```
+Dieser Befehl öffnet einen Browser (in der Regel Chromium), in dem Sie Ihre Anwendung manuell testen können. Während Sie dies tun, wird automatisch Code generiert, der als Playwright-Test dient. 
+Hinweis: Beim Schließen des Browsers wird auch das Playwright-Codefenster geschlossen.
+### Code debuggen:
+```bash
+npx playwright test --debug
+```
+Dieser Befehl ermöglicht das Debuggen von Tests. Es bietet eine visuelle Darstellung, um den Ablauf der Tests Schritt für Schritt nachzuvollziehen.
+
+### Die Playwright UI öffnen:
+```bash
+npx playwright test --ui
+```
+Die Playwright-Benutzeroberfläche zeigt Testläufe an und ermöglicht es Ihnen, vergangene Testläufe zu inspizieren und Details zu Fehlern zu sehen. Dies ist besonders hilfreich, um nach einem fehlgeschlagenen Test den Grund zu ermitteln.
