@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AuthService} from "../authentication/auth.service";
 import {SuggestionData} from "../../interface/suggestion-data";
-import {Observable} from "rxjs";
+import {concatMap, Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {Suggestion} from "../../interface/suggestion";
 import {DishData} from "../../interface/dishData";
@@ -12,28 +12,29 @@ import {DishData} from "../../interface/dishData";
 })
 export class SuggestionService {
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) {
+  }
 
   createSuggestion(suggestedDish: SuggestionData): Observable<any> {
-    const url = environment.apiUrl+'/create_dish_suggestion';
+    const url = environment.apiUrl + '/create_dish_suggestion';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-    return this.http.post<any>(url, suggestedDish, { headers });
+    return this.http.post<any>(url, suggestedDish, {headers});
   }
 
   getAllSuggestions(): Observable<Suggestion[]> {
-    const url = environment.apiUrl+'/all_dish_suggestions';
+    const url = environment.apiUrl + '/all_dish_suggestions';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
     return this.http.get<any>(url, {headers});
   }
 
   deleteSuggestion(id: number): Observable<any> {
-    const url = environment.apiUrl+'/delete_dish_suggestion';
-    return this.http.delete(url+`/${id}`);
+    const url = environment.apiUrl + '/delete_dish_suggestion';
+    return this.http.delete(url + `/${id}`);
   }
 
 
   acceptSuggestion(suggestionData: DishData, id?:number): Observable<any> {
-    const url = environment.apiUrl+'/create_dish_suggestion';
+    const url = environment.apiUrl+'/accept_dish_suggestion';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
     const payload = {
       dishSuggestionID: id,
@@ -43,10 +44,11 @@ export class SuggestionService {
         ingredients: suggestionData.ingredients,
         dietaryCategory: suggestionData.dietaryCategory,
         mealType: suggestionData.mealType,
-        image: btoa('test image data'), // Beispiel: hier könntest du das richtige Bild verwenden
+        image: "test",
         allergies: suggestionData.allergies
       }
     };
+    console.log(payload)
     return this.http.post(url, payload, {headers});
   }
 }

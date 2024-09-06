@@ -32,6 +32,7 @@ export class SuggestionCard implements OnInit {
   allergies: string[] = [];
   selectedAllergies: string[] = [];
   dietaryCategories = DietaryCategoriesArray;
+  id?:number;
 
   constructor(private fb: FormBuilder, private allergyService: AllergyService, private feedbackService: FeedbackService, private suggestionService: SuggestionService) {
 
@@ -67,6 +68,8 @@ export class SuggestionCard implements OnInit {
       image: [this.dish?.image]
     });
     if (this.suggestion) {
+      this.id=this.suggestion.dishSuggestion_ID
+      console.log(this.id)
       this.dish = {
         name: this.suggestion.name,
         price: 0,
@@ -131,8 +134,7 @@ export class SuggestionCard implements OnInit {
       image: this.dishForm.get('image')?.value || ''
     };
 
-    console.log(dishData)
-    this.suggestionService.acceptSuggestion(dishData, this.suggestion?.suggestion_id).subscribe(
+    this.suggestionService.acceptSuggestion(dishData, this.id).subscribe(
       response => {
         console.log('Dish created successful:', response);
         this.feedbackService.displayMessage(response.response);
@@ -146,7 +148,7 @@ export class SuggestionCard implements OnInit {
   }
 
   onReject() {
-    console.log('Suggestion rejected:', this.suggestion?.suggestion_id);
+    console.log('Suggestion rejected:', this.id); //TODO: löschen
 
   }
 
