@@ -27,7 +27,7 @@ import {HttpClient} from "@angular/common/http";
     NgForOf
   ],
   templateUrl: './dishSuggestion.html',
-  styleUrl: '../suggestion.component.scss'
+  styleUrl: './suggestion.component.scss'
 })
 export class DishSuggestionComponent implements OnInit{
   blurred: boolean = false;
