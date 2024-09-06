@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
 from initialize_database import initialize_Postgres, initialize_test_database
 from DB_Repositories import userRepository, dishesRepository, mealPlanRepository, orderRepository, allergyRepository, dishSuggestionRepository
-from routes_blueprints import dishSuggestion_blueprint
+from routes_blueprints import dish_suggestion_blueprint
 
 def create_app(config_name: str = 'default') -> Flask:
     app = Flask(__name__)
@@ -19,7 +19,7 @@ def create_app(config_name: str = 'default') -> Flask:
 
         
     # Datenbankverbindung initialisieren
-    POSTGRES_URL = app.config['SQLALCHEMY_DATABASE_URI']
+    POSTGRES_URL = app.config['POSTGRES_DATABASE_URI']
     engine = create_engine(POSTGRES_URL)
               
     # Repositories bereitstellen
@@ -32,8 +32,7 @@ def create_app(config_name: str = 'default') -> Flask:
     
     if config_name != 'testing':
         initialize_Postgres(engine)
-    
-    # Initialisiere JWT, CORS und registriere Blueprints
+    # Initialise JWT, CORS and register blueprints
     from flask_jwt_extended import JWTManager
     from flask_cors import CORS
     from routes_blueprints import register_blueprints
