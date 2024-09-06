@@ -1,5 +1,11 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
 import {NgIf} from "@angular/common";
 import {UserData} from '../../interface/user-data';
@@ -9,7 +15,6 @@ import {PasswordValidator} from "./password-validator";
 import {Role} from "../../interface/role";
 import {FeedbackService} from '../../service/feedback/feedback.service';
 import {Router} from "@angular/router";
-
 
 @Component({
   selector: 'app-register',
@@ -40,7 +45,8 @@ export class RegisterComponent {
     email: new FormControl('',
       [
         Validators.required,
-        Validators.email
+        Validators.email,
+        Validators.maxLength(50),
       ],
       []),
     password: new FormControl('',
@@ -51,7 +57,7 @@ export class RegisterComponent {
         Validators.pattern(this.REGEX_PASSWORD)
       ],
       []),
-    confirmpassword: new FormControl('',
+    confirmPassword: new FormControl('',
       [
         Validators.required,
         Validators.minLength(8),
@@ -86,9 +92,6 @@ export class RegisterComponent {
         }
       );
     } else {
-
     }
   }
-
-  protected readonly parent = parent;
 }

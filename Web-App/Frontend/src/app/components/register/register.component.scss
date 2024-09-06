@@ -1,5 +1,11 @@
 @import "../../color.scss";
 
+
+.blurred {
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
 .register {
   padding: 2em;
   display: flex;
