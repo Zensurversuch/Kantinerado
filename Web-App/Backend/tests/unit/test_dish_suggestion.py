@@ -358,6 +358,9 @@ def test_delete_dish_suggestion_success_kantinenmitarbeiter(session, client, aut
     assert response_get.status_code == 201 
     assert response_get.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Gerichtsvorschlag erfolgreich gelöscht"
 
+    deleted_dish_suggestion = session.query(DishSuggestion).filter_by(name='Test Dish').first()
+    assert deleted_dish_suggestion is None
+
 def test_delete_dish_suggestion_success_admin(session, client, auth_token_admin, auth_token_hungernde, delete_all_dish_suggestions):
     
     new_dish_suggestion = {
@@ -382,6 +385,9 @@ def test_delete_dish_suggestion_success_admin(session, client, auth_token_admin,
 
     assert response_get.status_code == 201 
     assert response_get.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Gerichtsvorschlag erfolgreich gelöscht"
+    
+    deleted_dish_suggestion = session.query(DishSuggestion).filter_by(name='Test Dish').first()
+    assert deleted_dish_suggestion is None
     
 def test_delete_dish_suggestion_no_suggestion(client, auth_token_kantinenmitarbeiter, delete_all_dish_suggestions):
     response = client.get(f'/dish_suggestion_by_id/1',
@@ -432,6 +438,9 @@ def test_accept_dish_suggestion_success_admin(session, client, auth_token_admin,
     assert response_acceptSuggestion.status_code == 201
     assert response_acceptSuggestion.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Gericht erfolgreich erstellt. Gerichtsvorschlag erfolgreich gelöscht"
     
+    deleted_dish_suggestion = session.query(DishSuggestion).filter_by(dishSuggestionID = dishSuggestionID).first()
+    assert deleted_dish_suggestion is None
+    
 def test_accept_dish_suggestion_success_kantinenmitarbeiter(session, client, auth_token_admin, auth_token_kantinenmitarbeiter, delete_all_dish_suggestions, delete_all_dishes):
     new_dish_suggestion = {
         'name': 'Test Dish',
@@ -471,6 +480,9 @@ def test_accept_dish_suggestion_success_kantinenmitarbeiter(session, client, aut
     
     assert response_acceptSuggestion.status_code == 201
     assert response_acceptSuggestion.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Gericht erfolgreich erstellt. Gerichtsvorschlag erfolgreich gelöscht"
+    
+    deleted_dish_suggestion = session.query(DishSuggestion).filter_by(dishSuggestionID = dishSuggestionID).first()
+    assert deleted_dish_suggestion is None
     
 def test_accept_dish_suggestion_missing_fields(session, client, auth_token_admin, delete_all_dish_suggestions, delete_all_dishes):
     new_dish_suggestion = {
@@ -625,6 +637,9 @@ def test_accept_dish_suggestion_missing_allergies(session, client, auth_token_ad
     
     assert response_acceptSuggestion.status_code == 201
     assert response_acceptSuggestion.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allerigie ['TestAllergyThree'] sind nicht in der Datenbank vorhanden Gerichtsvorschlag erfolgreich gelöscht"
+    
+    deleted_dish_suggestion = session.query(DishSuggestion).filter_by(dishSuggestionID = dishSuggestionID).first()
+    assert deleted_dish_suggestion is None
     
 def test_accept_dish_suggestion_missing_allergies_not_deleted(session, client, auth_token_admin, delete_all_dish_suggestions, delete_all_dishes):
     
