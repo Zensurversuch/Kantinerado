@@ -88,7 +88,7 @@ class DishSuggestionRepository:
             dishSuggestion_data = session.query(DishSuggestion).filter(DishSuggestion.dishSuggestionID == param_dishSuggestionID).first()
             if dishSuggestion_data:
                 session.delete(dishSuggestion_data)
-                session.commit
+                session.commit()
                 return True
             return None
         except SQLAlchemyError as e:
