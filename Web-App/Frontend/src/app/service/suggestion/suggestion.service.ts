@@ -29,9 +29,8 @@ export class SuggestionService {
 
   deleteSuggestion(id?: number): Observable<any> {
     const url = environment.apiUrl + '/delete_dish_suggestion';
-    console.log(url + `/${id}`)
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-    return this.http.delete(url + `/${id}`, {headers});
+    return this.http.get(url + `/${id}`, {headers});
   }
 
 
@@ -50,7 +49,6 @@ export class SuggestionService {
         allergies: suggestionData.allergies
       }
     };
-    console.log(payload)
     return this.http.post(url, payload, {headers});
   }
 }

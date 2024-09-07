@@ -25,8 +25,9 @@ export class ReviewSuggestionComponent implements OnInit{
   blurred: boolean = false;
   suggestions: Suggestion[] = [];
   loading: boolean = true;
+  empty: boolean = false;
 
-  constructor(private suggestionService: SuggestionService){}
+  constructor(private suggestionService: SuggestionService, private router : Router){}
 
   ngOnInit(): void {
     this.loadSuggestions();
@@ -37,11 +38,13 @@ export class ReviewSuggestionComponent implements OnInit{
       data => {
         this.suggestions = data;
         this.loading = false;
+        this.empty=false;
         console.log(this.suggestions);
       },
       error => {
         console.error('Fehler beim Laden der Gerichtsvorschläge', error);
         this.loading = false;
+        this.empty = true;
       }
     );
   }
@@ -50,6 +53,8 @@ export class ReviewSuggestionComponent implements OnInit{
   }
 
   reloadSuggestions() {
-    this.loadSuggestions()
+    this.router.navigate([this.router.url]).then(() => {
+      window.location.reload();
+    });
   }
 }
