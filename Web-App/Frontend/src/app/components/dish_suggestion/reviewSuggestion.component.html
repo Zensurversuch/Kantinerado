@@ -6,7 +6,7 @@
   <div *ngIf="loading">Loading suggestions...</div>
 
   <ng-container *ngIf="!loading">
-    <app-suggestion-card *ngFor="let suggestion of suggestions" [suggestion]="suggestion"></app-suggestion-card>
+    <app-suggestion-card (suggestionUpdated)="reloadSuggestions()" *ngFor="let suggestion of suggestions " [suggestion]="suggestion"></app-suggestion-card>
   </ng-container>
   </div>
 </div>

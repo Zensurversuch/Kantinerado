@@ -1,4 +1,4 @@
-<form [formGroup]="dishForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="dishForm">
   <div class="form-group">
     <label for="name">Name*</label>
     <input id="name" formControlName="name" type="text"/>
@@ -7,11 +7,23 @@
     </div>
   </div>
 
-  <div *ngIf="suggestion?.description" class="form-group">
-    <label for="description">Description</label>
-    <p id="description">{{ suggestion?.description }}</p>
+  <div *ngIf="suggestion?.description" class="form-group description">
+    <div>
+      <label for="description">Description</label>
+      <p id="description">{{ suggestion?.description }}</p>
+    </div>
+    <div>
+      <ng-container *ngIf="this.dish?.image">
+        <img style="display:block; width:120px;height:120px;" id="base64image"
+             [src]="'data:image/jpeg;base64,' + this.dish?.image" alt="No Image available">
+      </ng-container>
+      <ng-container *ngIf="!this.dish?.image">
+        <img style="display:block; width:120px;height:120px;" ngSrc="../../../assets/no-image-icon-23494.png"
+             height="200"
+             width="200" alt="Picture of Suggestion">
+      </ng-container>
+    </div>
   </div>
-
   <div class="form-group">
     <label for="price">Preis in €*</label>
     <input id="price" formControlName="price" type="number"/>
@@ -72,8 +84,8 @@
 
   <div class="form-group">
     <div class="button-group">
-      <button type="submit" [disabled]="dishForm.invalid" class="submit-button">Akzeptieren</button>
-      <button class="reject-button">Ablehnen</button>
+      <button  [disabled]="dishForm.invalid" class="submit-button" (click)="onSubmit($event)">Akzeptieren</button>
+      <button class="reject-button" (click)="onReject($event)">Ablehnen</button>
     </div>
   </div>
 </form>

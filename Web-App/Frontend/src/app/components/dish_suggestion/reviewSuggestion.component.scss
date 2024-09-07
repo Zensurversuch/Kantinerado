@@ -27,6 +27,29 @@ h2 {
   justify-content: space-around;
 }
 
+.description {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  div {
+    &:first-child {
+      flex: 1;
+    }
+
+    &:last-child {
+      display: block;
+      margin-left: 20px;
+    }
+
+    img {
+      display: block;
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
 form {
   margin: 20px auto;
   padding: 20px;

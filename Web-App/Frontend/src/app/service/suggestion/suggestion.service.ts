@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AuthService} from "../authentication/auth.service";
 import {SuggestionData} from "../../interface/suggestion-data";
-import {concatMap, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {Suggestion} from "../../interface/suggestion";
 import {DishData} from "../../interface/dishData";
@@ -27,9 +27,11 @@ export class SuggestionService {
     return this.http.get<any>(url, {headers});
   }
 
-  deleteSuggestion(id: number): Observable<any> {
+  deleteSuggestion(id?: number): Observable<any> {
     const url = environment.apiUrl + '/delete_dish_suggestion';
-    return this.http.delete(url + `/${id}`);
+    console.log(url + `/${id}`)
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
+    return this.http.delete(url + `/${id}`, {headers});
   }
 
 

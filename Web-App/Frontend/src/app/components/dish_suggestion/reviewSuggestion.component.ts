@@ -5,6 +5,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {SuggestionCard} from "./reviewSuggestionCard";
 import {NgForOf, NgIf} from "@angular/common";
 import {HeaderComponent} from "../header/header.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-suggestion-review',
@@ -46,5 +47,9 @@ export class ReviewSuggestionComponent implements OnInit{
   }
   ToggleBlurred(isOpened: boolean) {
     this.blurred = isOpened;
+  }
+
+  reloadSuggestions() {
+    this.loadSuggestions()
   }
 }
