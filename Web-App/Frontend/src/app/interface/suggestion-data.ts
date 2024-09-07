@@ -1,4 +1,4 @@
-export interface SuggestedDish {
+export interface SuggestionData {
   name: string;
   description: string;
   ingredients: [];

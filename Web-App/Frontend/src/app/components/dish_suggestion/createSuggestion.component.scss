@@ -10,24 +10,21 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+}
 
-  h2 {
-    margin-top: 0;
-    width: 100%;
-  }
-
+.createSuggestion{
   form {
-    .createSuggestion__form-group {
+    .form-group {
       margin-bottom: 20px;
     }
 
-    .createSuggestion__label {
+    label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
 
-    .createSuggestion__input {
+    input{
       width: 100%;
       padding: 8px;
       border: 1px solid $primary-border-color;
@@ -47,35 +44,15 @@
       }
     }
 
-    .createSuggestion__input__ingredients {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid $primary-border-color;
-      border-radius: 5px;
-      box-sizing: border-box;
-
-      &.ng-touched.ng-dirty {
-        &.ng-valid:not(.empty) {
-          border: $secondary-border-color 2px solid;
-          font-style: $secondary-border-color;
-        }
-
-        &.ng-invalid {
-          border: $primary-color 3px solid;
-          font-style: $primary-color;
-        }
-      }
-    }
-
-    .createSuggestion__submit-btn {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      color: $primary-text-color;
-      background-color: $secondary-border-color;
-      cursor: pointer;
-      transition: background-color 0.3s;
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: $primary-text-color;
+    background-color: $secondary-border-color;
+    cursor: pointer;
+    transition: background-color 0.3s;
 
       &:hover {
         background-color: $primary-color;
@@ -87,11 +64,12 @@
       }
     }
 
-    .createSuggestion__error-message{
-      color:$primary-color ;
+    .error-message {
+      color: $primary-color;
     }
   }
 }
+
 
 @media (min-width: 400px) {
   .createSuggestion {
@@ -102,16 +80,17 @@
     border-radius: 10px;
     background-color: $highlight-color;
   }
-  h2{
+  h2 {
     width: auto;
   }
-  .createSuggestion__input {
-    width: calc(100% - 12px);
+  input, textarea {
+    width: calc(100%);
     border: 1px solid $primary-border-color;
     border-radius: 5px;
     box-sizing: border-box;
   }
-  .createSuggestion__submit-btn{
+  .submit-button {
     width: calc(100% - 12px);
   }
 }
+

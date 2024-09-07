@@ -46,19 +46,21 @@ class DishSuggestionRepository:
             if all_dishSuggestions:
                 for dishSuggestion in all_dishSuggestions:
                     dishSuggestion_dict = {
-                        "dishSuggestionID": dishSuggestion.dishSuggestionID,
+                        "dishSuggestion_ID": dishSuggestion.dishSuggestionID,
                         "name": dishSuggestion.name,
-                        "date": dishSuggestion.date
+                        "ingredients": dishSuggestion.ingredients if dishSuggestion.ingredients else None,
+                        "image": base64.b64encode(dishSuggestion.image).decode() if dishSuggestion.image else None,
+                        "date": dishSuggestion.date,
+                        "description": dishSuggestion.description if dishSuggestion.description else None
                     }
                     dishSuggestion_list.append(dishSuggestion_dict)
-
                 return dishSuggestion_list
             return None
         except SQLAlchemyError as e:
             return None
         finally:
             session.close()
-    
+
     def dish_suggestion_by_ID(self, param_dishSuggestionID):
         try:
             session = scoped_session(self.session_factory)

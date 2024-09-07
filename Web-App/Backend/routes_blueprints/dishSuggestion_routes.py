@@ -86,7 +86,7 @@ def accept_dish_suggestion():
     elif ret_value:     # If ret_value contains values allergies were missing
         ret_value_delete = current_app.dish_suggestion_repo.delete_dish_suggestion(data_dishSuggestionID)
         if ret_value_delete:
-            return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allerigie {ret_value} sind nicht in der Datenbank vorhanden Gerichtsvorschlag erfolgreich gelöscht"}), 201
-        return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allerigie {ret_value} sind nicht in der Datenbank vorhanden Gerichtsvorschlag konnte nicht gelöscht werden"}), 201
+            return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allergie {ret_value} sind nicht in der Datenbank vorhanden Gerichtsvorschlag erfolgreich gelöscht"}), 201
+        return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allergie {ret_value} sind nicht in der Datenbank vorhanden Gerichtsvorschlag konnte nicht gelöscht werden"}), 201
     elif ret_value == False:
         return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gericht konnte nicht erstellt werden"}), 500
