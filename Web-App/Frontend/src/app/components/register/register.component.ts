@@ -1,5 +1,11 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, FormsModule, isFormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
 import {HeaderComponent} from "../header/header.component";
 import {NgIf} from "@angular/common";
 import {UserData} from '../../interface/user-data';
@@ -7,10 +13,8 @@ import {UserService} from '../../service/user/user.service';
 import {HttpClientModule} from "@angular/common/http";
 import {PasswordValidator} from "./password-validator";
 import {Role} from "../../interface/role";
-import { FeedbackService } from '../../service/feedback/feedback.service';
+import {FeedbackService} from '../../service/feedback/feedback.service';
 import {Router} from "@angular/router";
-
-
 
 @Component({
   selector: 'app-register',
@@ -41,7 +45,8 @@ export class RegisterComponent {
     email: new FormControl('',
       [
         Validators.required,
-        Validators.email
+        Validators.email,
+        Validators.maxLength(50),
       ],
       []),
     password: new FormControl('',
@@ -52,7 +57,7 @@ export class RegisterComponent {
         Validators.pattern(this.REGEX_PASSWORD)
       ],
       []),
-    confirmpassword: new FormControl('',
+    confirmPassword: new FormControl('',
       [
         Validators.required,
         Validators.minLength(8),
@@ -60,11 +65,9 @@ export class RegisterComponent {
         Validators.pattern(this.REGEX_PASSWORD),
       ],
       [])
-  },{ validators: PasswordValidator } );
+  }, {validators: PasswordValidator});
 
-  constructor(private userService: UserService, private feedbackService: FeedbackService, private router:Router) {
-    this.registerForm.valueChanges.subscribe(console.log)
-
+  constructor(private userService: UserService, private feedbackService: FeedbackService, private router: Router) {
   }
 
   registerUser() {
@@ -89,10 +92,6 @@ export class RegisterComponent {
         }
       );
     } else {
-
     }
   }
-
-  protected readonly isFormControl = isFormControl;
-  protected readonly parent = parent;
 }

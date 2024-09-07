@@ -15,6 +15,7 @@ import {ReviewSuggestionComponent} from "./components/dish_suggestion/reviewSugg
 
 
 
+
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},
@@ -28,5 +29,4 @@ export const routes: Routes = [
   { path: 'workerOrderSummary', component: WorkerOrderSummaryComponent, canActivate: [AuthGuard]},
   { path: 'registerAdmin', component: RegisterAdminComponent, canActivate: [AuthGuard]},
   { path: '', component: HomeComponent},
-
 ];

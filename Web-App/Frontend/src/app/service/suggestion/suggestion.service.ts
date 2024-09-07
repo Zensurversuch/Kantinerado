@@ -6,12 +6,12 @@ import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {Suggestion} from "../../interface/suggestion";
 import {DishData} from "../../interface/dishData";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuggestionService {
-
   constructor(private http: HttpClient, private authService: AuthService) {
   }
 
