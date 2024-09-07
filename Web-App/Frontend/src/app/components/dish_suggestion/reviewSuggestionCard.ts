@@ -70,7 +70,6 @@ export class SuggestionCard implements OnInit {
     });
     if (this.suggestion) {
       this.id = this.suggestion.dishSuggestion_ID
-      console.log(this.id)
       this.dish = {
         name: this.suggestion.name,
         price: 0,
@@ -189,5 +188,4 @@ export class SuggestionCard implements OnInit {
       }
     }
   }
-
 }

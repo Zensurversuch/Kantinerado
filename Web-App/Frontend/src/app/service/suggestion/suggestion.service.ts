@@ -6,7 +6,6 @@ import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {Suggestion} from "../../interface/suggestion";
 import {DishData} from "../../interface/dishData";
-import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +14,10 @@ export class SuggestionService {
   constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  createSuggestion(suggestedDish: SuggestionData): Observable<any> {
+  createSuggestion(suggestion: SuggestionData): Observable<any> {
     const url = environment.apiUrl + '/create_dish_suggestion';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
-    return this.http.post<any>(url, suggestedDish, {headers});
+    return this.http.post<any>(url, suggestion, {headers});
   }
 
   getAllSuggestions(): Observable<Suggestion[]> {
@@ -34,8 +33,8 @@ export class SuggestionService {
   }
 
 
-  acceptSuggestion(suggestionData: DishData, id?:number): Observable<any> {
-    const url = environment.apiUrl+'/accept_dish_suggestion';
+  acceptSuggestion(suggestionData: DishData, id?: number): Observable<any> {
+    const url = environment.apiUrl + '/accept_dish_suggestion';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getJwtToken()}`);
     const payload = {
       dishSuggestionID: id,
