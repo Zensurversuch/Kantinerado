@@ -5,61 +5,44 @@
   opacity: 0.5;
 }
 
-.card {
-  padding: 2em;
-  margin: 1em;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  flex-direction: row;
-  border: 1px solid $primary-border-color;
-  background-color: $highlight-color;
-  max-width: 25em;
-}
-
-createSuggestion {
+.createSuggestion {
   padding: 2em;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
 }
 
-h2 {
-  margin-top: 0;
-  width: 100%;
-}
+.createSuggestion{
+  form {
+    .form-group {
+      margin-bottom: 20px;
+    }
 
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
 
-form {
-  .form-group {
-    margin-bottom: 20px;
-  }
+    input{
+      width: 100%;
+      padding: 8px;
+      border: 1px solid $primary-border-color;
+      border-radius: 5px;
+      box-sizing: border-box;
 
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
+      &.ng-touched, &.ng-dirty {
+        &.ng-valid {
+          border: $secondary-border-color 2px solid;
+          font-style: $secondary-border-color;
+        }
 
-  input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid $primary-border-color;
-    border-radius: 5px;
-    box-sizing: border-box;
-
-    &.ng-touched, &.ng-dirty {
-      &.ng-valid {
-        border: $secondary-border-color 2px solid;
-        font-style: $secondary-border-color;
-      }
-
-      &.ng-invalid {
-        border: $primary-color 3px solid;
-        font-style: $primary-color;
+        &.ng-invalid {
+          border: $primary-color 3px solid;
+          font-style: $primary-color;
+        }
       }
     }
-  }
 
   .submit-button {
     width: 100%;
@@ -71,18 +54,19 @@ form {
     cursor: pointer;
     transition: background-color 0.3s;
 
-    &:hover {
-      background-color: $primary-color;
+      &:hover {
+        background-color: $primary-color;
+      }
+
+      &:disabled {
+        background-color: $disabled-color;
+        cursor: default;
+      }
     }
 
-    &:disabled {
-      background-color: $disabled-color;
-      cursor: default;
+    .error-message {
+      color: $primary-color;
     }
-  }
-
-  .createSuggestion__error-message {
-    color: $primary-color;
   }
 }
 
@@ -110,14 +94,3 @@ form {
   }
 }
 
-.suggestions-container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1em;
-
-  h2 {
-    text-align: center;
-    margin-bottom: 1em;
-  }
-}

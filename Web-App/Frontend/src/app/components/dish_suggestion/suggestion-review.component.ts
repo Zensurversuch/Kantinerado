@@ -18,7 +18,7 @@ import {HeaderComponent} from "../header/header.component";
     NgIf
   ],
   templateUrl: './suggestion-review.component.html',
-  styleUrl: './suggestion.component.scss'
+  styleUrl: './suggestion-card.scss'
 })
 export class SuggestionReviewComponent implements OnInit{
   blurred: boolean = false;

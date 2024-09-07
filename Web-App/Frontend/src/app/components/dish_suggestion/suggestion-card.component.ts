@@ -22,7 +22,7 @@ import {SuggestionService} from "../../service/suggestion/suggestion.service";
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, HeaderComponent],
   templateUrl: './suggestion-card.component.html',
-  styleUrls: ['./suggestion.component.scss']
+  styleUrls: ['./suggestion-card.scss']
 })
 export class SuggestionCard implements OnInit {
   @Input() suggestion?: Suggestion;
@@ -153,4 +153,8 @@ export class SuggestionCard implements OnInit {
   }
 
   protected readonly mealTypes = MealTypesArray;
+
+  onImageChange($event: Event) {
+
+  }
 }

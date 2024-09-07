@@ -1,11 +1,12 @@
 <app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
 
-<div class="suggestions-container" [class.blurred]="blurred">
-  <h2>Gerichtsvorschläge</h2>
-
+<div [class.blurred]="blurred" >
+  <h2>Menüvorschläge</h2>
+  <div class="suggestions-container" >
   <div *ngIf="loading">Loading suggestions...</div>
 
   <ng-container *ngIf="!loading">
     <app-suggestion-card *ngFor="let suggestion of suggestions" [suggestion]="suggestion"></app-suggestion-card>
   </ng-container>
+  </div>
 </div>
