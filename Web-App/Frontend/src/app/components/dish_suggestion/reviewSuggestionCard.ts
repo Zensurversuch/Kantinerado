@@ -21,8 +21,8 @@ import {SuggestionService} from "../../service/suggestion/suggestion.service";
   selector: 'app-suggestion-card',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, HeaderComponent],
-  templateUrl: './suggestion-card.component.html',
-  styleUrls: ['./suggestion-card.scss']
+  templateUrl: './reviewSuggestionCard.html',
+  styleUrls: ['./reviewSuggestion.component.scss']
 })
 export class SuggestionCard implements OnInit {
   @Input() suggestion?: Suggestion;

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Suggestion} from "../../interface/suggestion";
 import {SuggestionService} from "../../service/suggestion/suggestion.service";
 import {ReactiveFormsModule} from "@angular/forms";
-import {SuggestionCard} from "./suggestion-card.component";
+import {SuggestionCard} from "./reviewSuggestionCard";
 import {NgForOf, NgIf} from "@angular/common";
 import {HeaderComponent} from "../header/header.component";
 
@@ -17,10 +17,10 @@ import {HeaderComponent} from "../header/header.component";
     SuggestionCard,
     NgIf
   ],
-  templateUrl: './suggestion-review.component.html',
-  styleUrl: './suggestion-card.scss'
+  templateUrl: './reviewSuggestion.component.html',
+  styleUrl: './reviewSuggestion.component.scss'
 })
-export class SuggestionReviewComponent implements OnInit{
+export class ReviewSuggestionComponent implements OnInit{
   blurred: boolean = false;
   suggestions: Suggestion[] = [];
   loading: boolean = true;

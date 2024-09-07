@@ -26,10 +26,10 @@ import {HttpClient} from "@angular/common/http";
     ReactiveFormsModule,
     NgForOf
   ],
-  templateUrl: './dishSuggestion.html',
-  styleUrl: './suggestion.component.scss'
+  templateUrl: './createSuggestion.component.html',
+  styleUrl: './createSuggestion.component.scss'
 })
-export class DishSuggestionComponent implements OnInit{
+export class CreateSuggestionComponent implements OnInit{
   blurred: boolean = false;
   createDishSuggestionForm!: FormGroup;
 
