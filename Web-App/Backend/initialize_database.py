@@ -2,6 +2,7 @@ import hashlib
 from sqlalchemy.orm import sessionmaker
 from DB_Repositories.models import Base, User, Allergy
 import time
+import secrets
 import os
 
 # Postgres Database
@@ -27,12 +28,14 @@ def initialize_Postgres(engine):
             if session.query(User).count() == 0:
             
                 # Create the admin user
+                    salt = secrets.token_hex()
                     user = User(
                     email = data_email,
-                    password = hashlib.sha256(data_password.encode('utf-8')).hexdigest(),
+                    password = hashlib.sha256((data_password + salt).encode('utf-8')).hexdigest(),
                     lastName = data_last_name,
                     firstName = data_first_name,
-                    role = "admin"
+                    role = "admin",
+                    salt = salt
                     )
                     session.add(user)
                     print("Admin Benutzer erfolgreich erstellt.")
