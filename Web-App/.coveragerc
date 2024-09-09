@@ -1,0 +1,5 @@
+# excludes the code of the tests from the code coverage measurement
+[run]
+omit =
+    Backend/tests/*
+ 

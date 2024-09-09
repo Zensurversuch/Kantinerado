@@ -51,24 +51,44 @@ Um die Anwendung auszuführen muss folgender Befehl ausgeführt werden
 
 1. **pytest installieren (optional)**
     Um pytest zu verwenden, muss dieses zuerst installiert werden.
-    Dazu führen Sie den folgenden Befehl vorzugsweise in einer viertuellen Umgebung aus:
+    Dazu führen Sie den folgenden Befehl vorzugsweise in einer virtuellen Umgebung aus:
     ```bash
     pip install pytest
     ```
 
+2. **pytest-con installieren (optional)**
+    Wenn die Code-Coverage gemessen werden soll, muss das Plugin pytest-cov installiert sein.
+    Dafür führen Sid den folgenden Befehl vorzugsweise in einer virtuellen Umgebung aus:
+    ```bash
+    pip install pytest-cov
+    ```
+
 2. **Docker Compose starten:**
-    Führen Sie den folgenden Befehl in diesem Ordner ("~/Web-App") aus:
+    Führen Sie den folgenden Befehl in dem Ordner ("~/Web-App") aus:
     ```bash
     docker-compose -f docker-compose.test.yml up --build
     ```
     Dieser Befehl baut die Docker-Images und startet die Container gemäß der Konfiguration in der `docker-compose.yml`-Datei. Die Option `--build` wird verwendet, um sicherzustellen, dass das Backend und Frontend Image vor dem Start der Container neu erstellt wird, wodurch Änderungen am Code automatisch mit deployed werden.
 
 3. **Tests starten**
-    Um die Tests zu starten führen sie folgenden Befehl in diesem Ordner ("~/Web-App") aus:
-
+    Um die Tests zu starten führen sie folgenden Befehl in dem Ordner ("~/Web-App") aus:
     ```bash
     pytest
     ```
+
+4. **Code Coverage messen**
+    Um die Code Coverage zu erfassen, muss anstelle des vorherigen Befehls der Folgender, in diesem Ordner ("~/Web-App"), ausgeführt werden:
+    ```bash
+    pytest --cov=Backend --cov-config=.coveragerc --cov-report=term
+    ```
+    Dieser Befehl führt die Tests aus und zeigt gleichzeitig die Code Coverage im Terminal an. Er misst, welcher Teil des Codes von den Tests abgedeckt ist.
+
+    Um einen detaillierten Coverage-Bericht in HTML-Format zu erstellen kann folgender Befehl ausgeführt werden:
+    ```bash
+    pytest --cov=Backend --cov-config=.coveragerc --cov-report=html
+    ```
+    Danach kann der Bericht in einem Browser unter htmlcov/index.html betrachtet werden.
+
 
 **Hinweise**
 - Die PostgreSQL-Datenbank wird auf Port 5433 bereitgestellt.
