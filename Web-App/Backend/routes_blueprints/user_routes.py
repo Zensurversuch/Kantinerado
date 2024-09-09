@@ -20,7 +20,7 @@ def login():
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fehlender Benutzername oder Passwort"}), 400
 
     user_data = current_app.user_repo.get_user_by_email(data_email)
-    
+
     if user_data:
         hashed_pw = hashlib.sha256((data_password + user_data["salt"]).encode('utf-8')).hexdigest()
         if (hashed_pw == user_data["password"]):
@@ -93,15 +93,6 @@ def all_users():
 @permission_check()
 def user_by_id(user_id):
     user = current_app.user_repo.get_user_by_id(user_id)
-    if user:
-        return user
-    return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
-
-@user_blueprint.route('/user_by_email/<string:email>')
-@jwt_required()
-@permission_check()
-def user_by_email(email):
-    user = current_app.user_repo.get_user_by_email(email)
     if user:
         return user
     return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404

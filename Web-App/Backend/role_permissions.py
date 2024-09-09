@@ -6,8 +6,7 @@ def get_permissions_for_role(role):
         permissions = [
             # User Permissions
             Permissions.ALL_USERS.value, 
-            Permissions.USER_BY_ID.value,  
-            Permissions.USER_BY_EMAIL.value,  
+            Permissions.USER_BY_ID.value,   
             Permissions.CREATE_USER_AS_ADMIN.value,
             Permissions.SET_USER_ALLERGIES.value, 
             # Dish Permissions
