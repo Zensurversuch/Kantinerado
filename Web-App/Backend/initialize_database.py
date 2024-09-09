@@ -84,7 +84,6 @@ def initialize_test_database(engine):
     while not isDatabaseReady:
         try:
             Base.metadata.create_all(engine)
-
             Session = sessionmaker(bind=engine)
             session = Session()
             isDatabaseReady = True
@@ -94,38 +93,42 @@ def initialize_test_database(engine):
     try:
         #add admin user during initial setup
         if session.query(User).count() == 0:
-        
+            salt = secrets.token_hex()
             # Create the test users
-                admin = User(
-                userID = 1,
-                email = 'admin@test.com',
-                password = hashlib.sha256('admin_test'.encode('utf-8')).hexdigest(),
-                lastName = 'admin',
-                firstName = 'test',
-                role = "admin"
-                )
-                worker = User(
-                userID = 2,
-                email = 'kantinenmitarbeiter@test.com',
-                password = hashlib.sha256('kantinenmitarbeiter_test'.encode('utf-8')).hexdigest(),
-                lastName = 'kantinenmitarbeiter',
-                firstName = 'test',
-                role = "kantinenmitarbeiter"
-                )
-                user = User(
-                userID = 3,
-                email = 'hungernder@test.com',
-                password = hashlib.sha256('hungernder_test'.encode('utf-8')).hexdigest(),
-                lastName = 'hungernder',
-                firstName = 'test',
-                role = "hungernde"
-                )
-                session.add(admin)
-                session.add(worker)
-                session.add(user)
-                session.commit()
-                print("Test Benutzer erfolgreich erstellt.")
-        
+            admin = User(
+            userID = 1,
+            email = 'admin@test.com',
+            password = hashlib.sha256('admin_test'.encode('utf-8')).hexdigest(),
+            salt = salt,
+            lastName = 'admin',
+            firstName = 'test',
+            role = "admin"
+            )
+            worker = User(
+            userID = 2,
+            email = 'kantinenmitarbeiter@test.com',
+            password = hashlib.sha256('kantinenmitarbeiter_test'.encode('utf-8')).hexdigest(),
+            salt = salt,
+            lastName = 'kantinenmitarbeiter',
+            firstName = 'test',
+            role = "kantinenmitarbeiter"
+            )
+            user = User(
+            userID = 3,
+            email = 'hungernder@test.com',
+            password = hashlib.sha256('hungernder_test'.encode('utf-8')).hexdigest(),
+            salt = salt,
+            lastName = 'hungernder',
+            firstName = 'test',
+            role = "hungernde"
+            )
+            session.add(admin)
+            session.add(worker)
+            session.add(user)
+            session.commit()
+            print("Test Benutzer erfolgreich erstellt.")
+
+
         #Adding example allergies
         if session.query(Allergy).count() == 0:
             allergies = [

@@ -2,6 +2,7 @@ from functools import wraps
 from flask_jwt_extended import get_jwt_identity
 from role_permissions import get_permissions_for_role
 from flask import jsonify, current_app
+from api_messages import API_MESSAGE_DESCRIPTOR
 
 def permission_check():
     def decorator(func):
@@ -22,7 +23,7 @@ def permission_check():
             if function_name in current_permissions:
                 return func(*args, **kwargs)
             else:
-                return jsonify(message=f'Zugriff nicht gestattet! {function_name} Berechtigung erforderlich'), 403
+                return jsonify(API_MESSAGE_DESCRIPTOR=f'Zugriff nicht gestattet! {function_name} Berechtigung erforderlich'), 403
 
         return wrapper
     return decorator
