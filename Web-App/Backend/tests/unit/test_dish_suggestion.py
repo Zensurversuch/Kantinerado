@@ -7,7 +7,7 @@ from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
 
 ########################################################## create_dish_suggestions test ##########################################################
 
-def test_create_dish_suggestion_success_admin(client, auth_token_admin, session, delete_all_dish_suggestions):
+def test_create_dish_suggestion_success_admin(app, client, auth_token_admin, session, delete_all_dish_suggestions):
     """Test creating a dish suggestion as admin."""
     # Post-Data
     data = {
@@ -48,7 +48,7 @@ def test_create_dish_suggestion_kantinenmitarbeiter(client, auth_token_kantinenm
                            )
     
     assert response.status_code == 403
-    assert response.json['message'] == f"Zugriff nicht gestattet! create_dish_suggestion Berechtigung erforderlich"
+    assert response.json[f"API_MESSAGE_DESCRIPTOR"] == f"Zugriff nicht gestattet! create_dish_suggestion Berechtigung erforderlich"
     
     # check if dish suggestion was created
     suggestion = session.query(DishSuggestion).filter_by(name='Test Dish').first()
@@ -205,7 +205,7 @@ def test_all_dish_suggestions_success_admin(client, auth_token_admin, auth_token
         session.delete(dish_suggestion_two)
     session.commit()
 
-def test_all_dish_suggestions_hungernde(client, auth_token_hungernde, session, delete_all_dish_suggestions):
+def test_all_dish_suggestions_hungernde(app, client, auth_token_hungernde, session, delete_all_dish_suggestions):
     dataOne = {
         'name': 'Test Dish One',
         'ingredients': ['ingredient1', 'ingredient2'],
@@ -238,7 +238,7 @@ def test_all_dish_suggestions_hungernde(client, auth_token_hungernde, session, d
     
     # Validate the JSON-response
     assert response.status_code == 403
-    assert response.json['message'] == f"Zugriff nicht gestattet! all_dish_suggestions Berechtigung erforderlich"
+    assert response.json[f"API_MESSAGE_DESCRIPTOR"] == f"Zugriff nicht gestattet! all_dish_suggestions Berechtigung erforderlich"
 
     dish_suggestion_one = session.query(DishSuggestion).filter_by(name=dataOne['name']).first()
     dish_suggestion_two = session.query(DishSuggestion).filter_by(name=dataTwo['name']).first()

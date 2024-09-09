@@ -286,6 +286,7 @@ node_modules/
 # Visual Studio Code
 /Frontend/.vscode/
 /Frontend/.history/
+.vscode/
 
 # Miscellaneous
 .angular/cache/
