@@ -13,4 +13,3 @@ flask_jwt_extended==4.6.0
 flasgger==0.9.7.1
 flask_swagger_ui==4.11.1
 flask-cors==3.0.10
-pytest==8.3.2
