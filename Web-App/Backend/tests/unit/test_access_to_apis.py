@@ -1,80 +1,81 @@
 import pytest
-from flask import Flask, jsonify
-from flask_jwt_extended import JWTManager, create_access_token
-from ../decorators import permission_check
+from flask_jwt_extended import create_access_token
+from unittest.mock import patch
 from role_permissions import UserRole
 
-@pytest.fixture
-def app():
-    app = Flask(__name__)
-    app.config['JWT_SECRET_KEY'] = 'testsecret'
-    jwt = JWTManager(app)
+# @pytest.fixture
+# def mock_user_repo():
+#     """Fixture to mock the user repository."""
+#     with patch('flask.current_app.user_repo') as mock_repo:
+#         yield mock_repo
+
+
+def test_admin_can_access_all_users(client, mock_user_repo, auth_token_admin):
+    """Test if an admin can access the all_users route."""
+    mock_user_repo.get_user_by_id.return_value = {"id": 1, "role": UserRole.ADMIN.value}
+    mock_user_repo.get_all_users.return_value = [{"id": 2, "role": UserRole.HUNGERNDE.value}, {"id": 3, "role": UserRole.KANTINENMITARBEITER.value}]
+
+    response = client.get('/all_users',
+                          headers={'Authorization': f'Bearer {auth_token_admin}'} 
+                )
     
-    # Dummy user repository
-    class UserRepository:
-        def __init__(self, users):
-            self.users = users
+    assert response.status_code == 200
+    assert response.json == [{"id": 2, "role": UserRole.HUNGERNDE.value}, {"id": 3, "role": UserRole.KANTINENMITARBEITER.value}]
 
-        def get_user_by_id(self, user_id):
-            return self.users.get(user_id)
+    """Test if hungernde and kantinenmitarbeiter can not access the all_users route."""
     
-    users = {
-        1: {"id": 1, "role": UserRole.ADMIN.value},
-        2: {"id": 2, "role": UserRole.HUNGERNDE.value},
-        3: {"id": 3, "role": UserRole.KANTINENMITARBEITER.value},
-    }
 
-    user_repo = UserRepository(users)
 
-    @app.route('/create_dish', methods=['POST'])
-    @permission_check(user_repo)
-    def create_dish():
-        return jsonify({"msg": "Dish created!"}), 200
+def test_hungernde_cannot_access_create_dish(client, mock_user_repo):
+    """Test if a user with 'HUNGERNDE' role cannot access the create_dish route."""
+    mock_user_repo.get_user_by_id.return_value = {"id": 2, "role": UserRole.HUNGERNDE.value}
 
-    @app.route('/all_users', methods=['GET'])
-    @permission_check(user_repo)
-    def all_users():
-        return jsonify({"msg": "All users listed!"}), 200
+    access_token = create_access_token(identity=2)  # Hungernde
+    headers = {'Authorization': f'Bearer {access_token}'}
 
-    return app
+    response = client.post('/create_dish', headers=headers)
 
-def test_admin_can_access_all_users(app):
-    with app.test_client() as client:
-        access_token = create_access_token(identity=1)
-        headers = {'Authorization': f'Bearer {access_token}'}
-        response = client.get('/all_users', headers=headers)
-        assert response.status_code == 200
-        assert response.json == {"msg": "All users listed!"}
+    assert response.status_code == 403
+    assert "Zugriff nicht gestattet" in response.json['message']
 
-def test_hungernde_cannot_access_create_dish(app):
-    with app.test_client() as client:
-        access_token = create_access_token(identity=2)
-        headers = {'Authorization': f'Bearer {access_token}'}
-        response = client.post('/create_dish', headers=headers)
-        assert response.status_code == 403
-        assert "Zugriff nicht gestattet" in response.json['message']
 
-def test_kantinenmitarbeiter_can_create_dish(app):
-    with app.test_client() as client:
-        access_token = create_access_token(identity=3)
-        headers = {'Authorization': f'Bearer {access_token}'}
-        response = client.post('/create_dish', headers=headers)
-        assert response.status_code == 200
-        assert response.json == {"msg": "Dish created!"}
-        
-def test_hungernde_cannot_access_all_users(app):
-    with app.test_client() as client:
-        access_token = create_access_token(identity=2)
-        headers = {'Authorization': f'Bearer {access_token}'}
-        response = client.get('/all_users', headers=headers)
-        assert response.status_code == 403
-        assert "Zugriff nicht gestattet" in response.json['message']
+@pytest.mark.usefixtures('mock_user_repo')
+def test_kantinenmitarbeiter_can_create_dish(client, mock_user_repo):
+    """Test if a user with 'KANTINENMITARBEITER' role can access the create_dish route."""
+    mock_user_repo.get_user_by_id.return_value = {"id": 3, "role": UserRole.KANTINENMITARBEITER.value}
 
-def test_kantinenmitarbeiter_cannot_access_all_users(app):
-    with app.test_client() as client:
-        access_token = create_access_token(identity=3)
-        headers = {'Authorization': f'Bearer {access_token}'}
-        response = client.get('/all_users', headers=headers)
-        assert response.status_code == 403
-        assert "Zugriff nicht gestattet" in response.json['message']
+    access_token = create_access_token(identity=3)  # Kantinenmitarbeiter
+    headers = {'Authorization': f'Bearer {access_token}'}
 
+    response = client.post('/create_dish', headers=headers)
+
+    assert response.status_code == 200
+    assert response.json == {"msg": "Dish created!"}
+
+
+@pytest.mark.usefixtures('mock_user_repo')
+def test_hungernde_cannot_access_all_users(client, mock_user_repo):
+    """Test if a user with 'HUNGERNDE' role cannot access the all_users route."""
+    mock_user_repo.get_user_by_id.return_value = {"id": 2, "role": UserRole.HUNGERNDE.value}
+
+    access_token = create_access_token(identity=2)  # Hungernde
+    headers = {'Authorization': f'Bearer {access_token}'}
+
+    response = client.get('/all_users', headers=headers)
+
+    assert response.status_code == 403
+    assert "Zugriff nicht gestattet" in response.json['message']
+
+
+@pytest.mark.usefixtures('mock_user_repo')
+def test_kantinenmitarbeiter_cannot_access_all_users(client, mock_user_repo):
+    """Test if a user with 'KANTINENMITARBEITER' role cannot access the all_users route."""
+    mock_user_repo.get_user_by_id.return_value = {"id": 3, "role": UserRole.KANTINENMITARBEITER.value}
+
+    access_token = create_access_token(identity=3)  # Kantinenmitarbeiter
+    headers = {'Authorization': f'Bearer {access_token}'}
+
+    response = client.get('/all_users', headers=headers)
+
+    assert response.status_code == 403
+    assert "Zugriff nicht gestattet" in response.json['message']
