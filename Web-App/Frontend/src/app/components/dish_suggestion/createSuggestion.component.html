@@ -1,0 +1,37 @@
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
+
+<body [ngClass]="{ 'blurred': blurred }">
+<div class="createSuggestion">
+  <h2 class="title">Einreichen eines Gerichtsvorschlags</h2>
+
+  <form [formGroup]="createDishSuggestionForm" (submit)="sendSuggestedDish()">
+    <div class="form-group">
+      <label for="dishTitle" class="label">Titel*:</label>
+      <input id=dishTitle type="text" formControlName="title" placeholder="Name des Gerichts" maxlength=50>
+      <div
+        *ngIf="createDishSuggestionForm.get('title')?.invalid && (createDishSuggestionForm.get('title')?.dirty || createDishSuggestionForm.get('title')?.touched)">
+        <span class="error-message">Name des Gerichts ist erforderlich.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="dishDescription" class="label">Beschreibung:</label>
+      <textarea id="dishDescription" formControlName="description" placeholder="Beschreibe dein Gericht dem Personal."
+                maxlength="150" class="input"></textarea>
+    </div>
+    <div class="form-group" formArrayName="ingredients">
+      <label class="label">Inhaltsstoffe</label>
+      <div *ngFor="let ingredient of ingredients.controls; let i=index" [formGroupName]="i">
+        <input formControlName="ingredientName" type="text" class="input"
+               placeholder="Inhaltsstoff {{ i + 1 }}">
+      </div>
+      <button (click)="addIngredient()" type="button">Inhaltsstoff hinzufügen</button>
+    </div>
+    <div class="form-group">
+      <label class="label">Bild</label>
+      <input type="file" (change)="onImageChange($event)" accept="image/*" class="input">
+    </div>
+    <button [disabled]="!createDishSuggestionForm.valid" class="submit-button" type="submit">Vorschlag einreichen
+    </button>
+  </form>
+</div>
+</body>

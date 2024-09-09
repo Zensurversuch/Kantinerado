@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData, Column, Integer, String, Date, Table, ForeignKey, ARRAY, LargeBinary, Float
+from sqlalchemy import create_engine, MetaData, Column, Integer, String, Date, Table, ForeignKey, ARRAY, LargeBinary, Float, Boolean
 from sqlalchemy.orm import relationship, declarative_base
 
 
@@ -47,6 +47,7 @@ class User(Base):
     lastName = Column(String(50), nullable=False)
     firstName = Column(String(50), nullable=False)
     role = Column(String(50), nullable=False)
+    salt = Column(String(64), nullable=False)
     
     # n-m to allergy
     allergies = relationship("Allergy", secondary=user_allergy_association)
@@ -66,3 +67,13 @@ class MealPlan(Base):
     mealPlanID = Column(Integer, primary_key=True, autoincrement=True)
     dishID = Column(Integer, ForeignKey('dishes.dishID'), nullable=False)
     date = Column(Date, nullable=False)
+    
+class DishSuggestion(Base):
+    __tablename__ = 'dishSuggestion'
+    
+    dishSuggestionID = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(50), nullable=False)
+    ingredients = Column(ARRAY(String))
+    image = Column(LargeBinary)
+    date = Column(Date, nullable=False)
+    description = Column(String(150))

@@ -1,34 +1,30 @@
 @import "../../color.scss";
 
-
 .blurred {
   filter: blur(3px);
   opacity: 0.5;
 }
 
-.register {
+.createSuggestion {
   padding: 2em;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+}
 
-  h2 {
-    margin-top: 0;
-    width: 100%;
-  }
-
+.createSuggestion{
   form {
-    .register__form-group {
+    .form-group {
       margin-bottom: 20px;
     }
 
-    .register__label {
+    label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
 
-    .register__input {
+    input{
       width: 100%;
       padding: 8px;
       border: 1px solid $primary-border-color;
@@ -48,15 +44,15 @@
       }
     }
 
-    .register__submit-btn {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      color: $primary-text-color;
-      background-color: $secondary-border-color;
-      cursor: pointer;
-      transition: background-color 0.3s;
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: $primary-text-color;
+    background-color: $secondary-border-color;
+    cursor: pointer;
+    transition: background-color 0.3s;
 
       &:hover {
         background-color: $primary-color;
@@ -68,14 +64,15 @@
       }
     }
 
-    .register__error-message{
-      color:$primary-color ;
+    .error-message {
+      color: $primary-color;
     }
   }
 }
 
+
 @media (min-width: 400px) {
-  .register {
+  .createSuggestion {
     display: block;
     width: 300px;
     margin: 50px auto;
@@ -83,16 +80,17 @@
     border-radius: 10px;
     background-color: $highlight-color;
   }
-  h2{
+  h2 {
     width: auto;
   }
-  .register__input {
-    width: calc(100% - 12px);
+  input, textarea {
+    width: calc(100%);
     border: 1px solid $primary-border-color;
     border-radius: 5px;
     box-sizing: border-box;
   }
-  .register__submit-btn{
-  width: calc(100% - 12px);
+  .submit-button {
+    width: calc(100% - 12px);
   }
 }
+

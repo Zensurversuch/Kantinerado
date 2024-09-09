@@ -1,0 +1,13 @@
+<app-header (menuOrSettingsToggled)="ToggleBlurred($event)"></app-header>
+
+<div [class.blurred]="blurred" >
+  <h2>Menüvorschläge</h2>
+  <div class="suggestions-container" >
+  <div *ngIf="loading">Loading suggestions...</div>
+    <div *ngIf="empty">No Suggestions found</div>
+
+  <ng-container *ngIf="!loading">
+    <app-suggestion-card (suggestionUpdated)="reloadSuggestions()" *ngFor="let suggestion of suggestions " [suggestion]="suggestion"></app-suggestion-card>
+  </ng-container>
+  </div>
+</div>

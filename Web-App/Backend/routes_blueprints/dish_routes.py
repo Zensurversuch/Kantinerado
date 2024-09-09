@@ -1,7 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from flask_jwt_extended import jwt_required
 from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
-from config import user_repo, dish_repo
 from decorators import permission_check
 import base64
 
@@ -10,27 +9,27 @@ dish_blueprint = Blueprint('dish_blueprint', __name__)
 
 @dish_blueprint.route('/dish_by_id/<int:dish_id>')
 @jwt_required()
-@permission_check(user_repo)
+@permission_check()
 def dish_by_id(dish_id):
-    dish = dish_repo.get_dish_by_id(dish_id)
+    dish = current_app.dish_repo.get_dish_by_id(dish_id)
     if dish:
         return dish
     return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gericht nicht gefunden"}), 404
 
 @dish_blueprint.route('/dish_by_name/<string:dish_name>')
 @jwt_required()
-@permission_check(user_repo)
+@permission_check()
 def dish_by_name(dish_name):
-    dish = dish_repo.get_dish_by_name(dish_name)
+    dish = current_app.dish_repo.get_dish_by_name(dish_name)
     if dish:
         return dish
     return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gericht nicht gefunden"}), 404
 
 @dish_blueprint.route('/dish_by_mealType/<string:dish_mealType>')
 @jwt_required()
-@permission_check(user_repo)
+@permission_check()
 def dish_by_mealType(dish_mealType):
-    dishes = dish_repo.get_dishes_by_mealType(dish_mealType)
+    dishes = current_app.dish_repo.get_dishes_by_mealType(dish_mealType)
     if dishes:
         return dishes
     return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Keine Gerichte gefunden"}), 404
@@ -38,7 +37,7 @@ def dish_by_mealType(dish_mealType):
 
 @dish_blueprint.route('/create_dish', methods=['POST'])
 @jwt_required()
-@permission_check(user_repo)
+@permission_check()
 def create_dish():
     data = request.json
     data_name = data.get('name')
@@ -52,12 +51,12 @@ def create_dish():
     if not (data_name and data_price and data_dietaryCategory and data_mealType):
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
 
-    if dish_repo.get_dish_by_name(data_name):
+    if current_app.dish_repo.get_dish_by_name(data_name):
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Gericht existiert bereits"}), 400
 
     decoded_image = base64.b64decode(data_image) if data_image else None
 
-    ret_value = dish_repo.create_dish(data_name, data_price, data_dietaryCategory, data_mealType, data_ingredients, decoded_image, data_allergies)
+    ret_value = current_app.dish_repo.create_dish(data_name, data_price, data_dietaryCategory, data_mealType, data_ingredients, decoded_image, data_allergies)
     if ret_value == []:   # If ret_value is empty no allergies were missing
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.SUCCESS.value}Gericht erfolgreich erstellt"}), 201
     elif ret_value:     # If ret_value contains values allergies were missing
