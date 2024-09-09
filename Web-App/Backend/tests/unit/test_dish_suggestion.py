@@ -636,7 +636,7 @@ def test_accept_dish_suggestion_missing_allergies(session, client, auth_token_ad
                 headers={'Authorization': f'Bearer {auth_token_admin}'})
     
     assert response_acceptSuggestion.status_code == 201
-    assert response_acceptSuggestion.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allerigie ['TestAllergyThree'] sind nicht in der Datenbank vorhanden Gerichtsvorschlag erfolgreich gelöscht"
+    assert response_acceptSuggestion.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allergie ['TestAllergyThree'] sind nicht in der Datenbank vorhanden Gerichtsvorschlag erfolgreich gelöscht"
     
     deleted_dish_suggestion = session.query(DishSuggestion).filter_by(dishSuggestionID = dishSuggestionID).first()
     assert deleted_dish_suggestion is None
@@ -661,4 +661,4 @@ def test_accept_dish_suggestion_missing_allergies_not_deleted(session, client, a
                 headers={'Authorization': f'Bearer {auth_token_admin}'})
     
     assert response_acceptSuggestion.status_code == 201
-    assert response_acceptSuggestion.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allerigie ['TestAllergyThree'] sind nicht in der Datenbank vorhanden Gerichtsvorschlag konnte nicht gelöscht werden"
+    assert response_acceptSuggestion.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.WARNING.value}Gericht erfolgreich erstellt, aber die folgenden Allergie ['TestAllergyThree'] sind nicht in der Datenbank vorhanden Gerichtsvorschlag konnte nicht gelöscht werden"
