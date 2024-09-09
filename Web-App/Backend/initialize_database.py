@@ -65,7 +65,7 @@ def initialize_Postgres(engine):
                     ]
                     session.add_all(allergies)
             session.commit()   
-            print("Datenbank initzialisiert.")
+            print("Datenbank initialisiert.")
         except Exception as e:
             session.rollback()
             print(f"Admin Benutzer und Allergien konnten nicht angelegt werden: {e}")
