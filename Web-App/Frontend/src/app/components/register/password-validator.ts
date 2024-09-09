@@ -6,7 +6,7 @@ import {
 
 export const PasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password');
-  const confirmPassword = control.get('confirmpassword');
+  const confirmPassword = control.get('confirmPassword');
 
   return password?.value === confirmPassword?.value ? null : { notmatched: true };
 };

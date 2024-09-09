@@ -1,14 +1,13 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from flask_jwt_extended import jwt_required
 from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
-from config import user_repo, meal_plan_repo
 from decorators import permission_check
 
 meal_plan_blueprint = Blueprint('meal_plan_blueprint', __name__)
 
 @meal_plan_blueprint.route('/create_meal_plan', methods=['POST'])
 @jwt_required()
-@permission_check(user_repo)
+@permission_check()
 def create_meal_plan():
     data = request.json
     meal_plan = data.get('mealPlan') 
@@ -21,7 +20,7 @@ def create_meal_plan():
         if not (dishID and date):
             return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
 
-    ret_value = meal_plan_repo.create_mealPlan(meal_plan)
+    ret_value = current_app.meal_plan_repo.create_mealPlan(meal_plan)
     if ret_value[0]:
         if ret_value[1] == '':
             return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Speiseplan erfolgreich erstellt"}), 201
@@ -34,7 +33,7 @@ def create_meal_plan():
 def meal_plan(start_date, end_date):
     if not (start_date and end_date):
             return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
-    meal_Plan = meal_plan_repo.get_mealPlan(start_date, end_date)
+    meal_Plan = current_app.meal_plan_repo.get_mealPlan(start_date, end_date)
     if meal_Plan[0]:
         return jsonify(meal_Plan[1]), 201
     elif meal_Plan[0]== None:

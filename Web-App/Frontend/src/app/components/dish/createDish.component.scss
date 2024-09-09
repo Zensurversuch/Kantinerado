@@ -53,13 +53,13 @@
       border: 1px solid $primary-border-color;
       border-radius: 5px;
       box-sizing: border-box;
-    
+
       &.ng-touched.ng-dirty {
         &.ng-valid:not(.empty) {
           border: $secondary-border-color 2px solid;
           font-style: $secondary-border-color;
         }
-    
+
         &.ng-invalid {
           border: $primary-color 3px solid;
           font-style: $primary-color;

@@ -6,9 +6,9 @@ import {UserData} from '../../interface/user-data';
 import {UserService} from '../../service/user/user.service';
 import {HttpClientModule} from "@angular/common/http";
 import {PasswordValidator} from "./password-validator";
-import { PermissionService } from '../../service/authentication/permission.service';
-import { FeedbackService } from '../../service/feedback/feedback.service';
-
+import {PermissionService} from '../../service/authentication/permission.service';
+import {FeedbackService} from '../../service/feedback/feedback.service';
+import {AuthService} from "../../service/authentication/auth.service";
 
 
 @Component({
@@ -23,9 +23,9 @@ import { FeedbackService } from '../../service/feedback/feedback.service';
     CommonModule
   ],
   templateUrl: './registerAdmin.component.html',
-  styleUrl: './registerAdmin.component.scss'
+  styleUrl: './register.component.scss'
 })
-export class RegisterAdminComponent  {
+export class RegisterAdminComponent {
   roles = this.permissionService.getRoles();
   REGEX_PASSWORD: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!^_%*#?&])[A-Za-z\d@$!_%*#?&]{8,}$/;
   public registerForm: FormGroup = new FormGroup({
@@ -42,7 +42,8 @@ export class RegisterAdminComponent  {
     email: new FormControl('',
       [
         Validators.required,
-        Validators.email
+        Validators.email,
+        Validators.maxLength(50),
       ],
       []),
     role: new FormControl('',
@@ -58,7 +59,7 @@ export class RegisterAdminComponent  {
         Validators.pattern(this.REGEX_PASSWORD)
       ],
       []),
-    confirmpassword: new FormControl('',
+    confirmPassword: new FormControl('',
       [
         Validators.required,
         Validators.minLength(8),
@@ -66,13 +67,14 @@ export class RegisterAdminComponent  {
         Validators.pattern(this.REGEX_PASSWORD),
       ],
       [])
-  },{ validators: PasswordValidator } );
+  }, {validators: PasswordValidator});
 
-  constructor(private userService: UserService, private permissionService: PermissionService, private feedbackService: FeedbackService) {
+  constructor(private userService: UserService, private permissionService: PermissionService, private feedbackService: FeedbackService, private authService: AuthService) {
     this.registerForm.valueChanges.subscribe(console.log)
   }
 
   blurred: boolean = false;
+
   ToggleBlurred(isOpened: boolean) {
     this.blurred = isOpened;
   }

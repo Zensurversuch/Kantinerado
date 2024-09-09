@@ -77,3 +77,66 @@ def initialize_Postgres(engine):
 
     else:
         print("Umgebungsvariablen USER_EMAIL, USER_PASSWORD, USER_FIRST_NAME or USER_LAST_NAME wurden nicht angegeben. Datenbank Schema wird nicht automatisch aufgesetzt.")
+
+#test Database
+def initialize_test_database(engine):
+    isDatabaseReady = False
+    while not isDatabaseReady:
+        try:
+            Base.metadata.create_all(engine)
+
+            Session = sessionmaker(bind=engine)
+            session = Session()
+            isDatabaseReady = True
+        except Exception as e:
+            print(f"PostgreSQL ist nicht erreichbar - versuche erneunt in einer Sekunde: {e}")
+            time.sleep(1)
+    try:
+        #add admin user during initial setup
+        if session.query(User).count() == 0:
+        
+            # Create the test users
+                admin = User(
+                userID = 1,
+                email = 'admin@test.com',
+                password = hashlib.sha256('admin_test'.encode('utf-8')).hexdigest(),
+                lastName = 'admin',
+                firstName = 'test',
+                role = "admin"
+                )
+                worker = User(
+                userID = 2,
+                email = 'kantinenmitarbeiter@test.com',
+                password = hashlib.sha256('kantinenmitarbeiter_test'.encode('utf-8')).hexdigest(),
+                lastName = 'kantinenmitarbeiter',
+                firstName = 'test',
+                role = "kantinenmitarbeiter"
+                )
+                user = User(
+                userID = 3,
+                email = 'hungernder@test.com',
+                password = hashlib.sha256('hungernder_test'.encode('utf-8')).hexdigest(),
+                lastName = 'hungernder',
+                firstName = 'test',
+                role = "hungernde"
+                )
+                session.add(admin)
+                session.add(worker)
+                session.add(user)
+                session.commit()
+                print("Test Benutzer erfolgreich erstellt.")
+        
+        #Adding example allergies
+        if session.query(Allergy).count() == 0:
+            allergies = [
+                Allergy(name='TestAllergyOne'),
+                Allergy(name='TestAllergyTwo'),
+            ]
+            session.add_all(allergies)
+            session.commit()
+            print("Test-Allergien erfolgreich hinzugefügt.")
+        print("Testdatenbank erfolgreich initialisiert")
+    except Exception as e:
+        print(f"Fehler beim Initialisieren der Testdatenbank: {e}")
+    finally:
+        session.close()

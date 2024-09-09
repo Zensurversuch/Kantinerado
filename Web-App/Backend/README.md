@@ -46,3 +46,30 @@ Um die Anwendung auszuführen muss folgender Befehl ausgeführt werden
 
 ### Weitere Informationen
     Für weitere Informationen zur Verwendung von Swagger und zur Interpretation der in swagger/swagger.json definierten Spezifikationen, besuchen Sie die offizielle Swagger-Dokumentation.
+
+## Testen des Backends
+
+1. **pytest installieren (optional)**
+    Um pytest zu verwenden, muss dieses zuerst installiert werden.
+    Dazu führen Sie den folgenden Befehl vorzugsweise in einer viertuellen Umgebung aus:
+    ```bash
+    pip install pytest
+    ```
+
+2. **Docker Compose starten:**
+    Führen Sie den folgenden Befehl in diesem Ordner ("~/Web-App") aus:
+    ```bash
+    docker-compose -f docker-compose.test.yml up --build
+    ```
+    Dieser Befehl baut die Docker-Images und startet die Container gemäß der Konfiguration in der `docker-compose.yml`-Datei. Die Option `--build` wird verwendet, um sicherzustellen, dass das Backend und Frontend Image vor dem Start der Container neu erstellt wird, wodurch Änderungen am Code automatisch mit deployed werden.
+
+3. **Tests starten**
+    Um die Tests zu starten führen sie folgenden Befehl in diesem Ordner ("~/Web-App") aus:
+
+    ```bash
+    pytest
+    ```
+
+**Hinweise**
+- Die PostgreSQL-Datenbank wird auf Port 5433 bereitgestellt.
+- Sind die Container gestartet, können die Tests beliebig oft ausgeführt werden.
