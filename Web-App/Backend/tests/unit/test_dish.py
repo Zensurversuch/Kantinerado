@@ -50,7 +50,7 @@ def test_create_dish_success_kantinenmitarbeiter(app, client, auth_token_kantine
     assert dish is not None
     
 def test_create_dish_hungernder(client, auth_token_hungernde, session, delete_all_dishes):
-    """Test creating a dish suggestion as kantinenmitarbeiter."""
+    """Test creating a dish suggestion as hungernder."""
     # Post-Data
     new_dish = {
         'name': 'Test Dish',
