@@ -28,8 +28,6 @@ def create_meal_plan():
 
 @meal_plan_blueprint.route('/meal_plan/<string:start_date>/<string:end_date>')
 def meal_plan(start_date, end_date):
-    if not (start_date and end_date):
-            return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
     meal_Plan = current_app.meal_plan_repo.get_mealPlan(start_date, end_date)
     if meal_Plan[0]:
         return jsonify(meal_Plan[1]), 201
