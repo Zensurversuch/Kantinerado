@@ -23,7 +23,7 @@ def create_meal_plan():
     ret_value = current_app.meal_plan_repo.create_mealPlan(meal_plan)
     if ret_value[0]:
         if ret_value[1] == '':
-            return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Speiseplan erfolgreich erstellt"}), 201
+            return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.SUCCESS.value}Speiseplan erfolgreich erstellt"}), 201
         else:
             return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.WARNING.value}Speiseplan erfolgreich erstellt, {ret_value[1]} sind bereits vorhanden"}), 201
     else:
