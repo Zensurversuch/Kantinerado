@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 import pytest
-import base64
 from DB_Repositories.models import Dish, MealPlan, Order
 from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
 
