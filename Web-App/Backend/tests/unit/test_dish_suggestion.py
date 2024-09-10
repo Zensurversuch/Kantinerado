@@ -285,7 +285,6 @@ def test_dish_suggestion_by_ID_success_kantinenarbeiter(session, client, auth_to
 
     # Check JSON-Data of dish suggestion
     retrieved_dish = response_get.get_json()
-    print (retrieved_dish)
     assert retrieved_dish['name'] == new_dish_suggestion['name']
     assert retrieved_dish['description'] == new_dish_suggestion['description']
     assert retrieved_dish['ingredients'] == new_dish_suggestion['ingredients']
@@ -317,7 +316,6 @@ def test_dish_suggestion_by_ID_success_admin(session, client, auth_token_admin, 
 
     # Check JSON-Data of dish suggestion
     retrieved_dish = response_get.get_json()
-    print (retrieved_dish)
     assert retrieved_dish['name'] == new_dish_suggestion['name']
     assert retrieved_dish['description'] == new_dish_suggestion['description']
     assert retrieved_dish['ingredients'] == new_dish_suggestion['ingredients']
