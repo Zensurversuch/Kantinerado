@@ -1,11 +1,10 @@
-from datetime import datetime, timedelta
 import pytest
 from flask_jwt_extended import create_access_token
 from __init__ import create_app
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from initialize_database import initialize_test_database
-from DB_Repositories.models import DishSuggestion, Dish, MealPlan, Order, dish_allergy_association
+from DB_Repositories.models import DishSuggestion, Dish, MealPlan, Order, dish_allergy_association, Allergy
 
 @pytest.fixture(scope='session')
 def app():
@@ -54,6 +53,24 @@ def delete_all_dishes(session):
     session.query(MealPlan).delete()
     session.query(dish_allergy_association).delete()
     session.query(Dish).delete()
+    session.commit()
+
+@pytest.fixture(scope='function')
+def delete_all_allergies(session):
+    """Fixture, to delete all allergies from database."""
+    session.query(dish_allergy_association).delete()
+    session.query(Allergy).delete()
+    session.commit()
+    
+@pytest.fixture(scope='function')
+def reset_allergies(session):
+    """Fixture, to reset allergies in database after a test."""
+    yield
+    allergies = [
+        Allergy(allergieID=1, name='TestAllergyOne'),
+        Allergy(allergieID=2, name='TestAllergyTwo'),
+        ]
+    session.add_all(allergies)
     session.commit()
         
 @pytest.fixture(scope='function')

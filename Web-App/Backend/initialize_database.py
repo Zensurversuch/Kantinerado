@@ -132,8 +132,8 @@ def initialize_test_database(engine):
         #Adding example allergies
         if session.query(Allergy).count() == 0:
             allergies = [
-                Allergy(name='TestAllergyOne'),
-                Allergy(name='TestAllergyTwo'),
+                Allergy(allergieID=1, name='TestAllergyOne'),
+                Allergy(allergieID=2, name='TestAllergyTwo'),
             ]
             session.add_all(allergies)
             session.commit()
