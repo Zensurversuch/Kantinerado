@@ -88,6 +88,15 @@ def all_users():
         return jsonify(data)
     return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
 
+@user_blueprint.route('/user_by_id/<int:user_id>')
+@jwt_required()
+@permission_check()
+def user_by_id(user_id):
+    user = current_app.user_repo.get_user_by_id(user_id)
+    if user:
+        return user
+    return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
+
 @user_blueprint.route('/allergy_by_userid/<int:user_id>')
 @jwt_required()
 @permission_check()
