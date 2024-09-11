@@ -3,7 +3,7 @@ import pytest
 from DB_Repositories.models import Dish, MealPlan, Order
 from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
 
-@pytest.mark.usefixtures("session",)
+@pytest.mark.usefixtures("session")
 
 
 ########################################################## order test ##########################################################
