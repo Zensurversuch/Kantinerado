@@ -49,16 +49,24 @@ Um die Anwendung auszuführen muss folgender Befehl ausgeführt werden
 
 ## Testen des Backends
 
-1. **pytest installieren (optional)**
+1. **Voraussetzungen**
+    **Abhängigkeiten installieren**
+    Um das Backend zu testen, müssen alle Abhängigkeiten installiert sein.
+    Dafür führen Sie den folgenden Befehl, vorzugsweise in einder virtuellen Umgebung, aus:
+    ```bash
+    pip install -r "requirements.txt"
+    ```
+    Dieser Befehl installiert alle Pakete, welche in der Datai "Web-App\Backend\requirements.txt" gelistet sind.
+    **pytest installieren**
     Um pytest zu verwenden, muss dieses zuerst installiert werden.
-    Dazu führen Sie den folgenden Befehl vorzugsweise in einer virtuellen Umgebung aus:
+    Dazu führen Sie den folgenden Befehl, vorzugsweise in einer virtuellen Umgebung, aus:
     ```bash
     pip install pytest
     ```
 
-2. **pytest-con installieren (optional)**
+    **pytest-con installieren (optional)**
     Wenn die Code-Coverage gemessen werden soll, muss das Plugin pytest-cov installiert sein.
-    Dafür führen Sid den folgenden Befehl vorzugsweise in einer virtuellen Umgebung aus:
+    Dafür führen Sid den folgenden Befehl, vorzugsweise in einer virtuellen Umgebung, aus:
     ```bash
     pip install pytest-cov
     ```
@@ -77,7 +85,7 @@ Um die Anwendung auszuführen muss folgender Befehl ausgeführt werden
     ```
 
 4. **Code Coverage messen**
-    Um die Code Coverage zu erfassen, muss anstelle des vorherigen Befehls der Folgender, in diesem Ordner ("~/Web-App"), ausgeführt werden:
+    Um die Code Coverage zu erfassen, muss anstelle des vorherigen Befehls der Folgende, in dem Ordner ("~/Web-App"), ausgeführt werden:
     ```bash
     pytest --cov=Backend --cov-config=.coveragerc --cov-report=term
     ```
@@ -91,5 +99,5 @@ Um die Anwendung auszuführen muss folgender Befehl ausgeführt werden
 
 
 **Hinweise**
-- Die PostgreSQL-Datenbank wird auf Port 5433 bereitgestellt.
+- Die PostgreSQL-Datenbank wird, in der Testumgebung, auf Port 5433 bereitgestellt.
 - Sind die Container gestartet, können die Tests beliebig oft ausgeführt werden.
