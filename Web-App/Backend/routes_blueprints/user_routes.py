@@ -14,13 +14,11 @@ def login():
 
     data_email = request.json.get('email', None)
     data_password = request.json.get('password', None)
-   
 
     if not data_email or not data_password:
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fehlender Benutzername oder Passwort"}), 400
 
     user_data = current_app.user_repo.get_user_by_email(data_email)
-
     if user_data:
         hashed_pw = hashlib.sha256((data_password + user_data["salt"]).encode('utf-8')).hexdigest()
         if (hashed_pw == user_data["password"]):
