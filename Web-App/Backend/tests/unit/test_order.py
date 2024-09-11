@@ -9,7 +9,7 @@ from api_messages import get_api_messages, API_MESSAGE_DESCRIPTOR
 ########################################################## order test ##########################################################
 
 def test_create_order_success_admin(client, auth_token_admin, session, delete_all_orders_mealPlans_dishes):
-    """Test creating a order as admin."""
+    """Test creating a order as admin"""
     dish = Dish(
             dishID=1,
             name="Test Dish",
@@ -69,7 +69,7 @@ def test_create_order_success_admin(client, auth_token_admin, session, delete_al
     assert second_order.amount == 1
     
 def test_create_order_success_hungernde(client, auth_token_hungernde, session, delete_all_orders_mealPlans_dishes):
-    """Test creating a order as hungernder."""
+    """Test creating a order as hungernder"""
     dish = Dish(
             dishID=1,
             name="Test Dish",
@@ -129,8 +129,7 @@ def test_create_order_success_hungernde(client, auth_token_hungernde, session, d
     assert second_order.amount == 1
 
 def test_orders_by_admin_success(client, auth_token_admin, session, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders by admin within a date range."""
-
+    """Test retrieving orders by admin within a date range"""
     dish = Dish(
             dishID=1,
             name="Test Dish",
@@ -179,8 +178,7 @@ def test_orders_by_admin_success(client, auth_token_admin, session, delete_all_o
     assert any(order['mealPlanID'] == 2 for order in response_data)
 
 def test_orders_by_kantinenmitarbeiter_success(client, auth_token_kantinenmitarbeiter, session, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders by kantinenmitarbeiter within a date range."""
-
+    """Test retrieving orders by kantinenmitarbeiter within a date range"""
     dish = Dish(
             dishID=1,
             name="Test Dish",
@@ -231,8 +229,7 @@ def test_orders_by_kantinenmitarbeiter_success(client, auth_token_kantinenmitarb
 
 
 def test_orders_by_hungernde_success(client, auth_token_hungernde, session, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders by hungernde within a date range."""
-
+    """Test retrieving orders by hungernde within a date range"""
     dish = Dish(
             dishID=1,
             name="Test Dish",
@@ -282,7 +279,7 @@ def test_orders_by_hungernde_success(client, auth_token_hungernde, session, dele
 
 
 def test_orders_no_orders_admin(client, auth_token_admin, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders by admin with no orders in the date range."""
+    """Test retrieving orders by admin with no orders in the date range"""
     today = datetime.today().date()
     start_date = today - timedelta(days=5)
     end_date = today + timedelta(days=5)
@@ -294,7 +291,7 @@ def test_orders_no_orders_admin(client, auth_token_admin, delete_all_orders_meal
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.ERROR.value}Sie haben keine Bestellungen in diesem Zeitraum"
 
 def test_orders_no_orders_kantinenmitarbeiter(client, auth_token_kantinenmitarbeiter, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders by hungernde with no orders in the date range."""
+    """Test retrieving orders by hungernde with no orders in the date range"""
     today = datetime.today().date()
     start_date = today - timedelta(days=5)
     end_date = today + timedelta(days=5)
@@ -307,7 +304,7 @@ def test_orders_no_orders_kantinenmitarbeiter(client, auth_token_kantinenmitarbe
 
 
 def test_orders_no_orders_hungernde(client, auth_token_hungernde, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders by hungernde with no orders in the date range."""
+    """Test retrieving orders by hungernde with no orders in the date range"""
     today = datetime.today().date()
     start_date = today - timedelta(days=5)
     end_date = today + timedelta(days=5)
@@ -320,9 +317,8 @@ def test_orders_no_orders_hungernde(client, auth_token_hungernde, delete_all_ord
 
 
 def test_orders_sorted_by_dish_success_admin(client, auth_token_admin, session, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders sorted by Dish by admin within a date range."""
+    """Test retrieving orders sorted by Dish by admin within a date range"""
     today = datetime.today().date()
-
     dishes = [
         Dish(
             dishID=1,
@@ -388,10 +384,8 @@ def test_orders_sorted_by_dish_success_admin(client, auth_token_admin, session, 
     )
 
     
-
-@pytest.mark.usefixtures("session")
 def test_sorted_by_dish_no_orders_admin(client, auth_token_admin, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders sorted by Dish by admin ID with no orders in the date range."""
+    """Test retrieving orders sorted by Dish by admin ID with no orders in the date range"""
     today = datetime.today().date()
     start_date = today - timedelta(days=10)
     end_date = today - timedelta(days=5)
@@ -402,8 +396,8 @@ def test_sorted_by_dish_no_orders_admin(client, auth_token_admin, delete_all_ord
     assert response.status_code == 404
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.ERROR.value}Es gibt keine Bestellungen in diesem Zeitraum"
 
-def test_orders_sorted_by_dish_success_admin(client, auth_token_kantinenmitarbeiter, session, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders sorted by Dish by admin within a date range."""
+def test_orders_sorted_by_dish_success_kantinenmitarbeiter(client, auth_token_kantinenmitarbeiter, session, delete_all_orders_mealPlans_dishes):
+    """Test retrieving orders sorted by Dish by kantinenmitarbeiter within a date range"""
     today = datetime.today().date()
 
     dishes = [
@@ -470,11 +464,8 @@ def test_orders_sorted_by_dish_success_admin(client, auth_token_kantinenmitarbei
         for order in response_data
     )
 
-    
-
-@pytest.mark.usefixtures("session")
 def test_sorted_by_dish_no_orders_kantinenmitarbeiter(client, auth_token_kantinenmitarbeiter, delete_all_orders_mealPlans_dishes):
-    """Test retrieving orders sorted by Dish by kantinenmitarbeiter with no orders in the date range."""
+    """Test retrieving orders sorted by Dish by kantinenmitarbeiter with no orders in the date range"""
     today = datetime.today().date()
     start_date = today - timedelta(days=10)
     end_date = today - timedelta(days=5)
