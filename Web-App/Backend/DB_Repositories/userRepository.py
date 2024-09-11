@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from DB_Repositories.models import User, Allergy
@@ -99,7 +100,7 @@ class UserRepository:
     def get_user_by_email(self, param_email):
         try:
             session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.email == param_email).first()
+            user_data = session.query(User).filter(func.lower(User.email) == param_email.lower()).first()
             if user_data:
                 allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
 
