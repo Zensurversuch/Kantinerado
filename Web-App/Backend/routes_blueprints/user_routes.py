@@ -64,7 +64,7 @@ def create_user_as_admin():
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
 
     if data_role not in ["hungernde", "admin", "kantinenmitarbeiter"]:
-        return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value} Die Rolle {data_role} , existiert nicht"}), 400
+        return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Die Rolle {data_role} , existiert nicht"}), 400
 
     if current_app.user_repo.get_user_by_email(data_email):
         return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Benutzer mit der E-Mail {data_email} exisitiert bereits"}), 500
