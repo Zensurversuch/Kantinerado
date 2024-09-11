@@ -93,7 +93,7 @@ def initialize_test_database(engine):
     try:
         #add admin user during initial setup
         if session.query(User).count() == 0:
-            admin_salt = '123456789qwertzzudsfsdfsadf'#secrets.token_hex()
+            admin_salt = secrets.token_hex()
             # Create the test users
             admin = User(
             userID = 1,
