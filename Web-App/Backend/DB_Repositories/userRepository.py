@@ -74,27 +74,6 @@ class UserRepository:
         finally:
             session.close()
 
-    def get_user_by_id(self, param_userID):
-        try:
-            session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.userID == param_userID).first()
-            if user_data:
-                allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
-
-                user_dict = {
-                    "userID": user_data.userID,
-                    "email": user_data.email,
-                    "lastName": user_data.lastName,
-                    "firstName": user_data.firstName,
-                    "role": user_data.role,
-                    "allergies": allergies
-                }
-                return user_dict
-            return None
-        except SQLAlchemyError as e:
-            return None
-        finally:
-            session.close()
 
     def get_user_by_email(self, param_email):
         try:
