@@ -135,7 +135,7 @@ def test_create_meal_plan_success_kantinenarbeiter(app, client, auth_token_kanti
     assert mealPlanOne is not None
     assert mealPlanTwo is not None
     
-def test_create_meal_plan_ungernder(app, client, auth_token_admin, auth_token_hungernde, session, delete_all_dishes, delete_all_meal_plans):
+def test_create_meal_plan_hungernder(app, client, auth_token_admin, auth_token_hungernde, session, delete_all_dishes, delete_all_meal_plans):
     """Test creating a meal plan as hungernder."""
     newDishOne = {
         'name': 'Test Dish one',
@@ -232,7 +232,7 @@ def test_create_meal_plan_missing_fields(app, client, auth_token_admin, session,
     assert responseMealPlan.status_code == 400
     assert responseMealPlan.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"
 
-########################################################## create_meal_plan test ##########################################################
+########################################################## meal_plan test ##########################################################
 
 def test_meal_plan_success_admin(app, client, auth_token_admin, session, delete_all_dishes, delete_all_meal_plans):
     """Test getting a meal plan as admin."""
@@ -284,6 +284,14 @@ def test_meal_plan_success_admin(app, client, auth_token_admin, session, delete_
             {
                 "dishID": dishTwo.dishID,
                 "date": "2024-04-04"
+            },
+            {
+                "dishID": dishOne.dishID,
+                "date": "2024-04-02"
+            },
+            {
+                "dishID": dishOne.dishID,
+                "date": "2024-04-05"
             }
         ]
     }
