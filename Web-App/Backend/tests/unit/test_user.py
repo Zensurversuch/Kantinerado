@@ -9,7 +9,7 @@ from datetime import timedelta
 
 ########################################################## login test ##########################################################
 
-def test_login_succes_admin_role(app, client, session):
+def test_login_success_admin_role(app, client, session):
     """Test login with admin role."""
     loginData= {
     "email": "admin@test.com",
@@ -31,7 +31,7 @@ def test_login_succes_admin_role(app, client, session):
     assert response.json["userID"] == user.userID
     assert response.json["role"] == user.role 
     
-def test_login_succes_kantinenmitarbeiter_role(app, client, session):
+def test_login_success_kantinenmitarbeiter_role(app, client, session):
     """Test login with kantinenmitarbeiter role."""
     loginData= {
     "email": "kantinenmitarbeiter@test.com",
@@ -53,7 +53,7 @@ def test_login_succes_kantinenmitarbeiter_role(app, client, session):
     assert response.json["userID"] == user.userID
     assert response.json["role"] == user.role 
     
-def test_login_succes_hungernde_role(app, client, session):
+def test_login_success_hungernde_role(app, client, session):
     """Test login with hungernde role."""
     loginData= {
     "email": "hungernder@test.com",
@@ -346,7 +346,7 @@ def test_create_user_as_admin_already_exists(client, session, delete_all_users, 
     assert response.status_code == 201
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Benutzer erfolgreich erstellt"
     
-    # check if dish suggestion was created
+    # check if user was created
     user = session.query(User).filter_by(email = data["email"]).first()
     assert user is not None
     assert user.lastName == data["lastName"]
@@ -361,7 +361,7 @@ def test_create_user_as_admin_already_exists(client, session, delete_all_users, 
     assert responseTwo.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.ERROR.value}Benutzer mit der E-Mail {data['email']} exisitiert bereits"
     
 def test_create_user_as_admin_invalid_role(client, delete_all_users, auth_token_admin):
-    """Test creating a user as admin with missing allergies"""
+    """Test creating a user as admin with an invalid role"""
     # Post-Data
     data = {
         'email': 'test@test.com',
@@ -381,7 +381,7 @@ def test_create_user_as_admin_invalid_role(client, delete_all_users, auth_token_
 
 ########################################################## all_users test ##########################################################
 
-def test_all_users_succes(client, auth_token_admin, delete_all_users):
+def test_all_users_success(client, auth_token_admin, delete_all_users):
     response = client.get(f'/all_users',
                           headers={'Authorization': f'Bearer {auth_token_admin}'}
                           )
@@ -391,7 +391,7 @@ def test_all_users_succes(client, auth_token_admin, delete_all_users):
     
 ########################################################## user_by_id test ##########################################################
 
-def test_user_by_id_succes(client, auth_token_admin):
+def test_user_by_id_success(client, auth_token_admin):
     response = client.get(f'/user_by_id/1',
                           headers={'Authorization': f'Bearer {auth_token_admin}'}
                           )
@@ -399,7 +399,7 @@ def test_user_by_id_succes(client, auth_token_admin):
     assert response.status_code == 200
     assert response.json == {'allergies': None, 'email': 'admin@test.com', 'firstName': 'test', 'lastName': 'admin', 'role': 'admin', 'userID': 1}
     
-def test_user_by_id_not_founde(client, auth_token_admin, delete_all_users):
+def test_user_by_id_not_found(client, auth_token_admin, delete_all_users):
     response = client.get(f'/user_by_id/4',
                           headers={'Authorization': f'Bearer {auth_token_admin}'}
                           )
@@ -409,7 +409,7 @@ def test_user_by_id_not_founde(client, auth_token_admin, delete_all_users):
     
 ########################################################## allergy_by_userid test ##########################################################
 
-def test_allergy_by_userid_succes_admin(client, auth_token_admin, session, delete_all_users):
+def test_allergy_by_userid_success_admin(client, auth_token_admin, session, delete_all_users):
     """Test allergy by userid as admin"""
     # Post-Data
     data = {
@@ -439,7 +439,7 @@ def test_allergy_by_userid_succes_admin(client, auth_token_admin, session, delet
     assert responseTwo.status_code == 200
     assert responseTwo.json == data['allergies']
     
-def test_allergy_by_userid_succes_hungernder(client, auth_token_hungernde, session, delete_all_users):
+def test_allergy_by_userid_success_hungernder(client, auth_token_hungernde, session, delete_all_users):
     """Test allergy by userid as hungernder"""
     # Post-Data
     data = {
@@ -541,7 +541,7 @@ def test_allergy_by_userid_user_not_found(client, auth_token_admin, delete_all_u
     
 ########################################################## set_user_allergies test ##########################################################
 
-def test_set_user_allergies_succes_hungernde(app, client, session, delete_all_users):
+def test_set_user_allergies_success_hungernde(app, client, session, delete_all_users):
     """Test set user allergies as hungernde"""
     # Post-Data
     data = {
@@ -599,7 +599,7 @@ def test_set_user_allergies_succes_hungernde(app, client, session, delete_all_us
     assert responseThree.status_code == 201
     assert responseThree.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Allergien erfolgreich angepasst"
     
-def test_set_user_allergies_succes_admin(app, client, session, delete_all_users, auth_token_admin):
+def test_set_user_allergies_success_admin(app, client, session, delete_all_users, auth_token_admin):
     """Test set user allergies as admin"""
     # Post-Data
     data = {
@@ -614,7 +614,6 @@ def test_set_user_allergies_succes_admin(app, client, session, delete_all_users,
                            json=data,
                            headers={'Authorization': f'Bearer {auth_token_admin}'}
                            )
-    print (auth_token_admin)
     assert response.status_code == 201
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Benutzer erfolgreich erstellt"
     
@@ -648,12 +647,12 @@ def test_set_user_allergies_succes_admin(app, client, session, delete_all_users,
     with app.app_context():
         generated_token = create_access_token(identity=user.userID, expires_delta=timedelta(hours=1))
         
-    dataTwo = {
+    allergyData = {
     'allergies': ['TestAllergyOne', 'TestAllergyTwo']
     }
 
     responseThree = client.post('/set_user_allergies',
-                                json = dataTwo,
+                                json = allergyData,
                                 headers={'Authorization': f'Bearer {generated_token}'}
                                 )
     
