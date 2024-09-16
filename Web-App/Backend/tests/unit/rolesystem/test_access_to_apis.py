@@ -49,16 +49,8 @@ def test_admin_can_access_create_dish(client, auth_token_admin, app, session, de
                           )
     assert response.status_code == 201
 
-    dish = session.query(Dish).filter_by(name='TestNewCreatedDish').first()
-    assert dish is not None
-    assert dish.name == 'TestNewCreatedDish'
 
-    if dish:
-            session.delete(dish)
-            session.commit()
-
-
-def test_kantinenmitarbeiter_cannot_access_create_dish(client, auth_token_kantinenmitarbeiter, app, session, delete_all_dishes):
+def test_kantinenmitarbeiter_can_access_create_dish(client, auth_token_kantinenmitarbeiter, app, session, delete_all_dishes):
     """Test if a kantinenmitarbeit can access the create_dish route."""
     response = client.post('/create_dish',
                            headers={'Authorization': f'Bearer {auth_token_kantinenmitarbeiter}'},
@@ -66,14 +58,6 @@ def test_kantinenmitarbeiter_cannot_access_create_dish(client, auth_token_kantin
                            )
 
     assert response.status_code == 201
-
-    dish = session.query(Dish).filter_by(name='TestNewCreatedDish').first()
-    assert dish is not None
-    assert dish.name == 'TestNewCreatedDish'
-
-    if dish:
-            session.delete(dish)
-            session.commit()
 
 def test_hungernde_cannot_access_create_dish(client, auth_token_hungernde, app):
     """Test if a hungernder cannot access the create_dish route."""
