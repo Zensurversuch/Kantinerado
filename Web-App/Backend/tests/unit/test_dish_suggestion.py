@@ -256,79 +256,7 @@ def test_all_dish_suggestions_no_suggestions(client, auth_token_kantinenmitarbei
     # Validating the JSON-response
     assert response.status_code == 404
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"Fehler: Keinen Gerichtsvorschlag gefunden"
-       
-########################################################## dish_suggestion_by_ID test ##########################################################
-
-def test_dish_suggestion_by_ID_success_kantinenarbeiter(session, client, auth_token_kantinenmitarbeiter, auth_token_hungernde, delete_all_dish_suggestions):
-    
-    new_dish_suggestion = {
-        'name': 'Test Dish',
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'description': 'Das ist eine Testbeschreibung'
-    }
-
-    response_post = client.post('/create_dish_suggestion',
-                                json=new_dish_suggestion,
-                                headers={'Authorization': f'Bearer {auth_token_hungernde}'})
-
-    assert response_post.status_code == 201
-
-    dish_suggestion = session.query(DishSuggestion).filter_by(name='Test Dish').first()
-    
-    assert dish_suggestion is not None
-
-    response_get = client.get(f'/dish_suggestion_by_id/{dish_suggestion.dishSuggestionID}',
-                              headers={'Authorization': f'Bearer {auth_token_kantinenmitarbeiter}'})
-
-    assert response_get.status_code == 200  
-
-    # Check JSON-Data of dish suggestion
-    retrieved_dish = response_get.get_json()
-    assert retrieved_dish['name'] == new_dish_suggestion['name']
-    assert retrieved_dish['description'] == new_dish_suggestion['description']
-    assert retrieved_dish['ingredients'] == new_dish_suggestion['ingredients']
-    assert retrieved_dish['image'] == new_dish_suggestion['image']
-    
-def test_dish_suggestion_by_ID_success_admin(session, client, auth_token_admin, auth_token_hungernde, delete_all_dish_suggestions):
-    
-    new_dish_suggestion = {
-        'name': 'Test Dish',
-        'ingredients': ['ingredient1', 'ingredient2'],
-        'image': base64.b64encode(b'test image data').decode('utf-8'),
-        'description': 'Das ist eine Testbeschreibung'
-    }
-
-    response_post = client.post('/create_dish_suggestion',
-                                json=new_dish_suggestion,
-                                headers={'Authorization': f'Bearer {auth_token_hungernde}'})
-
-    assert response_post.status_code == 201
-
-    dish_suggestion = session.query(DishSuggestion).filter_by(name='Test Dish').first()
-    
-    assert dish_suggestion is not None
-
-    response_get = client.get(f'/dish_suggestion_by_id/{dish_suggestion.dishSuggestionID}',
-                              headers={'Authorization': f'Bearer {auth_token_admin}'})
-
-    assert response_get.status_code == 200  
-
-    # Check JSON-Data of dish suggestion
-    retrieved_dish = response_get.get_json()
-    assert retrieved_dish['name'] == new_dish_suggestion['name']
-    assert retrieved_dish['description'] == new_dish_suggestion['description']
-    assert retrieved_dish['ingredients'] == new_dish_suggestion['ingredients']
-    assert retrieved_dish['image'] == new_dish_suggestion['image']
-    
-def test_dish_suggestion_by_ID_no_suggestion(client, auth_token_kantinenmitarbeiter, delete_all_dish_suggestions):
-    response = client.get(f'/dish_suggestion_by_id/1',
-                          headers={'Authorization': f'Bearer {auth_token_kantinenmitarbeiter}'})
-    
-    # Validate the JSON-response
-    assert response.status_code == 404
-    assert response.json[API_MESSAGE_DESCRIPTOR] == f"Fehler: Gerichtsvorschlag nicht gefunden"
-    
+        
 ########################################################## delete_dish_suggestion test ##########################################################
     
 def test_delete_dish_suggestion_success_kantinenmitarbeiter(session, client, auth_token_kantinenmitarbeiter, auth_token_hungernde, delete_all_dish_suggestions):
@@ -388,7 +316,7 @@ def test_delete_dish_suggestion_success_admin(session, client, auth_token_admin,
     assert deleted_dish_suggestion is None
     
 def test_delete_dish_suggestion_no_suggestion(client, auth_token_kantinenmitarbeiter, delete_all_dish_suggestions):
-    response = client.get(f'/dish_suggestion_by_id/1',
+    response = client.get(f'/delete_dish_suggestion/1',
                           headers={'Authorization': f'Bearer {auth_token_kantinenmitarbeiter}'})
     
     assert response.status_code == 404

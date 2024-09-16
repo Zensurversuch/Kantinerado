@@ -5,14 +5,11 @@ def get_permissions_for_role(role):
     if role == UserRole.ADMIN.value:
         permissions = [
             # User Permissions
-            Permissions.ALL_USERS.value, 
             Permissions.USER_BY_ID.value,   
             Permissions.CREATE_USER_AS_ADMIN.value,
             Permissions.SET_USER_ALLERGIES.value, 
-            # Dish Permissions
-            Permissions.DISH_BY_ID.value,  
+            # Dish Permissions 
             Permissions.CREATE_DISH.value,  
-            Permissions.DISH_BY_NAME.value,
             Permissions.DISH_BY_MEALTYPE.value,  
             # Allergy Permissions
             Permissions.ALLERGY_BY_USERID.value,  
@@ -26,7 +23,6 @@ def get_permissions_for_role(role):
             # Dish Suggestion Permissions
             Permissions.CREATE_DISH_SUGGESTION.value,
             Permissions.ALL_DISH_SUGGESTIONS.value,
-            Permissions.DISH_SUGGESTION_BY_ID.value,
             Permissions.DELETE_DISH_SUGGESTION.value,
             Permissions.ACCEPT_DISH_SUGGESTION.value
         ]
@@ -35,8 +31,6 @@ def get_permissions_for_role(role):
             # User Permissions
             Permissions.SET_USER_ALLERGIES.value, 
             # Dish Permissions
-            Permissions.DISH_BY_ID.value,  
-            Permissions.DISH_BY_NAME.value,
             Permissions.DISH_BY_MEALTYPE.value,  
             # Allergy Permissions
             Permissions.ALLERGY_BY_USERID.value,  
@@ -50,10 +44,8 @@ def get_permissions_for_role(role):
         ]
     elif role == UserRole.KANTINENMITARBEITER.value:
         permissions = [
-            # Dish Permissions
-            Permissions.DISH_BY_ID.value,  
+            # Dish Permissions 
             Permissions.CREATE_DISH.value, 
-            Permissions.DISH_BY_NAME.value,
             Permissions.DISH_BY_MEALTYPE.value,               
             # Order Permissions
             Permissions.ORDERS_BY_USER.value,  
@@ -63,7 +55,6 @@ def get_permissions_for_role(role):
             Permissions.CREATE_MEAL_PLAN.value,
             #Dish suggestion Permissions
             Permissions.ALL_DISH_SUGGESTIONS.value,
-            Permissions.DISH_SUGGESTION_BY_ID.value,
             Permissions.DELETE_DISH_SUGGESTION.value,
             Permissions.ACCEPT_DISH_SUGGESTION.value
     
@@ -81,14 +72,11 @@ class UserRole(Enum):
 
 class Permissions(Enum):
     # User Permissions
-    ALL_USERS = "all_users"
     USER_BY_ID = "user_by_id"
     USER_BY_EMAIL = "user_by_email"
     CREATE_USER_AS_ADMIN = "create_user_as_admin"
     SET_USER_ALLERGIES = "set_user_allergies"
     # Dish Permissions
-    DISH_BY_ID = "dish_by_id"
-    DISH_BY_NAME = "dish_by_name"
     CREATE_DISH = "create_dish"
     DISH_BY_MEALTYPE = "dish_by_mealType"
     # Allergy Permissions
@@ -105,7 +93,6 @@ class Permissions(Enum):
     # Dish Suggestion Permissions
     CREATE_DISH_SUGGESTION = "create_dish_suggestion"
     ALL_DISH_SUGGESTIONS = "all_dish_suggestions"
-    DISH_SUGGESTION_BY_ID = "dish_suggestion_by_id"
     DELETE_DISH_SUGGESTION = "delete_dish_suggestion"
     ACCEPT_DISH_SUGGESTION = "accept_dish_suggestion"
     

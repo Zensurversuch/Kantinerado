@@ -35,15 +35,6 @@ def all_dish_suggestions():
         return jsonify(data)
     return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Keinen Gerichtsvorschlag gefunden"}), 404
 
-@dish_suggestion_blueprint.route('/dish_suggestion_by_id/<int:dishSuggestion_ID>')
-@jwt_required()
-@permission_check()
-def dish_suggestion_by_id(dishSuggestion_ID):
-    dishSuggestion = current_app.dish_suggestion_repo.dish_suggestion_by_ID(dishSuggestion_ID)
-    if dishSuggestion:
-        return dishSuggestion
-    return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gerichtsvorschlag nicht gefunden"}), 404
-
 @dish_suggestion_blueprint.route('/delete_dish_suggestion/<int:dishSuggestion_ID>')
 @jwt_required()
 @permission_check()

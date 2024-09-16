@@ -379,16 +379,6 @@ def test_create_user_as_admin_invalid_role(client, delete_all_users, auth_token_
     assert response.status_code == 400
     assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.ERROR.value}Die Rolle {data['role']} , existiert nicht"
 
-########################################################## all_users test ##########################################################
-
-def test_all_users_success(client, auth_token_admin, delete_all_users):
-    response = client.get(f'/all_users',
-                          headers={'Authorization': f'Bearer {auth_token_admin}'}
-                          )
-
-    assert response.status_code == 200
-    assert response.json == [{'allergies': None, 'email': 'admin@test.com', 'firstName': 'test', 'lastName': 'admin', 'role': 'admin', 'userID': 1}, {'allergies': None, 'email': 'kantinenmitarbeiter@test.com', 'firstName': 'test', 'lastName': 'kantinenmitarbeiter', 'role': 'kantinenmitarbeiter', 'userID': 2}, {'allergies': None, 'email': 'hungernder@test.com', 'firstName': 'test', 'lastName': 'hungernder', 'role': 'hungernde', 'userID': 3}]
-    
 ########################################################## user_by_id test ##########################################################
 
 def test_user_by_id_success(client, auth_token_admin):
