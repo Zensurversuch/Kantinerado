@@ -14,13 +14,11 @@ def login():
 
     data_email = request.json.get('email', None)
     data_password = request.json.get('password', None)
-   
 
     if not data_email or not data_password:
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fehlender Benutzername oder Passwort"}), 400
 
     user_data = current_app.user_repo.get_user_by_email(data_email)
-
     if user_data:
         hashed_pw = hashlib.sha256((data_password + user_data["salt"]).encode('utf-8')).hexdigest()
         if (hashed_pw == user_data["password"]):
@@ -66,7 +64,7 @@ def create_user_as_admin():
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
 
     if data_role not in ["hungernde", "admin", "kantinenmitarbeiter"]:
-        return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value} Die Rolle {data_role} , existiert nicht"}), 400
+        return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Die Rolle {data_role} , existiert nicht"}), 400
 
     if current_app.user_repo.get_user_by_email(data_email):
         return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Benutzer mit der E-Mail {data_email} exisitiert bereits"}), 500
