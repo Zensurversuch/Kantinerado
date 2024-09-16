@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from DB_Repositories.models import User, Allergy
@@ -74,6 +75,32 @@ class UserRepository:
         finally:
             session.close()
 
+
+    def get_user_by_email(self, param_email):
+        try:
+            session = scoped_session(self.session_factory)
+            user_data = session.query(User).filter(func.lower(User.email) == param_email.lower()).first()
+            if user_data:
+                allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
+
+                user_dict = {
+                    "userID": user_data.userID,
+                    "password": user_data.password,
+                    "email": user_data.email,
+                    "lastName": user_data.lastName,
+                    "firstName": user_data.firstName,
+                    "role": user_data.role,
+                    "salt": user_data.salt,
+                    "allergies": allergies
+                }
+                return user_dict
+            return None
+        except SQLAlchemyError as e:
+            return None
+        finally:
+            session.close()
+
+
     def get_user_by_id(self, param_userID):
         try:
             session = scoped_session(self.session_factory)
@@ -87,30 +114,6 @@ class UserRepository:
                     "lastName": user_data.lastName,
                     "firstName": user_data.firstName,
                     "role": user_data.role,
-                    "allergies": allergies
-                }
-                return user_dict
-            return None
-        except SQLAlchemyError as e:
-            return None
-        finally:
-            session.close()
-
-    def get_user_by_email(self, param_email):
-        try:
-            session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.email == param_email).first()
-            if user_data:
-                allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
-
-                user_dict = {
-                    "userID": user_data.userID,
-                    "password": user_data.password,
-                    "email": user_data.email,
-                    "lastName": user_data.lastName,
-                    "firstName": user_data.firstName,
-                    "role": user_data.role,
-                    "salt": user_data.salt,
                     "allergies": allergies
                 }
                 return user_dict

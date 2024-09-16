@@ -93,31 +93,33 @@ def initialize_test_database(engine):
     try:
         #add admin user during initial setup
         if session.query(User).count() == 0:
-            salt = secrets.token_hex()
+            admin_salt = secrets.token_hex()
             # Create the test users
             admin = User(
             userID = 1,
             email = 'admin@test.com',
-            password = hashlib.sha256('admin_test'.encode('utf-8')).hexdigest(),
-            salt = salt,
+            password = hashlib.sha256(('admin_test' + admin_salt).encode('utf-8')).hexdigest(),
+            salt = admin_salt,
             lastName = 'admin',
             firstName = 'test',
             role = "admin"
             )
+            worker_salt = secrets.token_hex()
             worker = User(
             userID = 2,
             email = 'kantinenmitarbeiter@test.com',
-            password = hashlib.sha256('kantinenmitarbeiter_test'.encode('utf-8')).hexdigest(),
-            salt = salt,
+            password = hashlib.sha256(('kantinenmitarbeiter_test' + worker_salt).encode('utf-8')).hexdigest(),
+            salt = worker_salt,
             lastName = 'kantinenmitarbeiter',
             firstName = 'test',
             role = "kantinenmitarbeiter"
             )
+            user_salt = secrets.token_hex()
             user = User(
             userID = 3,
             email = 'hungernder@test.com',
-            password = hashlib.sha256('hungernder_test'.encode('utf-8')).hexdigest(),
-            salt = salt,
+            password = hashlib.sha256(('hungernder_test' + user_salt).encode('utf-8')).hexdigest(),
+            salt = user_salt,
             lastName = 'hungernder',
             firstName = 'test',
             role = "hungernde"
@@ -132,8 +134,8 @@ def initialize_test_database(engine):
         #Adding example allergies
         if session.query(Allergy).count() == 0:
             allergies = [
-                Allergy(name='TestAllergyOne'),
-                Allergy(name='TestAllergyTwo'),
+                Allergy(allergieID=1, name='TestAllergyOne'),
+                Allergy(allergieID=2, name='TestAllergyTwo'),
             ]
             session.add_all(allergies)
             session.commit()
