@@ -6,25 +6,6 @@ import base64
 
 
 dish_blueprint = Blueprint('dish_blueprint', __name__)
-
-@dish_blueprint.route('/dish_by_id/<int:dish_id>')
-@jwt_required()
-@permission_check()
-def dish_by_id(dish_id):
-    dish = current_app.dish_repo.get_dish_by_id(dish_id)
-    if dish:
-        return dish
-    return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gericht nicht gefunden"}), 404
-
-@dish_blueprint.route('/dish_by_name/<string:dish_name>')
-@jwt_required()
-@permission_check()
-def dish_by_name(dish_name):
-    dish = current_app.dish_repo.get_dish_by_name(dish_name)
-    if dish:
-        return dish
-    return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Gericht nicht gefunden"}), 404
-
 @dish_blueprint.route('/dish_by_mealType/<string:dish_mealType>')
 @jwt_required()
 @permission_check()

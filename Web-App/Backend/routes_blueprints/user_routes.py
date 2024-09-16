@@ -77,14 +77,6 @@ def create_user_as_admin():
     elif ret_value == False:
         return jsonify({API_MESSAGE_DESCRIPTOR: f"{get_api_messages.ERROR.value}Benutzer konnte nicht erstellt werden"}), 500
 
-@user_blueprint.route('/all_users')
-@jwt_required()
-@permission_check()
-def all_users():
-    data = current_app.user_repo.get_all_users()
-    if data:
-        return jsonify(data)
-    return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Benutzer nicht gefunden"}), 404
 
 @user_blueprint.route('/user_by_id/<int:user_id>')
 @jwt_required()

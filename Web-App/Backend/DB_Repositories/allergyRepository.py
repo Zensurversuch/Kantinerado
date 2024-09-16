@@ -29,18 +29,3 @@ class AllergyRepository:
         finally:
             session.close()
 
-    def get_allergie_by_id(self, param_allergyID):
-        try:
-            session = scoped_session(self.session_factory)
-            allergy_data = session.query(Allergy).filter(Allergy.allergieID == param_allergyID).first()
-            if allergy_data:
-                allergy_dict = {
-                    "allergieID": allergy_data.allergieID,
-                    "name": allergy_data.name
-                }
-                return allergy_dict
-            return None
-        except SQLAlchemyError as e:
-            return None
-        finally:
-            session.close()

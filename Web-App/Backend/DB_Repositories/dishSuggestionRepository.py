@@ -60,27 +60,6 @@ class DishSuggestionRepository:
             return None
         finally:
             session.close()
-
-    def dish_suggestion_by_ID(self, param_dishSuggestionID):
-        try:
-            session = scoped_session(self.session_factory)
-            dishSuggestion_data = session.query(DishSuggestion).filter(DishSuggestion.dishSuggestionID == param_dishSuggestionID).first()
-            if dishSuggestion_data:
-
-                dishSuggestion_dict = {
-                    "dishSuggestion_ID": dishSuggestion_data.dishSuggestionID,
-                    "name": dishSuggestion_data.name,
-                    "ingredients": dishSuggestion_data.ingredients if dishSuggestion_data.ingredients else None,
-                    "image": base64.b64encode(dishSuggestion_data.image).decode() if dishSuggestion_data.image else None,
-                    "date": dishSuggestion_data.date,
-                    "description": dishSuggestion_data.description if dishSuggestion_data.description else None
-                }
-                return dishSuggestion_dict
-            return None
-        except SQLAlchemyError as e:
-            return None
-        finally:
-            session.close()
     
     def delete_dish_suggestion(self, param_dishSuggestionID):
         try:
