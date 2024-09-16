@@ -4,7 +4,7 @@ from __init__ import create_app
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from initialize_database import initialize_test_database
-from DB_Repositories.models import DishSuggestion, Dish, MealPlan, Order, dish_allergy_association, Allergy, User, user_allergy_association
+from DB_Repositories.models import DishSuggestion, Dish, Order, dish_allergy_association, MealPlan, Allergy, User, user_allergy_association
 
 @pytest.fixture(scope='session')
 def app():
@@ -47,9 +47,14 @@ def delete_all_dish_suggestions(session):
     session.commit()
     
 @pytest.fixture(scope='function')
+def delete_all_meal_plans(session):
+    """Fixture, to delete all meal plans from database."""
+    session.query(MealPlan).delete()
+    session.commit()
+    
+@pytest.fixture(scope='function')
 def delete_all_dishes(session):
     """Fixture, to delete all dishes from database."""
-    session.query(Order).delete()
     session.query(MealPlan).delete()
     session.query(dish_allergy_association).delete()
     session.query(Dish).delete()

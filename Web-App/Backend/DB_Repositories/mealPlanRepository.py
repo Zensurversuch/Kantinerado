@@ -19,7 +19,6 @@ class MealPlanRepository:
                 session = scoped_session(self.session_factory)
                 min_ = 1
                 max_ = 1000000000
-                listOfDuplicates = []
                 rand_mealPlanID = randint(min_, max_)
     
                 date_str = mealPlan[0].get('date')  
@@ -38,27 +37,17 @@ class MealPlanRepository:
                     dish_id = meal.get('dishID')
                     date_str = meal.get('date')
                     date = datetime.strptime(date_str, "%Y-%m-%d")
-                    if not session.query(MealPlan).filter(
-                        and_(
-                            MealPlan.date == date,
-                            MealPlan.dishID == dish_id
-                        )
-                    ).first():
-                        while session.query(MealPlan).filter(MealPlan.mealPlanID == rand_mealPlanID).first() is not None:
-                            rand_mealPlanID = randint(min_, max_)
-                        new_mealPlan = MealPlan(
-                            mealPlanID=rand_mealPlanID,
-                            dishID=dish_id,
-                            date=date
-                        )
-                        session.add(new_mealPlan)
-                    else:
-                        listOfDuplicates.append(meal)
+                    
+                    while session.query(MealPlan).filter(MealPlan.mealPlanID == rand_mealPlanID).first() is not None:
+                        rand_mealPlanID = randint(min_, max_)
+                    new_mealPlan = MealPlan(
+                        mealPlanID=rand_mealPlanID,
+                        dishID=dish_id,
+                        date=date
+                    )
+                    session.add(new_mealPlan)
                 session.commit()
-                if listOfDuplicates == []:
-                    return True, ''
-                else: 
-                    return True, str(listOfDuplicates)
+                return True, None
             except SQLAlchemyError as e:
                 return False, e
             except ValueError as e:

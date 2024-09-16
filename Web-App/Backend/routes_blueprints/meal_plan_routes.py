@@ -22,17 +22,12 @@ def create_meal_plan():
 
     ret_value = current_app.meal_plan_repo.create_mealPlan(meal_plan)
     if ret_value[0]:
-        if ret_value[1] == '':
-            return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Speiseplan erfolgreich erstellt"}), 201
-        else:
-            return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.WARNING.value}Speiseplan erfolgreich erstellt, {ret_value[1]} sind bereits vorhanden"}), 201
+        return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.SUCCESS.value}Speiseplan erfolgreich erstellt"}), 201
     else:
         return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}{str(ret_value[1])}"}),420 
 
 @meal_plan_blueprint.route('/meal_plan/<string:start_date>/<string:end_date>')
 def meal_plan(start_date, end_date):
-    if not (start_date and end_date):
-            return jsonify({API_MESSAGE_DESCRIPTOR:  f"{get_api_messages.ERROR.value}Fülle alle erforderliche Felder aus"}), 400
     meal_Plan = current_app.meal_plan_repo.get_mealPlan(start_date, end_date)
     if meal_Plan[0]:
         return jsonify(meal_Plan[1]), 201
