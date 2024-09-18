@@ -9,7 +9,7 @@ Dieses Docker-Compose-Setup ermöglicht es, eine einfache Webanwendung mit einer
    ```text
    # Diese Datei kann Variablen für Docker speichern  
     JWT_SECRET_KEY=<key>  # Setzen Sie hier das Secret für den JWT Token
-    ANGULAR_ENVIRONMENT=<development || production>         # Zum lokalen test development, auf dem server production
+    ENVIRONMENT=<development || production>         # Zum lokalen test development, auf dem server production
     #PostgreSQL variablen
     POSTGRES_PASSWORD=<Passwort>                            # Setzen Sie hier das Passwort 
     USER_EMAIL= <E-mail>                                    # Setze die E-mail für den erstern Kantinerado Admin Benutzer (optional)
