@@ -12,6 +12,7 @@ def app():
     app = create_app(config_name='testing')
     with app.app_context():
         # Initialize the database schema
+        print("Inititalize Database")
         engine = create_engine(app.config['POSTGRES_DATABASE_URI'])
         print(app.config['POSTGRES_DATABASE_URI'])
         initialize_test_database(engine)
