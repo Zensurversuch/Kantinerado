@@ -12,7 +12,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """test configuration"""
     TESTING = True
-    POSTGRES_DATABASE_URI = f"postgresql://postgres:test@database:5433/postgres_test"
+    POSTGRES_DATABASE_URI = f"postgresql://postgres:test@localhost:5433/postgres_test"
 
 class ProductionConfig(Config):
     """production configuration"""

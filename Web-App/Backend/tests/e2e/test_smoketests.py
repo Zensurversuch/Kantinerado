@@ -3,7 +3,7 @@ import pytest
 from playwright.sync_api import Page
 from support_scipts import load_users
 
-@pytest.mark.usefixtures("session")
+@pytest.mark.usefixtures("app", "session")
 
 def test_smoketest_dish(app, session, client, page: Page):
     print("Testing...")
