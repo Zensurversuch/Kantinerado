@@ -1,7 +1,7 @@
 from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig
+from config import Config, TestingConfig, DevelopmentConfig, ProductionConfig, UnitTestingConfig
 from initialize_database import initialize_Postgres, initialize_test_database
 from DB_Repositories import userRepository, dishesRepository, mealPlanRepository, orderRepository, allergyRepository, dishSuggestionRepository
 from routes_blueprints import dish_suggestion_blueprint
@@ -14,6 +14,8 @@ def create_app(config_name: str = 'default') -> Flask:
         app.config.from_object(TestingConfig)
     elif config_name == 'development':
         app.config.from_object(DevelopmentConfig) 
+    elif config_name == 'unitTesting':
+        app.config.from_object(UnitTestingConfig)
     else:
         app.config.from_object(ProductionConfig)
 
@@ -30,7 +32,9 @@ def create_app(config_name: str = 'default') -> Flask:
     app.allergy_repo = allergyRepository.AllergyRepository(engine)
     app.dish_suggestion_repo = dishSuggestionRepository.DishSuggestionRepository(engine)
     
-    if config_name != 'testing':
+    if config_name == 'testing':
+        initialize_test_database(engine)
+    else:
         initialize_Postgres(engine)
     # Initialise JWT, CORS and register blueprints
     from flask_jwt_extended import JWTManager

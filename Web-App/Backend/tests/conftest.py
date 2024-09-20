@@ -9,14 +9,14 @@ from DB_Repositories.models import DishSuggestion, Dish, Order, dish_allergy_ass
 @pytest.fixture(scope='session')
 def app():
     """Create and configure the Flask-App for the tests."""
-    app = create_app(config_name='testing')
+    app = create_app(config_name='unitTesting')
     with app.app_context():
         # Initialize the database schema
         print("Inititalize Database")
         engine = create_engine(app.config['POSTGRES_DATABASE_URI'])
         print(app.config['POSTGRES_DATABASE_URI'])
         initialize_test_database(engine)
-    yield app
+        yield app
 
 @pytest.fixture(scope='session')
 def client(app):
