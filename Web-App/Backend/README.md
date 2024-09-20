@@ -36,7 +36,7 @@ Um die Anwendung auszuführen muss folgender Befehl ausgeführt werden
     Diese Dokumentation beschreibt die Verwendung von Swagger zur Dokumentation von APIs in diesem Projekt. Swagger ist über die Route /swagger erreichbar und die Spezifikationen sind in der Datei swagger/swagger.json definiert.
 
 ### Verwendung
-    Um auf die Swagger-Dokumentation zuzugreifen, navigieren Sie einfach zu http://<Ihre_Domain>/swagger in Ihrem Webbrowser.
+    Um auf die Swagger-Dokumentation zuzugreifen, muss das Backend in der Development Konfiguration gestartet sein. Dafür geben Sie in Ihrer .env Datei unter environment "development" an. Danach können Sie einfach zu http://<Ihre_Domain>/swagger in Ihrem Webbrowser navigieren, um die Swagger UI abzurufen.
 
 ### Spezifikationen
     Die Spezifikationen für die APIs sind in der Datei swagger/swagger.json definiert. Diese Datei enthält detaillierte Informationen über die verfügbaren Endpunkte, Parameter, Anfragemethoden und Antworten.
