@@ -2,16 +2,13 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Kantinerado API",
-    "description": "\nDie API stellt eine Schnittstelle zwischen dem Fornt- und dem Backend der Kantinerado Web-App bereit. ",
+    "description": "\nDie API stellt eine Schnittstelle zwischen dem Front- und dem Backend der Kantinerado Web-App bereit. ",
     "contact": {
       "email": "kirchert.tin22@student.dhbw-heidenheim.de"
     },
     "version": "1.0.1"
   },
   "servers": [
-    {
-      "url": "http://185.233.106.149:5000"
-    },
     {
       "url": "http://127.0.0.1:5000"
     }
@@ -38,89 +35,15 @@
       "description": "routes regarding mealplans"
     },
     {
+      "name": "dishsuggestions",
+      "description": "routes regarding dishsuggestions"
+    },
+    {
       "name": "others",
       "description": "other routes"
     }
   ],
   "paths": {
-    "/dish_by_id/{dish_id}": {
-      "get": {
-        "tags": [
-          "dishes"
-        ],
-        "summary": "returns dish by Id",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "dish_id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the dish to get"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returned dish succesfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Dish_with_Id"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "dish not found"
-          }
-        }
-      }
-    },
-    "/dish_by_name/{dish_name}": {
-      "get": {
-        "tags": [
-          "dishes"
-        ],
-        "summary": "returns dish by name",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "dish_name",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "name of the dish to get"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returned dish succesfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Dish_with_Id"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "dish not found"
-          }
-        }
-      }
-    },
     "/dish_by_mealType/{dish_mealType}": {
       "get": {
         "tags": [
@@ -353,55 +276,6 @@
         }
       }
     },
-    "/all_users": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "returns all users",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returned users succesfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "UserList": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/User_with_Id"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "no users found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "No users found"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/user_by_id/{user_id}": {
       "get": {
         "tags": [
@@ -422,45 +296,6 @@
             },
             "required": true,
             "description": "Numeric ID of the user to get"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returned user succesfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User_with_Id"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "user not found"
-          }
-        }
-      }
-    },
-    "/user_by_email/{user_email}": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "summary": "returns User by email",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "user_email",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "email of the user to get"
           }
         ],
         "responses": {
@@ -525,39 +360,67 @@
         }
       }
     },
-    "/user_password/{user_id}": {
-      "get": {
+    "/set_user_allergies": {
+      "post": {
         "tags": [
           "users"
         ],
-        "summary": "returns password of a user by user_id",
+        "summary": "Set user allergies",
         "security": [
           {
             "BearerAuth": []
           }
         ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "user_id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the user to get password"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "allergies": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/allergy"
+                    },
+                    "example": [
+                      "nuts",
+                      "gluten",
+                      "lactose"
+                    ]
+                  }
+                }
+              }
+            }
           }
-        ],
+        },
         "responses": {
-          "200": {
-            "description": "returned password succesfully'",
+          "201": {
+            "description": "Allergies successfully updated",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "password": {
+                    "msg": {
                       "type": "string",
-                      "example": "password"
+                      "example": "Allergies successfully updated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string",
+                      "example": "Fill in all required fields"
                     }
                   }
                 }
@@ -565,7 +428,36 @@
             }
           },
           "404": {
-            "description": "user not found"
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unable to update allergies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string",
+                      "example": "Could not update allergies"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -613,19 +505,6 @@
         }
       }
     },
-    "/hello": {
-      "get": {
-        "summary": "Hello-Endpunkt",
-        "responses": {
-          "200": {
-            "description": "Nachricht, wenn die Berechtigung gewährt ist"
-          },
-          "403": {
-            "description": "Nachricht, wenn die Berechtigung erforderlich ist"
-          }
-        }
-      }
-    },
     "/all_allergies": {
       "get": {
         "tags": [
@@ -658,45 +537,6 @@
           },
           "404": {
             "description": "no allergies found"
-          }
-        }
-      }
-    },
-    "/allergy_by_id/{allergy_id}": {
-      "get": {
-        "tags": [
-          "allergies"
-        ],
-        "summary": "returns Allergy by Id",
-        "security": [
-          {
-            "BearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "allergy_id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the allergy to get"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "returned allergy succesfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/allergy"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "allergy not found"
           }
         }
       }
@@ -955,11 +795,11 @@
                   "properties": {
                     "monday": {
                       "type": "string",
-                      "example": "2024-01-01T00:00:00.000Z"
+                      "example": "2024-01-01"
                     },
                     "sunday": {
                       "type": "string",
-                      "example": "2024-01-07T00:00:00.000Z"
+                      "example": "2024-01-07"
                     }
                   }
                 }
@@ -990,6 +830,273 @@
                     "sunday": {
                       "type": "string",
                       "example": "2024-01-014"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create_dish_suggestion": {
+      "post": {
+        "summary": "Create a new dish suggestion",
+        "description": "Creates a new dish suggestion by providing name, ingredients, image, and description.",
+        "tags": [
+          "dishsuggestions"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Daten, die zum Erstellen eines neuen Gerichtsvorschlags erforderlich sind",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DishSuggestion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Gerichtsvorschlag erfolgreich erstellt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "SUCCESS: Gerichtsvorschlag erfolgreich erstellt"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fehlende erforderliche Felder",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "ERROR: Fülle alle erforderliche Felder aus"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Gerichtsvorschlag konnte nicht erstellt werden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "ERROR: Gerichtsvorschlag konnte nicht erstellt werden"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/all_dish_suggestions": {
+      "get": {
+        "summary": "Retrieve all dish suggestions",
+        "description": "Fetches a list of all available dish suggestions.",
+        "tags": [
+          "dishsuggestions"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of all dish suggestions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DishSuggestion_with_Id_and_date"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Keinen Gerichtsvorschlag gefunden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "ERROR: Keinen Gerichtsvorschlag gefunden"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete_dish_suggestion/{dishSuggestion_ID}": {
+      "get": {
+        "summary": "Delete a dish suggestion",
+        "description": "Deletes a dish suggestion based on the provided dish suggestion ID.",
+        "tags": [
+          "dishsuggestions"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dishSuggestion_ID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the dish suggestion to delete"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Dish suggestion successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "SUCCESS: Gerichtsvorschlag erfolgreich gelöscht"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Dish suggestion not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "ERROR: Gerichtsvorschlag nicht gefunden"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accept_dish_suggestion": {
+      "post": {
+        "summary": "Accept a dish suggestion and create a new dish",
+        "description": "Accepts a dish suggestion and creates a new dish based on the provided details. Deletes the suggestion upon success.",
+        "tags": [
+          "dishsuggestions"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Data required to accept the dish suggestion and create a new dish.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "dishSuggestionID",
+                  "dishData"
+                ],
+                "properties": {
+                  "dishSuggestionID": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "dishData": {
+                    "$ref": "#/components/schemas/Dish"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Dish successfully created and suggestion deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "SUCCESS: Gericht erfolgreich erstellt. Gerichtsvorschlag erfolgreich gelöscht"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required fields or dish already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "ERROR: Fülle alle erforderlichen Felder aus"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Dish could not be created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "ERROR: Gericht konnte nicht erstellt werden"
                     }
                   }
                 }
@@ -1118,6 +1225,7 @@
           },
           "image": {
             "type": "string",
+            "format": "binary",
             "example": "insert base 64 string or remove image-key from json"
           }
         }
@@ -1166,6 +1274,63 @@
             "example": 1
           }
         }
+      },
+      "DishSuggestion": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "test Suggestion"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "dough",
+              "cheese",
+              "tamatosauce"
+            ]
+          },
+          "image": {
+            "type": "string",
+            "format": "binary",
+            "example": "insert base 64 string or remove image-key from json"
+          },
+          "description": {
+            "type": "string",
+            "example": "a description to further describe the dish suggestion"
+          }
+        }
+      },
+      "DishSuggestion_with_Id_and_date": {
+        "required": [
+          "dishSuggestionID",
+          "date"
+        ],
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "dishSuggestionID": {
+                "type": "number",
+                "example": 1234
+              },
+              "date": {
+                "type": "string",
+                "format": "date",
+                "example": "2024-01-01T00:00:00.000Z"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/DishSuggestion"
+          }
+        ]
       }
     }
   }
