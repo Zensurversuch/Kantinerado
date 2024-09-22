@@ -2,8 +2,8 @@ import pytest
 from playwright.sync_api import Page, expect
 from tests.conftest import load_users, perform_login, perform_logout
 
-@pytest.mark.usefixtures("session")
 
+@pytest.mark.usefixtures("session")
 def test_register_kantinenmitarbeiter(page: Page, load_users, delete_all_users):
     users = load_users
     admin_user = next(user for user in users if user.get("role") == "admin")

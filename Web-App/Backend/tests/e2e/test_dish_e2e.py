@@ -7,7 +7,6 @@ from tests.conftest import load_users, perform_login
 
 
 @pytest.mark.usefixtures("session")
-
 def test_suggestion_accept(page: Page, load_users, delete_all_dishes, delete_all_meal_plans):
     users = load_users
     kantinenmitarbeiter_user = next(user for user in users if user.get("role") == "kantinenmitarbeiter")

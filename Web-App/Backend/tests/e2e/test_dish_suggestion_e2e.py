@@ -3,8 +3,8 @@ from playwright.sync_api import expect, Page
 
 from tests.conftest import load_users, perform_login, perform_logout
 
-@pytest.mark.usefixtures("session")
 
+@pytest.mark.usefixtures("session")
 def test_suggestion_accept(page: Page, load_users, delete_all_dish_suggestions, delete_all_dishes):
     users = load_users
     kantinenmitarbeiter_user = next(user for user in users if user.get("role") == "kantinenmitarbeiter")
@@ -56,7 +56,6 @@ def test_suggestion_accept(page: Page, load_users, delete_all_dish_suggestions, 
     page.get_by_role("option", name="Mittagessen").click()
     page.locator("div").filter(has_text="Gericht auswählen").nth(4).click()
     expect(page.get_by_role("option", name="TestVorschlag edited")).to_be_visible()
-
 
 
 def test_suggestion_decline(page: Page, load_users, delete_all_dish_suggestions, delete_all_dishes):
