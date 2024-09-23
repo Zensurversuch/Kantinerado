@@ -55,18 +55,24 @@ def test_create_order_success_admin(client, auth_token_admin, session, delete_al
                            headers={'Authorization': f'Bearer {auth_token_admin}'}
                            )
     
-    assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Bestellung erfolgreich"
-    assert response.status_code == 201
-
+    now = datetime.now()
     
-    # check if order was created
-    first_order = session.query(Order).filter_by(mealPlanID=1).first()
-    assert first_order is not None
-    assert first_order.amount == 2
+    if (now.weekday() == 3 and now.hour >= 16) or now.weekday() >3:
+        assert response.status_code == 400
+        assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.ERROR.value}Es können keine Bestellungen mehr nach Donnerstag 16 Uhr für nächste Woche aufgegeben werden"
+    else:
+        assert response.json[API_MESSAGE_DESCRIPTOR] == f"{get_api_messages.SUCCESS.value}Bestellung erfolgreich"
+        assert response.status_code == 201
 
-    second_order = session.query(Order).filter_by(mealPlanID=2).first()
-    assert second_order is not None
-    assert second_order.amount == 1
+        
+        # check if order was created
+        first_order = session.query(Order).filter_by(mealPlanID=1).first()
+        assert first_order is not None
+        assert first_order.amount == 2
+
+        second_order = session.query(Order).filter_by(mealPlanID=2).first()
+        assert second_order is not None
+        assert second_order.amount == 1
     
 def test_create_order_success_hungernde(client, auth_token_hungernde, session, delete_all_orders_mealPlans_dishes):
     """Test creating a order as hungernder"""
