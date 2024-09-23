@@ -2,15 +2,16 @@ services:
   frontend:
     build:
       context: ./Frontend/
+      dockerfile: Dockerfile.production
       args:
-        - ANGULAR_ENVIRONMENT=${ANGULAR_ENVIRONMENT}
+        - ENVIRONMENT=${ENVIRONMENT}
     ports:
       - "80:80"
 
   backend:
     build:
-      context: ./Backend
-      dockerfile: Dockerfile.${ANGULAR_ENVIRONMENT}
+      context: ./Backend/
+      dockerfile: Dockerfile.${ENVIRONMENT}
     ports:
       - "5000:5000"
     depends_on:
@@ -23,6 +24,7 @@ services:
       USER_PASSWORD: ${USER_PASSWORD}
       USER_LAST_NAME: ${USER_LAST_NAME}
       USER_FIRST_NAME: ${USER_FIRST_NAME}
+      FLASK_CONFIG: ${ENVIRONMENT}
 
   database:
     image: postgres:15

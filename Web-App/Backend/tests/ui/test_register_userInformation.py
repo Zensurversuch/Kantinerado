@@ -1,26 +1,28 @@
-import {test, expect} from '@playwright/test';
+import pytest
+from playwright.sync_api import Page, expect
 
-test.beforeEach(async ({page}) => {
-  await page.goto('/');
-  await page.waitForLoadState('networkidle');
-  await page.getByRole('button', {name: 'Menu'}).click();
-  await page.waitForLoadState('networkidle');
-  await page.locator('li').filter({hasText: 'Login'}).click();
-  await page.getByRole('button', {name: 'Erstellen Sie einen Account'}).click();
-  await page.waitForLoadState('networkidle');
-})
 
-test.describe('Testing failure in the registration Form', () => {
-  test('should be true if the failure for "Nachname" ist shown.', async ({page}) => {
-    const informationLocator = page.getByText('Nachname ist erforderlich.');
-    await expect(informationLocator).toBeHidden();
-    await page.getByLabel('Nachname*').click();
-    await page.getByText('Nachname*').click();
-    await expect(informationLocator).toBeVisible();
-    await page.getByLabel('Nachname*').fill('Nachname');
-    await page.getByText('Nachname*').click();
-    await expect(informationLocator).toBeHidden();
-  })
+@pytest.fixture(scope="function")
+def before_each(page: Page):
+    page.goto('/')
+    page.wait_for_load_state('networkidle')
+    page.get_by_role('button', name='Menu').click()
+    page.wait_for_load_state('networkidle')
+    page.locator('li').filter(has_text='Login').click()
+    page.get_by_role('button', name='Erstellen Sie einen Account').click()
+    page.wait_for_load_state('networkidle')
+
+"""should be true if the failure for "Nachname" ist shown."""
+def test_lastname_information(page:Page, before_each):
+    information_locator = page.get_by_text('Nachname ist erforderlich.')
+    expect(information_locator).to_be_hidden()
+    page.get_by_label('Nachname*').click()
+    page.get_by_text('Nachname*').click()
+    expect(information_locator).to_be_visible()
+    page.get_by_label('Nachname*').fill('Nachname')
+    page.get_by_text('Nachname*').click()
+    expect(information_locator).to_be_hidden()
+'''
   test('should be true if the failure for "Vorname" ist shown.', async ({page}) => {
     const informationLocator = page.getByText('Vorname ist erforderlich.');
     await expect(informationLocator).toBeHidden();
@@ -94,3 +96,5 @@ test.describe('Testing failure in the registration Form', () => {
     await expect(equalLocator).toBeHidden();
   })
 })
+
+'''
