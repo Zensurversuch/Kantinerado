@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpHeaders } from '@angular/common/http';
-import { AllergyService } from '../../service/allergy/allergy.service';
-import { AuthService } from '../../service/authentication/auth.service';
-import { HeaderComponent } from '../header/header.component';
-import { FeedbackService } from '../../service/feedback/feedback.service';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HttpHeaders} from '@angular/common/http';
+import {AllergyService} from '../../service/allergy/allergy.service';
+import {AuthService} from '../../service/authentication/auth.service';
+import {HeaderComponent} from '../header/header.component';
+import {FeedbackService} from '../../service/feedback/feedback.service';
 
 interface Allergy {
   name: string;
@@ -24,7 +24,6 @@ interface Allergy {
 })
 export class SettingsComponent implements OnInit {
   allergies: Allergy[] = [];
-  darkMode: boolean = false;
   headers: HttpHeaders;
 
   constructor(private allergyService: AllergyService, private authService: AuthService, private header: HeaderComponent, private feedbackService: FeedbackService) {
@@ -32,20 +31,15 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  const storedDarkMode = localStorage.getItem('darkMode');
-    if (storedDarkMode !== null) {
-      this.darkMode = JSON.parse(storedDarkMode);
-    }
-
     this.allergyService.getAllergies().subscribe(
       (response: any[]) => {
-        this.allergies = response.map((allergy: any) => ({ name: allergy.name, selected: false}));
+        this.allergies = response.map((allergy: any) => ({name: allergy.name, selected: false}));
         console.log(this.allergies)
         this.setUsersAllergies();
       },
       error => {
         console.error('Error fetching allergies:', error);
-        this.allergies = [{ name: "Error Loading Allergies", selected: true }];
+        this.allergies = [{name: "Error Loading Allergies", selected: true}];
       }
     );
   }
@@ -81,12 +75,10 @@ export class SettingsComponent implements OnInit {
   }
 
 
-
   submitAllergies() {
     const selectedAllergies: Allergy[] = this.allergies.filter(allergy => allergy.selected);
     const selectedAllergiesNames: string[] = selectedAllergies.map(allergy => allergy.name);
-    const chosen_allergies = { allergies: selectedAllergiesNames };
-    console.log('Ausgewählte Allergien:', chosen_allergies);
+    const chosen_allergies = {allergies: selectedAllergiesNames};
 
     this.allergyService.setAllergies(chosen_allergies, this.headers).subscribe(
       response => {
@@ -97,5 +89,4 @@ export class SettingsComponent implements OnInit {
       }
     );
   }
-
 }
