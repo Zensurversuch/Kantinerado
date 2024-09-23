@@ -9,9 +9,13 @@ Voraussetzung dafür ist Python installiert zu haben.
    - in den Ordner Backend wechseln
    - virtuelle Umgebung erstellen
         - Unter Unix/macOS:
+            ```bash
             python3 -m venv .venv
+            ```
         - Unter Windows:
+            ```bash
             python -m venv .venv
+            ```
 
 2. **Interpreter der virtuellen Umgebung auswählen**
    - Die Taste "F1" drücken und "Python: Select Interpreter" auswählen
@@ -20,9 +24,13 @@ Voraussetzung dafür ist Python installiert zu haben.
 
 3. **virtuelle Umgebung aktivieren**
     - Unter Unix/macOS:
+        ```bash
         source venv/bin/activate
+        ```
     - Unter Windows:
+        ```bash
         venv\Scripts\activate
+        ```
 
 4. **Abhängigkeiten installieren**
    - ```bash

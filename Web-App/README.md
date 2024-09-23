@@ -10,7 +10,7 @@ PostgreSQL-Datenbank lokal zu betreiben. Hier ist eine kurze Anleitung, wie Sie 
    ```text
    # Diese Datei kann Variablen für Docker speichern  
     JWT_SECRET_KEY=<key>  # Setzen Sie hier das Secret für den JWT Token
-    ENVIRONMENT=<development || production>         # Zum lokalen test development, auf dem server production
+    ENVIRONMENT=<development || production>                 # Zum lokalen test development, auf dem server production
     #PostgreSQL variablen
     POSTGRES_PASSWORD=<Passwort>                            # Setzen Sie hier das Passwort 
     USER_EMAIL= <E-mail>                                    # Setze die E-mail für den erstern Kantinerado Admin Benutzer (optional)
@@ -64,7 +64,7 @@ docker-compose -f docker-compose.test.yml up --build
 Dieser Befehl baut die Docker-Images und startet die Container gemäß der Konfiguration in der `docker-compose.yml`-Datei. Die Option `--build` stellt sicher, dass das Backend- und Frontend-Image vor dem Start der Container neu erstellt wird, wodurch Änderungen am Code automatisch übernommen werden.
 
 **Tests starten**
-Um die Tests zu starten, führen Sie folgenden Befehl aus:
+Um alle Tests zu starten, führen Sie folgenden Befehl aus:
 
 ```bash
 pytest
