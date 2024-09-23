@@ -1,6 +1,5 @@
 import {Routes} from '@angular/router';
 import {LoginComponent} from "./components/login/login.component";
-import {HelloComponent} from "./components/hello/hello.component";
 import {HomeComponent} from "./components/home/home.component";
 import {RegisterComponent} from "./components/register/register.component";
 import {UserOrderSummaryComponent} from "./components/order_summary/userOrderSummary.component"
