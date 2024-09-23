@@ -12,6 +12,10 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """test configuration"""
     TESTING = True
+    POSTGRES_DATABASE_URI = f"postgresql://postgres:test@database-test:5432/postgres_test"
+class UnitTestingConfig(Config):
+    """unit test configuration"""
+    TESTING = True
     POSTGRES_DATABASE_URI = f"postgresql://postgres:test@localhost:5433/postgres_test"
 
 class ProductionConfig(Config):

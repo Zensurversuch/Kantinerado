@@ -275,8 +275,8 @@ node_modules/
 /Frontend/yarn-error.log
 
 # IDEs and editors
-/Frontend/.idea/
-/Frontend/.project
+.idea/
+.project
 /Frontend/.classpath
 /Frontend/.c9/
 /Frontend/*.launch

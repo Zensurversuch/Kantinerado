@@ -1,5 +1,10 @@
+import json
+import os
+
 import pytest
 from flask_jwt_extended import create_access_token
+from playwright.sync_api import Page, expect
+
 from __init__ import create_app
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -9,13 +14,14 @@ from DB_Repositories.models import DishSuggestion, Dish, Order, dish_allergy_ass
 @pytest.fixture(scope='session')
 def app():
     """Create and configure the Flask-App for the tests."""
-    app = create_app(config_name='testing')
+    app = create_app(config_name='unitTesting')
     with app.app_context():
         # Initialize the database schema
+        print("Inititalize Database")
         engine = create_engine(app.config['POSTGRES_DATABASE_URI'])
         print(app.config['POSTGRES_DATABASE_URI'])
         initialize_test_database(engine)
-    yield app
+        yield app
 
 @pytest.fixture(scope='session')
 def client(app):
@@ -105,3 +111,32 @@ def auth_token_hungernde(app):
     """Create an hungernde jwt-Token."""
     with app.app_context():
         return create_access_token(identity=3, expires_delta=False)
+
+@pytest.fixture(scope="function")
+def load_users():
+    file_path = os.path.join(os.path.dirname(__file__), 'user.json')
+    print("loading Usersdata")
+    with open(file_path) as f:
+        return json.load(f)
+
+def perform_login(page:Page, username, password):
+    print("Performing login")
+    page.goto("/#/")
+    page.get_by_role("button", name="Menu").click()
+    page.wait_for_load_state("networkidle")
+    page.get_by_role("link", name="Login").click()
+    page.wait_for_load_state("networkidle")
+    expect(page).to_have_url("/#/login")
+    page.get_by_label("Username:").click()
+    page.get_by_label("Username:").fill(username)
+    page.get_by_label("Password:").click()
+    page.get_by_label("Password:").fill(password)
+    page.get_by_label("Password:").press("Enter")
+    page.wait_for_load_state("networkidle")
+    expect(page).to_have_url("/#/")
+
+def perform_logout(page:Page):
+    page.get_by_role("button", name="Menu").click()
+    page.get_by_role("link", name="Logout").click()
+    page.get_by_role("button", name="Ja, Abmelden").click()
+    expect(page).to_have_url("/#/login")

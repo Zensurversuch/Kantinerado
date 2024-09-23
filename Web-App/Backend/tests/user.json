@@ -1,0 +1,31 @@
+[
+  {
+    "email": "admin@test.com",
+    "password": "admin_test",
+    "role": "admin"
+  },
+  {
+    "email": "kantinenmitarbeiter@test.com",
+    "password": "kantinenmitarbeiter_test",
+    "role": "kantinenmitarbeiter"
+  },
+  {
+    "email": "hungernder@test.com",
+    "password": "hungernder_test",
+    "role": "hungernder"
+  },
+  {
+    "firstName": "UserFor",
+    "lastName": "SmokeTests",
+    "email": "test@testing.com",
+    "password": "Testing1!",
+    "role": "new_user"
+  },
+  {
+    "firstName": "UserFor",
+    "lastName": "SmokeTests",
+    "email": "test@testing.com",
+    "password": "Testing1!",
+    "role": "new_kantinenmitarbeiter"
+  }
+]
