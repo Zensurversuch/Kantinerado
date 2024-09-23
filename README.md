@@ -28,10 +28,12 @@ Der Vorgang des Deployments ist durch einen Befehl vollständig:
 
 1. **Laden sie das Repository herunter**
 
-2. **Gehen Sie in den Ordner ( /Development/Web-App/**
+2. **Gehen Sie in den Ordner [Web-App](Web-App)**
 
 3. **Gehen Sie in die Console und führen Sie folgenden Befehl aus:**
+```bash
 docker-compose up --build
+```
 
 # Datenbank aufsetzen mit Backup
 Hierfür folgende Einträge aus der .env entfernen, sodass die Datenbank nicht direkt beim Start initialisiert wird:

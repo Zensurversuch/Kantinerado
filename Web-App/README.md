@@ -14,9 +14,9 @@ PostgreSQL-Datenbank lokal zu betreiben. Hier ist eine kurze Anleitung, wie Sie 
     #PostgreSQL variablen
     POSTGRES_PASSWORD=<Passwort>                            # Setzen Sie hier das Passwort 
     USER_EMAIL= <E-mail>                                    # Setze die E-mail für den erstern Kantinerado Admin Benutzer (optional)
-    USER_PASSWORD = <Passwort>                              # Setze das Password für den erstern Kantinerado Admin Benutzer (optional)
-    USER_LAST_NAME=<Nachnamen>                              # Setze das Nachnamen für den erstern Kantinerado Admin Benutzer (optional)
-    USER_FIRST_NAME=<Vornamen>                              # Setze das Vornamen für den erstern Kantinerado Admin Benutzer (optional)
+    USER_PASSWORD = <Passwort>                              # Setze das Passwort für den erstern Kantinerado Admin Benutzer (optional)
+    USER_LAST_NAME=<Nachnamen>                              # Setze den Nachnamen für den erstern Kantinerado Admin Benutzer (optional)
+    USER_FIRST_NAME=<Vornamen>                              # Setze den Vornamen für den erstern Kantinerado Admin Benutzer (optional)
    
    ```
 
