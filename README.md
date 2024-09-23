@@ -34,6 +34,13 @@ Der Vorgang des Deployments ist durch einen Befehl vollständig:
 docker-compose up --build
 
 # Datenbank aufsetzen mit Backup
+Hierfür folgende Einträge aus der .env entfernen, sodass die Datenbank nicht direkt beim Start initialisiert wird:
+* USER_EMAIL
+* USER_PASSWORD
+* USER_LAST_NAME
+* USER_FIRST_NAME
+
+
 Man muss sich mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) mit der Datenbank verbinden.
 1. DBeaver herunterladen
 2. Verbindung zur Datenbank herstellen
