@@ -1,4 +1,14 @@
 services:
+  frontend:
+    build:
+      context: ./Frontend/
+      dockerfile: Dockerfile.development
+      args:
+      - ENVIRONMENT=development
+    depends_on:
+      - backend
+    ports:
+      - "4200:4200"
   backend:
     build:
       context: ./Backend/

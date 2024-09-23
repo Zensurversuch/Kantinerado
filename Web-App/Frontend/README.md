@@ -29,32 +29,3 @@ ng serve
 ```
 
 Der Server wird bei jeder Änderung des Codes automatisch neu geladen.
-# Anleitung: Tests in einem Angular-Projekt ausführen
-
-In diesem Abschnitt erfahren Sie, wie Sie End-to-End-Tests (e2e) mit Playwright und den Angular-Testserver ausführen.
-
-### End-to-End (e2e) Tests mit Playwright starten:
-
-Um die e2e-Tests auszuführen, verwenden Sie den folgenden Befehl:
-```bash
-npx playwright test
-```
-
-Playwright ermöglicht das Testen von Benutzerinteraktionen in verschiedenen Browsern. Dieser Befehl führt alle im Projekt definierten Playwright-Tests aus.
-### Code erstellen:
-```bash
-npx playwright codegen
-```
-Dieser Befehl öffnet einen Browser (in der Regel Chromium), in dem Sie Ihre Anwendung manuell testen können. Während Sie dies tun, wird automatisch Code generiert, der als Playwright-Test dient. 
-Hinweis: Beim Schließen des Browsers wird auch das Playwright-Codefenster geschlossen.
-### Code debuggen:
-```bash
-npx playwright test --debug
-```
-Dieser Befehl ermöglicht das Debuggen von Tests. Es bietet eine visuelle Darstellung, um den Ablauf der Tests Schritt für Schritt nachzuvollziehen.
-
-### Die Playwright UI öffnen:
-```bash
-npx playwright test --ui
-```
-Die Playwright-Benutzeroberfläche zeigt Testläufe an und ermöglicht es Ihnen, vergangene Testläufe zu inspizieren und Details zu Fehlern zu sehen. Dies ist besonders hilfreich, um nach einem fehlgeschlagenen Test den Grund zu ermitteln.

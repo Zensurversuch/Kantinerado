@@ -2,15 +2,16 @@ services:
   frontend:
     build:
       context: ./Frontend/
+      dockerfile: Dockerfile.production
       args:
-        - ANGULAR_ENVIRONMENT=${ENVIRONMENT}
+        - ENVIRONMENT=${ENVIRONMENT}
     ports:
       - "80:80"
 
   backend:
     build:
-      context: ./Backend
-      dockerfile: Dockerfile.production
+      context: ./Backend/
+      dockerfile: Dockerfile.${ENVIRONMENT}
     ports:
       - "5000:5000"
     depends_on:
