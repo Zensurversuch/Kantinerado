@@ -2,7 +2,6 @@ import json
 import os
 
 import pytest
-from Tools.scripts.generate_global_objects import Printer
 from flask_jwt_extended import create_access_token
 from playwright.sync_api import Page, expect
 
