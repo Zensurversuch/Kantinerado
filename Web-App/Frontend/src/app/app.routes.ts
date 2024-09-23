@@ -24,7 +24,6 @@ export const routes: Routes = [
   { path: 'createSuggestion', component: CreateSuggestionComponent, canActivate: [AuthGuard]},
   { path: 'suggestionReview', component: ReviewSuggestionComponent, canActivate: [AuthGuard] },
   { path: 'createMealPlan', component: CreateMealPlanComponent, canActivate: [AuthGuard]},
-  { path: 'hello', component: HelloComponent, canActivate: [AuthGuard]},
   { path: 'userOrderSummary', component: UserOrderSummaryComponent, canActivate: [AuthGuard]},
   { path: 'workerOrderSummary', component: WorkerOrderSummaryComponent, canActivate: [AuthGuard]},
   { path: 'registerAdmin', component: RegisterAdminComponent, canActivate: [AuthGuard]},

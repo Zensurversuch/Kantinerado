@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
 import { AllergyService } from '../../service/allergy/allergy.service';
 import { AuthService } from '../../service/authentication/auth.service';
@@ -55,13 +55,6 @@ export class SettingsComponent implements OnInit {
   }
 
 
-  toggleDarkMode() {
-    // Hier Logik für Dark mode einfügen
-    this.darkMode = !this.darkMode;
-    localStorage.setItem('darkMode', JSON.stringify(this.darkMode));
-    console.log('Dark Mode wurde umgeschaltet!');
-  }
-
   toggleAllergy(allergy: Allergy) {
     allergy.selected = !allergy.selected;
   }
@@ -94,7 +87,7 @@ export class SettingsComponent implements OnInit {
     const selectedAllergiesNames: string[] = selectedAllergies.map(allergy => allergy.name);
     const chosen_allergies = { allergies: selectedAllergiesNames };
     console.log('Ausgewählte Allergien:', chosen_allergies);
-  
+
     this.allergyService.setAllergies(chosen_allergies, this.headers).subscribe(
       response => {
         this.feedbackService.displayMessage(response.response);
