@@ -9,9 +9,13 @@ Voraussetzung dafür ist Python installiert zu haben.
    - in den Ordner Backend wechseln
    - virtuelle Umgebung erstellen
         - Unter Unix/macOS:
+            ```bash
             python3 -m venv .venv
+            ```
         - Unter Windows:
+            ```bash
             python -m venv .venv
+            ```
 
 2. **Interpreter der virtuellen Umgebung auswählen**
    - Die Taste "F1" drücken und "Python: Select Interpreter" auswählen
@@ -20,9 +24,13 @@ Voraussetzung dafür ist Python installiert zu haben.
 
 3. **virtuelle Umgebung aktivieren**
     - Unter Unix/macOS:
+        ```bash
         source venv/bin/activate
+        ```
     - Unter Windows:
+        ```bash
         venv\Scripts\activate
+        ```
 
 4. **Abhängigkeiten installieren**
    - ```bash
@@ -38,7 +46,9 @@ flask run
 Diese Dokumentation beschreibt die Verwendung von Swagger zur Dokumentation von APIs in diesem Projekt. Swagger ist über die Route /swagger erreichbar und die Spezifikationen sind in der Datei swagger/swagger.json definiert.
 
 ### Verwendung
-Um auf die Swagger-Dokumentation zuzugreifen, navigieren Sie einfach zu http://<Ihre_Domain>/swagger in Ihrem Webbrowser.
+    Um auf die Swagger-Dokumentation zuzugreifen, muss das Backend in der Development Konfiguration gestartet sein. Dafür geben Sie in Ihrer .env Datei unter environment "development" an. Danach können Sie einfach zu http://<Ihre_Backend_Domain>/swagger (Default Konfiguration: http://localhost:5000/swagger) in Ihrem Webbrowser navigieren, um auf die SwaggerUI, welche die Backend API-Routen dokumentiert, zuzugreifen.
+
+    Da wir JWT verwenden, sind unsere Routen gesichert. Um Zugriff auf die gesperrten Routen zu erhalten, muss man oben rechts bei dem Schlosssymbol einen JWT-Token eingeben. Diesen Token erhält man über die Login-Route in Swagger, indem man die Zugangsdaten eines gültigen Nutzers eingibt und den JWT-Token aus der Antwort kopiert. Anschließend kann man sich oben rechts in der Swagger-UI mit diesem Token authentifizieren. Sollte allerdings kein Admin-User für den Login verwendet worden sein, kann es sein, dass manche Routen weiterhin gesperrt bleiben.
 
 ### Spezifikationen
 Die Spezifikationen für die APIs sind in der Datei swagger/swagger.json definiert. Diese Datei enthält detaillierte Informationen über die verfügbaren Endpunkte, Parameter, Anfragemethoden und Antworten.
