@@ -1,7 +1,9 @@
+from sqlalchemy import func
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from DB_Repositories.models import User, Allergy
 from random import randint 
+import secrets
 import hashlib
 
 class UserRepository:
@@ -18,13 +20,15 @@ class UserRepository:
             while session.query(User).filter(User.userID == rand_userid).first() is not None:
                 rand_userid = randint(min_, max_)
 
-            hashed_pw = hashlib.sha256(param_password.encode('utf-8')).hexdigest()
+            salt = secrets.token_hex()
+            hashed_pw = hashlib.sha256((param_password + salt).encode('utf-8')).hexdigest()
             new_user = User(userID=rand_userid,
                             email=param_email,
                             password=hashed_pw,
                             lastName=param_lastName,
                             firstName=param_firstName,
-                            role=param_role)
+                            role=param_role,
+                            salt = salt)
 
             missing_allergies = []
             if param_allergies:
@@ -45,36 +49,10 @@ class UserRepository:
             session.close()
 
 
-    def get_all_users(self):
+    def get_user_by_email(self, param_email):
         try:
             session = scoped_session(self.session_factory)
-            all_users = session.query(User).all()
-            user_list = []
-
-            if all_users:
-                for user in all_users:
-                    allergies = [allergy.name for allergy in user.allergies] if user.allergies else None
-                    user_dict = {
-                        "userID": user.userID,
-                        "email": user.email,
-                        "lastName": user.lastName,
-                        "firstName": user.firstName,
-                        "role": user.role,
-                        "allergies": allergies
-                    }
-                    user_list.append(user_dict)
-
-                return user_list
-            return None
-        except SQLAlchemyError as e:
-            return None
-        finally:
-            session.close()
-
-    def get_user_by_id(self, param_userID):
-        try:
-            session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.userID == param_userID).first()
+            user_data = session.query(User).filter(func.lower(User.email) == param_email.lower()).first()
             if user_data:
                 allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
 
@@ -85,6 +63,7 @@ class UserRepository:
                     "lastName": user_data.lastName,
                     "firstName": user_data.firstName,
                     "role": user_data.role,
+                    "salt": user_data.salt,
                     "allergies": allergies
                 }
                 return user_dict
@@ -94,16 +73,16 @@ class UserRepository:
         finally:
             session.close()
 
-    def get_user_by_email(self, param_email):
+
+    def get_user_by_id(self, param_userID):
         try:
             session = scoped_session(self.session_factory)
-            user_data = session.query(User).filter(User.email == param_email).first()
+            user_data = session.query(User).filter(User.userID == param_userID).first()
             if user_data:
                 allergies = [allergy.name for allergy in user_data.allergies] if user_data.allergies else None
 
                 user_dict = {
                     "userID": user_data.userID,
-                    "password": user_data.password,
                     "email": user_data.email,
                     "lastName": user_data.lastName,
                     "firstName": user_data.firstName,

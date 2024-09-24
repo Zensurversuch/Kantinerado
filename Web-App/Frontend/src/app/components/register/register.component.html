@@ -5,42 +5,42 @@
   <form [formGroup]="registerForm" (submit)="registerUser()">
     <div class="register__form-group">
       <label for="lastname" class="register__label">Nachname*</label>
-      <input id="lastname" formControlName="lastname" type="text" class="register__input">
+      <input id="lastname" formControlName="lastname" type="text" class="register__input" [maxlength]="50">
       <div *ngIf="registerForm.get('lastname')?.invalid && (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)">
         <span class="register__error-message">Nachname ist erforderlich.</span>
       </div>
     </div>
     <div class="register__form-group">
       <label for="firstname" class="register__label">Vorname*</label>
-      <input id="firstname" formControlName="firstname" type="text" class="register__input">
+      <input id="firstname" formControlName="firstname" type="text" class="register__input" [maxlength]="50">
       <div *ngIf="registerForm.get('firstname')?.invalid && (registerForm.get('firstname')?.dirty || registerForm.get('firstname')?.touched)">
         <span class="register__error-message">Vorname ist erforderlich.</span>
       </div>
     </div>
     <div class="register__form-group">
       <label for="email" class="register__label">E-Mail*</label>
-      <input id="email" formControlName="email" type="email" class="register__input">
+      <input id="email" formControlName="email" type="email" class="register__input" [maxlength]="50">
       <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
         <span class="register__error-message">Bitte geben Sie eine gültige E-Mail-Adresse ein.</span>
       </div>
     </div>
     <div class="register__form-group">
       <label for="password" class="register__label">Passwort*</label>
-      <input id="password" formControlName="password" type="password" class="register__input">
+      <input id="password" formControlName="password" type="password" class="register__input" [minlength]="8" [maxlength]="50">
       <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
         <span class="register__error-message">Mindestens 8 Zeichen, eine Zahl, Sonderzeichen und Großbuchstabe erforderlich.</span>
       </div>
     </div>
     <div class="register__form-group">
-      <label for="confirmpassword" class="register__label">Bestätige Passwort*</label>
-      <input id="confirmpassword" formControlName="confirmpassword" type="password" class="register__input">
-      <div *ngIf="registerForm.get('confirmpassword')?.invalid && (registerForm.get('confirmpassword')?.dirty || registerForm.get('confirmpassword')?.touched)">
+      <label for="confirmPassword" class="register__label">Bestätige Passwort*</label>
+      <input id="confirmPassword" formControlName="confirmPassword" type="password" class="register__input" [minlength]="8" [maxlength]="50">
+      <div *ngIf="registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">
         <span class="register__error-message">Passwortbestätigung ist erforderlich.</span>
       </div>
-      <div *ngIf="registerForm.hasError('passwordMismatch') && (registerForm.get('confirmpassword')?.dirty || registerForm.get('confirmpassword')?.touched)">
+      <div *ngIf="registerForm.hasError('passwordMismatch') && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">
         <span class="register__error-message">Passwörter stimmen nicht überein.</span>
       </div>
-      <div *ngIf="registerForm.get('password')?.value !== registerForm.get('confirmpassword')?.value && (registerForm.get('confirmpassword')?.dirty || registerForm.get('confirmpassword')?.touched)">
+      <div *ngIf="registerForm.get('password')?.value !== registerForm.get('confirmPassword')?.value && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)">
         <span class="register__error-message">Die Passwörter stimmen nicht überein.</span>
       </div>
     </div>

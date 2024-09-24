@@ -28,12 +28,21 @@ Der Vorgang des Deployments ist durch einen Befehl vollständig:
 
 1. **Laden sie das Repository herunter**
 
-2. **Gehen Sie in den Ordner ( /Development/Local-Environment/**
+2. **Gehen Sie in den Ordner [Web-App](Web-App)**
 
 3. **Gehen Sie in die Console und führen Sie folgenden Befehl aus:**
+```bash
 docker-compose up --build
+```
 
 # Datenbank aufsetzen mit Backup
+Hierfür folgende Einträge aus der .env entfernen, sodass die Datenbank nicht direkt beim Start initialisiert wird:
+* USER_EMAIL
+* USER_PASSWORD
+* USER_LAST_NAME
+* USER_FIRST_NAME
+
+
 Man muss sich mit dem Datenbank Tool [DBeaver](https://dbeaver.io/) mit der Datenbank verbinden.
 1. DBeaver herunterladen
 2. Verbindung zur Datenbank herstellen
@@ -48,20 +57,8 @@ Das Andere DB-Backup [hier](Web-App/Database/Dummy_Database_Presentation.sql) is
 
 # Datenbank aufsetzen ohne Backup
 
-1. **Erstellen Sie eine virtuelle Python Umgebung**
-Windows: python –m venv .venv
-
-2. **Stellen Sie den Interpreter der virtuellen Umgebung auf Python (venv)**
-Windows: .venv\Scripts\python.exe
-
-3. **Aktivieren Sie die Virtuelle Umgebung.**
-Windows: venv\Scripts\activate
-
-4. **Installieren Sie die verschiedenen Bibliotheken über den Package Installer Python (pip):**
-Windows: pip install -r "requirements.txt"
-
-5. **Initialisieren der Tabellen durch das Python Script für Lokal:**
-Windows: python [intialize_db_local.py](Web-App/Database/initialize_db_local.py)
+1. **Automatisches Datenbank Setup**
+    - Datenbank wird beim starten des Docker-Compose automatisch mit aufgesetz sofern die optionalen Benutzer Informationen in der .env angeben wurden. Genauere Beschreibung [hier](Web-App/ReadMe.md).
 
 ## Funktionen
 

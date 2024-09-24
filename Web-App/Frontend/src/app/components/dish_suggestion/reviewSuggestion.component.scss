@@ -1,0 +1,173 @@
+@import "../../color.scss";
+
+.card {
+  min-width: 300px;
+  width: 40%;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top:2em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.blurred {
+  filter: blur(5px);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.suggestions-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.description {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  div {
+    &:first-child {
+      flex: 1;
+    }
+
+    &:last-child {
+      display: block;
+      margin-left: 20px;
+    }
+
+    img {
+      display: block;
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+form {
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid $primary-color;
+  border-radius: 5px;
+  background-color: $highlight-color;
+
+  .form-group {
+    margin-bottom: 15px;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="file"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid $primary-border-color;
+      border-radius: 3px;
+      box-sizing: border-box;
+
+      &.ng-touched, &.ng-dirty {
+        &.ng-valid {
+          border: $secondary-border-color 2px solid;
+          font-style: $secondary-border-color;
+        }
+
+        &.ng-invalid {
+          border: $primary-color 3px solid;
+          font-style: $primary-color;
+        }
+      }
+    }
+
+    .error {
+      color: $primary-color;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .allergy-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .allergy-display {
+        width: 33%;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+
+        input {
+          margin-right: 5px;
+        }
+
+        label {
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    .submit-button {
+      background-color: $secondary-border-color;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: $disabled-color;
+        cursor: not-allowed;
+      }
+    }
+
+    .reject-button {
+      background-color: $primary-border-color;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: $primary-color;
+      }
+    }
+  }
+
+  .ingredients {
+    margin-bottom: 10px;
+
+    input {
+      margin-bottom: 5px;
+    }
+
+    button {
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: $secondary-border-color;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  }
+}

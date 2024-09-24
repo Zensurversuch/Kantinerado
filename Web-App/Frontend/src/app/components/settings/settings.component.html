@@ -6,16 +6,6 @@
   </div>
 
   <h2>Einstellungen</h2>
-  <br>
-  <div class="toggle-wrapper">
-    <span>{{ darkMode ? 'Darkmode' : 'Whitemode' }}</span>
-    <label class="switch">
-      <input type="checkbox" id="mode-toggle" (click)="toggleDarkMode()" [(ngModel)]="darkMode">
-      <span class="slider"></span>
-    </label>
-  </div>
-  <br>
-
   <h3>Wähle deine Allergien:</h3>
   <div class="allergies">
     <label *ngFor="let allergy of allergies" class="allergy-label">

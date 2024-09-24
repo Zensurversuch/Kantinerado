@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import {RouterLink} from "@angular/router";
 import {AuthService} from "../../service/authentication/auth.service";
-import {NgIf} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
 import { Role } from '../../interface/role';
 
 @Component({
@@ -12,7 +12,8 @@ import { Role } from '../../interface/role';
   standalone: true,
   imports: [
     RouterLink,
-    NgIf
+    NgIf,
+    NgOptimizedImage
   ],
 
 })

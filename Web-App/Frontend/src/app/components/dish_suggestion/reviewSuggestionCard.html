@@ -1,0 +1,91 @@
+<form [formGroup]="dishForm">
+  <div class="form-group">
+    <label for="name">Name*</label>
+    <input id="name" formControlName="name" type="text"/>
+    <div *ngIf="dishForm.get('name')?.invalid && dishForm.get('name')?.touched">
+      <small class="error">Name des Gerichts wird benötigt.</small>
+    </div>
+  </div>
+
+  <div *ngIf="suggestion?.description" class="form-group description">
+    <div>
+      <label for="description">Description</label>
+      <p id="description">{{ suggestion?.description }}</p>
+    </div>
+    <div>
+      <ng-container *ngIf="this.dish?.image">
+        <img style="display:block; width:120px;height:120px;" id="base64image"
+             [src]="'data:image/jpeg;base64,' + this.dish?.image" alt="No Image available">
+      </ng-container>
+      <ng-container *ngIf="!this.dish?.image">
+        <img style="display:block; width:120px;height:120px;" ngSrc="../../../assets/no-image-icon-23494.png"
+             height="200"
+             width="200" alt="Picture of Suggestion">
+      </ng-container>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="price">Preis in €*</label>
+    <input id="price" formControlName="price" type="number"/>
+    <div *ngIf="dishForm.get('price')?.invalid && dishForm.get('price')?.touched">
+      <small class="error">Bitte wählen Sie einen gültigen Preis.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="dietaryCategory">Ernährungsklasse*</label>
+    <select id="dietaryCategory" formControlName="dietaryCategory">
+      <option *ngFor="let category of dietaryCategories" [value]="category">{{ category }}</option>
+    </select>
+    <div
+      *ngIf="dishForm.get('dietaryCategory')?.invalid && (dishForm.get('dietaryCategory')?.dirty || dishForm.get('dietaryCategory')?.touched)">
+      <span class="error-message">Bitte wählen Sie eine gültige Option aus.</span>
+    </div>
+  </div>
+
+  <div class="form-group" formArrayName="ingredients">
+    <label class="label">Inhaltsstoffe</label>
+    <div *ngFor="let ingredient of ingredients.controls; let i=index" [formGroupName]="i">
+      <input formControlName="ingredientName" type="text" placeholder="Inhaltsstoff {{ i + 1 }}">
+    </div>
+    <button (click)="addIngredient()" type="button">Inhaltsstoff hinzufügen</button>
+  </div>
+
+  <div class="form-group">
+    <label for="mealType" class="label">Mahlzeitentyp*</label>
+    <select id="mealType" formControlName="mealType" class="input-dropdown">
+      <option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</option>
+    </select>
+    <div
+      *ngIf="dishForm.get('mealType')?.invalid && (dishForm.get('mealType')?.dirty || dishForm.get('mealType')?.touched)">
+      <span class="error-message">Bitte wählen Sie eine gültige Option aus.</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="allergy" class="label">Allergien
+    </label>
+    <div class="allergy-container">
+      <div *ngFor="let allergy of allergies" class="allergy-display">
+        <input id="allergy" type="checkbox" [value]="allergy" (change)="updateAllergies($event)">
+        {{ allergy }}
+      </div>
+    </div>
+    <div
+      *ngIf="dishForm.get('allergy')?.invalid && (dishForm.get('allergy')?.dirty || dishForm.get('allergy')?.touched)">
+      <span class="error-message">Bitte wählen Sie eine gültige Option aus.</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Bild</label>
+    <input type="file" (change)="onImageChange($event)" accept="image/*">
+  </div>
+
+  <div class="form-group">
+    <div class="button-group">
+      <button  [disabled]="dishForm.invalid" class="submit-button" (click)="onSubmit($event)">Akzeptieren</button>
+      <button class="reject-button" (click)="onReject($event)">Ablehnen</button>
+    </div>
+  </div>
+</form>
